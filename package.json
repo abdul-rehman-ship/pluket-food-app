@@ -8,6 +8,10 @@
     "build": "next build",
     "start": "next start"
   },
+  
+  "engines": {
+    "node": "16.x"
+  },
   "dependencies": {
     "@fontsource/open-sans": "^4.3.0",
     "@fontsource/satisfy": "^4.3.0",
