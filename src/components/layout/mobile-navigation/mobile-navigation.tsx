@@ -11,13 +11,13 @@ import { Drawer } from "@components/common/drawer/drawer";
 import { getDirection } from "@utils/get-direction";
 const CartButton = dynamic(() => import("@components/cart/cart-button"), {
 	ssr: false,
-});
+}) as any
 const AuthMenu = dynamic(() => import("@components/layout/header/auth-menu"), {
 	ssr: false,
-});
+}) as any
 const MobileMenu = dynamic(
 	() => import("@components/layout/header/mobile-menu")
-);
+) as any
 
 const BottomNavigation: React.FC = () => {
 	const {
