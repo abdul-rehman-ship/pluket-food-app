@@ -10,10 +10,10 @@ import dynamic from "next/dynamic";
 import { useTranslation } from "next-i18next";
 import Logo from '@components/ui/logo'
 
-const AuthMenu = dynamic(() => import("./auth-menu"), { ssr: false });
+const AuthMenu = dynamic(() => import("./auth-menu"), { ssr: false }) as any;
 const CartButton = dynamic(() => import("@components/cart/cart-button"), {
 	ssr: false,
-});
+}) as any;
 
 type DivElementRef = React.MutableRefObject<HTMLDivElement>;
 const { site_header } = siteSettings;
