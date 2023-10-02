@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "clean": "rimraf \"{.next,dist,build,out,node_modules}\"",
-    "dev": " next dev",
-    "build": " next build ",
-    "start": " next start"
+    "dev": "  SET NODE_OPTIONS=--openssl-legacy-provider && next dev  ",
+    "build": "SET NODE_OPTIONS=--openssl-legacy-provider && next build ",
+    "start": " SET NODE_OPTIONS=--openssl-legacy-provider && next start"
   },
   "dependencies": {
     "@fontsource/open-sans": "^4.3.0",
