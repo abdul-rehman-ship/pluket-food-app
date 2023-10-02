@@ -1,6 +1,6 @@
 import Button from "@components/ui/button";
 import Input from "@components/ui/input";
-import Logo from "@components/ui/logo";
+
 import { useForm } from "react-hook-form";
 import { useUI } from "@contexts/ui.context";
 import { useTranslation } from "next-i18next";
