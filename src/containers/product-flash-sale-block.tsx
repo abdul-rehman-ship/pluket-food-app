@@ -4,7 +4,7 @@ import ProductCardGridLoader from "@components/ui/loaders/product-card-grid-load
 import { useFlashSaleProductsQuery } from "@framework/product/get-all-flash-sale-products";
 import Alert from "@components/ui/alert";
 import dynamic from "next/dynamic";
-const Countdown = dynamic(() => import("react-countdown"), { ssr: false });
+const Countdown = dynamic(() => import("react-countdown"), { ssr: false }) as any;
 
 interface ProductsProps {
 	sectionHeading?: string;
@@ -55,7 +55,7 @@ const ProductsFlashSaleBlock: React.FC<ProductsProps> = ({
 	className = "mb-12 md:mb-14 xl:mb-16",
 	date = "2023-03-01T01:02:03",
 }) => {
-	const { data, isLoading, error } = useFlashSaleProductsQuery({
+	const { data, isLoading, error }:any = useFlashSaleProductsQuery({
 		limit: 10,
 	});
 	return (

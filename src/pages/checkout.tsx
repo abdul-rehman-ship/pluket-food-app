@@ -1,7 +1,7 @@
 import Container from "@components/ui/container";
 import Layout from "@components/layout/layout";
 
-import PageHeader from "@components/ui/page-header";
+
 import CheckoutForm from "@components/checkout/checkout-form";
 import CheckoutCard from "@components/checkout/checkout-card";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";

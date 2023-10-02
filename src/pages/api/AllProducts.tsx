@@ -10,7 +10,7 @@ const dbConfig: any = {
 
 async function queryDatabase(sql: string, params?: any[]) {
   const connection = await createConnection(dbConfig);
-  const [rows, fields]:any = await connection.execute(sql, params);
+  const [rows]:any = await connection.execute(sql, params);
   connection.end();
   return rows;
 }

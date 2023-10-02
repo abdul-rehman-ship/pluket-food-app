@@ -1,4 +1,4 @@
-import type { AppProps } from "next/app";
+// import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { AnimatePresence } from "framer-motion";
 import { ManagedUIContext } from "@contexts/ui.context";
@@ -36,7 +36,7 @@ function handleExitComplete() {
 
 const Noop: React.FC = ({ children }) => <>{children}</>;
 
-const CustomApp = ({ Component, pageProps }: AppProps) => {
+const CustomApp = ({ Component, pageProps }: any) => {
 	const queryClientRef = useRef<any>();
 	if (!queryClientRef.current) {
 		queryClientRef.current = new QueryClient();

@@ -2,7 +2,7 @@ import cn from "classnames";
 interface Props {
 	className?: string;
 	children?: any;
-	el?: HTMLElement;
+	el?: any;
 	clean?: boolean;
 }
 
@@ -16,9 +16,7 @@ const Container: React.FC<Props> = ({
 		"mx-auto max-w-[1920px] px-4 md:px-8 2xl:px-16": !clean,
 	});
 
-	let Component: React.ComponentType<
-		React.HTMLAttributes<HTMLDivElement>
-	> = el as any;
+	let Component: any = el as any;
 
 	return <Component className={rootClassName}>{children}</Component>;
 };

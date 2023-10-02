@@ -17,7 +17,7 @@ const ProductsWithFlashSale: React.FC<Props> = ({
 	carouselBreakpoint,
 }) => {
 	const { width } = useWindowSize();
-	const { data, isLoading, error } = useTopSellerProductsQuery({
+	const { data, isLoading, error }:any = useTopSellerProductsQuery({
 		limit: 10,
 	});
 
@@ -43,7 +43,7 @@ const ProductsWithFlashSale: React.FC<Props> = ({
 					) : isLoading && !data?.length ? (
 						<ProductListFeedLoader limit={4} />
 					) : (
-						data?.map((product) => (
+						data?.map((product:any) => (
 							<ProductCard
 								key={`product--key${product.id}`}
 								product={product}

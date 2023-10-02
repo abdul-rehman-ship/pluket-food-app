@@ -2,8 +2,7 @@ import React, { useEffect ,useState} from 'react'
 
 
 import VendorNavbar from '../components/adminNavbar'
-import Link from 'next/link'
-import style from '../styles/vendor.module.css'
+
 import VendorProductItem from '../components/VendorProductItem'
 
 import JsCookie from 'js-cookie'
