@@ -4,12 +4,9 @@
   "private": true,
   "scripts": {
     "clean": "rimraf \"{.next,dist,build,out,node_modules}\"",
-    "dev": "next dev",
-    "build": "next build set NODE_OPTIONS=--openssl-legacy-provider",
-    "start": "next start"
-  },
-  "engines": {
-    "node": "18.x"
+    "dev": " next dev",
+    "build": " next build ",
+    "start": " next start"
   },
   "dependencies": {
     "@fontsource/open-sans": "^4.3.0",
@@ -48,6 +45,7 @@
     "react-multi-carousel": "^2.6.2",
     "react-query": "^3.13.12",
     "react-rating-stars-component": "^2.2.0",
+    "react-scripts": "^5.0.1",
     "react-scroll": "^1.8.2",
     "react-sticky-box": "^0.9.3",
     "react-tabs": "^3.2.2",
