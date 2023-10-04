@@ -23,7 +23,7 @@ export default function VendorNavbar() {
     <>
      <Navbar   expand={'lg'} className={`mb-3   shadow-sm ${style.navbarContainer}`} style={{padding:"1rem"}}>
           <Container >
-            <Navbar.Brand style={{color:"#1F7B6F",fontWeight:600}}>Admin Dashboard</Navbar.Brand>
+            <Navbar.Brand style={{color:"#8A2BE2FF !important",fontWeight:600}}>Admin Dashboard</Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-lg`} />
            {Navbar ?  <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-lg`}
@@ -31,7 +31,7 @@ export default function VendorNavbar() {
               placement="end"
             >
               <Offcanvas.Header closeButton>
-                <Offcanvas.Title style={{color:"#1F7B6F",fontWeight:600}} id={`offcanvasNavbarLabel-expand-lg`}>
+                <Offcanvas.Title style={{color:"#8A2BE2FF !important",fontWeight:600}} id={`offcanvasNavbarLabel-expand-lg`}>
                   Admin Dashboard
                 </Offcanvas.Title>
               </Offcanvas.Header>

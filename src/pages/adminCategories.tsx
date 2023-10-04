@@ -80,8 +80,9 @@ toast.dismiss()
   }
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    
+    if(category!==''){
     toast.loading("Loading...");
+
     try {
       let isIn:any=false
         const data = await getDocs(collection(db, "categories"));
@@ -110,9 +111,12 @@ if(isIn===true){
 
 }
     } catch (error:any) {
-      
+      toast.dismiss();
       toast.error(error.message);
     }
+  }else{
+      toast.error("please enter category name")
+  }
   };
 const handleDelete=async(id:any)=>{
     

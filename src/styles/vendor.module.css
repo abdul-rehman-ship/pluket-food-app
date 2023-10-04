@@ -4,7 +4,7 @@
 }
 .table_head{
     padding: 1rem;
-    background: #1C7468 !important;
+    background: #8A2BE2FF !important;
     color: white !important;
     
 }
@@ -18,7 +18,7 @@
  
 }
 .card p,.role_card p{
-    color: #1C7468;
+    color: #8A2BE2FF;
     font-family: Poppins;
     font-size:larger;
     white-space: nowrap;
@@ -35,7 +35,7 @@
     white-space: nowrap;margin: 1rem 1rem;
     padding: 0 0.5rem;
 height: 56px;
-background: #1C7468 !important;
+background: #8A2BE2FF !important;
 border-radius: 50px !important;
 color: white 
 !important;
@@ -46,7 +46,7 @@ color: white
 }
 .search_btn{
     
-background: #1C7468 !important;
+background: #8A2BE2FF !important;
 
 color: white 
 !important;
@@ -99,13 +99,13 @@ color: white
     white-space: nowrap;
 }
 .edit_btn{
-    background-color: #1C7468;
+    background-color: #8A2BE2FF;
     color: white !important;
     padding: 0 1rem;
     transform: translateY(-0.6rem);
 }
 .edit_btn:hover{
-    color: #1C7468;
+    color: #8A2BE2FF;
     background-color: #000000B8;
     
 }
@@ -113,7 +113,7 @@ color: white
     font-family: Poppins;
 }
 .productDetail button{
-    background-color: #1C7468;
+    background-color: #8A2BE2FF;
     color: white !important;
     padding: 0 1rem;
     padding: 0.6rem 1rem;
@@ -130,7 +130,7 @@ color: white
     border-radius: 10px;
 }
 .contact button{
-    background: #1C7468 !important;
+    background: #8A2BE2FF !important;
 
     color: white 
     !important;

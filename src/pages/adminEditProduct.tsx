@@ -14,9 +14,10 @@ import {
 import {
   
   collection,
-  addDoc,
+  doc,
   getDocs,
   serverTimestamp,
+  updateDoc,
 } from "firebase/firestore";
 
 import { toast, Toaster } from "react-hot-toast";
@@ -37,12 +38,15 @@ function VendorAddNewProduct() {
     category: "",
     initialStock: "",
     salePrice: "",
+    image:""
   };
   const [productItem, setProductItem] = useState(initailState);
   const [images, setImage]:any = useState([]);
   const [variations, setVariations] = useState<Variation[]>([]);
   const [categories,setCategories]:any=useState([])
   const router=useRouter()
+const id=router.asPath.split("=")[1]
+
   const addVariation = () => {
     setVariations([...variations, { name: '', additionalPrice: '' }]);
   };
@@ -73,7 +77,26 @@ function VendorAddNewProduct() {
      
       
     });
-  
+    const data2 = await getDocs(collection(db, "products"));
+    
+    data2.forEach((doc: any) => {
+      if(doc.data()){
+        
+        if(doc.id===id){
+            const prod={id:doc.id,...doc.data()}
+            setProductItem(prod)
+            setVariations(prod.variations)
+            setImage([prod.image])
+              
+        }
+       
+          
+
+      
+      }
+     
+      
+    });
    
           
      setCategories(arr)
@@ -130,11 +153,12 @@ function VendorAddNewProduct() {
     
     try {
       
-      toast.loading("uploading product...");
+      toast.loading("updating product...");
 
       const urls = await uploadFiles("images", images);
 
-       await addDoc(collection(db, "products"), {
+      await updateDoc(doc(db, "products", id), {
+    
         name: productItem.name,
         price: productItem.price,
         description: productItem.description,
@@ -146,10 +170,8 @@ function VendorAddNewProduct() {
         
       });
       ;toast.dismiss();
-      toast.success("product uploaded successfully");
-      setProductItem(initailState);
-      setImage([]);
-      setVariations([]);
+      toast.success("product updated successfully");
+      getData()
     } catch (error:any) {
       
       toast.error(error.message);
@@ -198,6 +220,17 @@ function VendorAddNewProduct() {
             &#8592; Back{" "}
           </button>
         </Link>
+        <div className="row mt-4 mx-2">
+        <div className="col-md-6 mt-4">
+          <span>Current Product Image</span>
+          <img
+            src={productItem.image}
+            alt="Current Promotion"
+            className="img-fluid mt-2"
+            style={{ maxHeight: '200px' }}
+          />
+        </div>
+      </div>
         <form onSubmit={handleSubmit}>
           <div className={`row mt-4 px-3`}>
             <div className="col-md-6">
@@ -270,7 +303,7 @@ function VendorAddNewProduct() {
             </div>
             
             <div className="col-md-6 ">
-              <span>Product Image *</span>
+              <span>Change Product Image *</span>
               <input
                 type="file"
                 multiple
@@ -337,7 +370,7 @@ function VendorAddNewProduct() {
           <div className="row mt-4 mx-2">
             <div className="col-md-6">
               <button type="submit" className="btn">
-                Upload product
+                Update product
               </button>
             </div>
             <div className="col-md-6"></div>

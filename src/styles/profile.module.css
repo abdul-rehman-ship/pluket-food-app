@@ -7,10 +7,11 @@
     font-weight: 600;
 
 }
+
 .formContainer button{
     
 height: 42px;
-background: #1C7468 !important;
+background: #8A2BE2FF !important;
 border-radius: 50px !important;
 color: white;
 padding: 0 1rem;
@@ -18,7 +19,7 @@ font-weight: 500;
 
 }
 .formContainer button:hover{
-    background: #1C7468 !important;
+    background: #8A2BE2FF !important;
     color: white;
 }
 .delete_btn{
