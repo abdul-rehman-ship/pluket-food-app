@@ -1,6 +1,9 @@
 
-
+.container{
+    font-family: Poppins;
+}
 .table_head{
+    padding: 1rem;
     background: #1C7468 !important;
     color: white !important;
     
@@ -16,7 +19,7 @@
 }
 .card p,.role_card p{
     color: #1C7468;
-    font-family: 'Poppins';
+    font-family: Poppins;
     font-size:larger;
     white-space: nowrap;
     font-weight: bold;
@@ -26,7 +29,6 @@
     transform: translateY(0.6rem);
 }
 .login_btn{
-    font-family: 'Poppins';
    min-width: 165px;
    max-width: 200px;
 
@@ -52,12 +54,12 @@ color: white
 
 .login_btn a{
     color: white !important;
-    font-family: 'Poppins';
+    font-family: Poppins;
    
     text-decoration: none;
 }
 .productItem{
-    font-family: 'Poppins' !important;
+    font-family: Poppins !important;
     height: 27rem !important;
     cursor: pointer;
     border-radius: 1rem;
@@ -65,13 +67,13 @@ color: white
 }
 
 .product_title{
-    font-family: 'Poppins' !important;
+    font-family: Poppins !important;
 
     font-weight: bold;
     
 }
 .price{
-    font-family: 'Poppins' !important;
+    font-family: Poppins !important;
 
     transform: translateY(-0.7rem) !important;
     font-weight: 600;
@@ -83,7 +85,7 @@ color: white
 .description{
     
 
-    font-family: 'Poppins';
+    font-family: Poppins;
     font-size: medium;
     font-weight: bold;
     margin-top: 0.7rem;
@@ -92,7 +94,7 @@ color: white
 }
 .menu a{
     color: #000000BC !important;
-    font-family: 'Poppins';
+    font-family: Poppins;
     text-decoration: none;
     white-space: nowrap;
 }
@@ -108,7 +110,7 @@ color: white
     
 }
 .productDetail{
-    font-family: 'Poppins';
+    font-family: Poppins;
 }
 .productDetail button{
     background-color: #1C7468;

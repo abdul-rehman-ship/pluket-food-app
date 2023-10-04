@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "clean": "rimraf \"{.next,dist,build,out,node_modules}\"",
-    "dev": " next dev  ",
+    "dev": " SET NODE_OPTIONS = --openssl-legacy-provide && next dev  ",
     "build": " next build ",
     "start": "  next start"
   },
@@ -12,6 +12,7 @@
     "@fontsource/open-sans": "^4.3.0",
     "@fontsource/satisfy": "^4.3.0",
     "@headlessui/react": "^1.2.0",
+    "@heroicons/react": "^2.0.18",
     "@reach/portal": "^0.15.0",
     "@stripe/stripe-js": "^1.49.0",
     "@tailwindcss/forms": "^0.3.2",
@@ -20,6 +21,7 @@
     "bootstrap": "^5.2.3",
     "canvas-confetti": "^1.6.0",
     "classnames": "^2.3.1",
+    "firebase": "^10.4.0",
     "framer-motion": "^4.1.9",
     "js-cookie": "^2.2.1",
     "lodash": "^4.17.21",

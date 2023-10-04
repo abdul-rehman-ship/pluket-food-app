@@ -21,9 +21,9 @@ export default function VendorNavbar() {
  
   return (
     <>
-     <Navbar   expand={'lg'} className={`mb-3  shadow-sm ${style.navbarContainer}`}>
+     <Navbar   expand={'lg'} className={`mb-3   shadow-sm ${style.navbarContainer}`} style={{padding:"1rem"}}>
           <Container >
-            <Navbar.Brand style={{color:"#1F7B6F"}}>Admin Dashboard</Navbar.Brand>
+            <Navbar.Brand style={{color:"#1F7B6F",fontWeight:600}}>Admin Dashboard</Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-lg`} />
            {Navbar ?  <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-lg`}
@@ -31,19 +31,21 @@ export default function VendorNavbar() {
               placement="end"
             >
               <Offcanvas.Header closeButton>
-                <Offcanvas.Title style={{color:"#1F7B6F"}} id={`offcanvasNavbarLabel-expand-lg`}>
+                <Offcanvas.Title style={{color:"#1F7B6F",fontWeight:600}} id={`offcanvasNavbarLabel-expand-lg`}>
                   Admin Dashboard
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                <Nav.Link  href="/adminDashboard" className={`mx-3 ${style.menu} `}>Products</Nav.Link>
+                <Nav.Link  href="/adminDashboard" className={`mx-3 ${style.menu} `} style={{fontWeight:600}}>Products</Nav.Link>
 
+                <Nav.Link  href="/adminCategories" className={`mx-3 ${style.menu} `} style={{fontWeight:600}}>Categories</Nav.Link>
+                <Nav.Link  href="/adminPromotions" className={`mx-3 ${style.menu} `} style={{fontWeight:600}}>Promotions</Nav.Link>
                  
-                  <Nav.Link href="/adminOrders" className={`mx-3 ${style.menu} `}> Orders</Nav.Link>
+                  <Nav.Link href="/adminOrders" className={`mx-3 ${style.menu} `} style={{fontWeight:600}} > Orders</Nav.Link>
                   
 
-                  <Nav.Link href="/" className={`mx-3 ${style.menu} `}> Sign out</Nav.Link>
+                  <Nav.Link href="/" className={`mx-3 ${style.menu} `} style={{fontWeight:600}} > Sign out</Nav.Link>
 
                   
                   

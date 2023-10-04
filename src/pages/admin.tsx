@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import style from '@styles/admin.module.css'
 import {toast,Toaster} from 'react-hot-toast';
-
+import {getDocs,collection} from 'firebase/firestore'
+import {db} from '../../firebase'
 
 import { useRouter } from 'next/router'
 import JsCookie from 'js-cookie'
@@ -16,15 +17,26 @@ export default function Index() {
         e.preventDefault();
 toast.loading("Loading...")
         const key=e.target.key.value;
-        
-        const res=await fetch('/api/admin/isAdmin',{
-            method:'POST',
+        let adminKey:any;
+        const snapshot=await getDocs(collection(db,"admin_key"))
+        snapshot.forEach((doc)=>{
             
+            
+            if(doc.data().key===key){
+             
+                adminKey=doc.data().key
+            }
+            else{
+                
+                toast.error("Invalid Key")
+            }
         })
-        const data=await res.json()
-        const adminKey=data.admin_key;
         
-            console.log(adminKey);
+
+        
+        
+        
+            
             
             
             if(adminKey===key){
@@ -42,6 +54,12 @@ toast.loading("Loading...")
        
         
     }
+    useEffect(() => {
+        if(JsCookie.get("admin_key")){
+            router.push("/admin")
+        }
+        
+    })
   return (
     <>
         
