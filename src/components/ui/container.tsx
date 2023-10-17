@@ -13,7 +13,7 @@ const Container: React.FC<Props> = ({
 	clean,
 }) => {
 	const rootClassName = cn(className, {
-		"mx-auto max-w-[1920px] px-4 md:px-8 2xl:px-16": !clean,
+		"mx-auto max-w-[1920px] pt-4 ": !clean,
 	});
 
 	let Component: any = el as any;

@@ -1,5 +1,5 @@
 import Link from "@components/ui/link";
-import SearchIcon from "@components/icons/search-icon";
+
 import UserIcon from "@components/icons/user-icon";
 import MenuIcon from "@components/icons/menu-icon";
 import HomeIcon from "@components/icons/home-icon";
@@ -59,7 +59,7 @@ const BottomNavigation: React.FC = () => {
 					onClick={openSearch}
 					aria-label="search-button"
 				>
-					<SearchIcon />
+					
 				</button>
 				<Link href="/" className="flex-shrink-0">
 					<HomeIcon />

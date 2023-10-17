@@ -4,11 +4,12 @@ import Input from "@components/ui/input";
 import { useForm } from "react-hook-form";
 import { useUI } from "@contexts/ui.context";
 import { useTranslation } from "next-i18next";
-
+import {sendPasswordResetEmail} from 'firebase/auth'
 type FormValues = {
 	email: string;
 };
-
+import {auth} from '../../../firebase'
+import {Toaster,toast} from "react-hot-toast";
 const defaultValues = {
 	email: "",
 };
@@ -30,11 +31,21 @@ const ForgetPasswordForm = () => {
 	}
 
 	const onSubmit = (values: FormValues) => {
-		console.log(values, "token");
+		if(values.email){
+			sendPasswordResetEmail(auth,values.email).then(()=>{
+
+				closeModal()
+				toast.success("Reset Password Link Sent. Check Your Email")
+			}).catch((err:any)=>{
+				console.log(err.message)
+			})
+		}
+		
 	};
 
 	return (
 		<div className="py-6 px-5 sm:p-8 bg-white mx-auto rounded-lg w-full sm:w-96 md:w-450px border border-gray-300">
+			<Toaster/>
 			<div className="text-center mb-9 pt-2.5">
 				<div onClick={closeModal}>
 					
@@ -61,6 +72,8 @@ const ForgetPasswordForm = () => {
 						},
 					})}
 					errorKey={errors.email?.message}
+					detail="no"
+
 				/>
 
 				<Button type="submit" className="h-11 md:h-12 w-full mt-2">

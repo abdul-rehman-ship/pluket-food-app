@@ -3,14 +3,11 @@
 import { useMutation } from "react-query";
 
 export interface UpdateUserType {
-  firstName: string;
-  lastName: string;
-  displayName: string;
-  phoneNumber: string;
+  name: string;
+  address: string;
+  phone: string;
   email: string;
-  password: string;
-  confirmPassword: string;
-  gender: string;
+  
 }
 async function updateUser(input: UpdateUserType) {
   // return http.post(API_ENDPOINTS.ChangeEmail, input);

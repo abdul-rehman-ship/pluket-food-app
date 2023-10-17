@@ -16,14 +16,16 @@ export default function Cart() {
 	const { t } = useTranslation("common");
 	const { closeCart } = useUI();
 	const { items, total, isEmpty } = useCart();
+	
+	
 	const { price: cartTotal } = usePrice({
 		amount: total,
-		currencyCode: "USD",
+		currencyCode: "THB",
 	});
 	return (
-		<div className="flex flex-col w-full h-full justify-between">
+		<div className="flex flex-col bg-olive w-full h-full justify-between">
 			<div className="w-full flex justify-between items-center relative ps-5 md:ps-7 py-0.5 border-b border-gray-100">
-				<h2 className="font-bold text-xl md:text-2xl m-0 text-heading">
+				<h2 className="font-bold text-maroon text-xl md:text-2xl m-0 ">
 					{t("text-shopping-cart")}
 				</h2>
 				<button

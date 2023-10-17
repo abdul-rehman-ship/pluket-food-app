@@ -51,8 +51,8 @@ export default function AccountNav() {
 						<a
 							className={
 								mainPath === menuPath
-									? "bg-gray-100 font-semibold flex items-center cursor-pointer text-sm lg:text-base text-heading py-3.5 px-4 lg:px-5 rounded mb-2 "
-									: "flex items-center cursor-pointer text-sm lg:text-base text-heading font-normal py-3.5 px-4 lg:px-5 rounded mb-2"
+									? "bg-olive font-semibold flex items-center cursor-pointer text-sm lg:text-base text-maroon py-3.5 px-4 lg:px-5 rounded mb-2 hover:text-maroon "
+									: "flex items-center cursor-pointer text-sm lg:text-base text-olive font-normal py-3.5 px-4 lg:px-5 rounded mb-2 hover:text-olive"
 							}
 						>
 							{item.icon}
@@ -62,7 +62,7 @@ export default function AccountNav() {
 				);
 			})}
 			<button
-				className="flex items-center cursor-pointer text-sm lg:text-base text-heading font-normal py-3.5 px-4 lg:px-5 focus:outline-none"
+				className="flex items-center cursor-pointer text-sm lg:text-base text-olive font-normal py-3.5 px-4 lg:px-5 focus:outline-none"
 				onClick={() => logout()}
 			>
 				<IoLogOutOutline className="w-5 h-5" />

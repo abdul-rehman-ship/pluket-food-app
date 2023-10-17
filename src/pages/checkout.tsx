@@ -10,7 +10,7 @@ import { useUI } from "@contexts/ui.context";
 export default function CheckoutPage() {
 	const {isAuthorized}=useUI();
 	if(!isAuthorized){
-		return <div>Not Authorized</div>
+		return <div className="text-olive font-bold">Please Login to see this page</div>
 	}
 	return (
 		<>
@@ -20,9 +20,11 @@ export default function CheckoutPage() {
 					<div className="md:w-full lg:w-3/5 flex  h-full flex-col -mt-1.5">
 						<CheckoutForm />
 					</div>
+
 					<div className="md:w-full lg:w-2/5 md:ms-7 lg:ms-10 xl:ms-14 flex flex-col h-full -mt-1.5">
 						<CheckoutCard />
 					</div>
+		
 				</div>
 				{/* <Subscription /> */}
 			</Container>

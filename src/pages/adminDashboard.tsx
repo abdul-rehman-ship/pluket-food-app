@@ -16,13 +16,14 @@ export default function VendorDashboard() {
   const [products,setProducts]=useState([])
   const [allProducts,setAllProducts]=useState([])
   const [searchString,setSearchString]=useState("")
-
+  
    const router=useRouter()
   
    const getData = async () => {
-   toast.loading("Loading...")
+   
     let arr: any = [];
-    const data = await getDocs(collection(db, "products"));
+    const data :any= await getDocs(collection(db, "products"));
+  
     data.forEach((doc: any) => {
       if(doc.data()){
         const prod={id:doc.id,...doc.data()}
@@ -77,7 +78,7 @@ const filter=async()=>{
 
     useEffect(() => {
       
-
+    
       if(JsCookie.get("admin_key")==="admin"){
         if(products.length===0){
           getData()
@@ -87,8 +88,6 @@ const filter=async()=>{
       }else{
         router.push("/admin")
       }
-        
-
 
     })
   

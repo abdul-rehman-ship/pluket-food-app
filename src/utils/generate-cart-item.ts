@@ -1,16 +1,20 @@
 import isEmpty from "lodash/isEmpty";
 
 export function generateCartItem(item: any, attributes: object) {
-  const { _id, shoeName, thumbnail, retailPrice,stock } = item;
+  const { id, name,image, description,price,variations,selectedVariations ,initialStock ,size} = item;
   return {
     id: !isEmpty(attributes)
-      ? `${_id}.${Object.values(attributes).join(".")}`
-      : _id,
-      name:shoeName,
+      ? `${id}.${Object.values(attributes).join(".")}`
+      : id,
+      name:name,
     
-    image: thumbnail,
-    price: retailPrice,
-    stock,
-    attributes,
+    image: image,
+    price ,
+    stock:initialStock,
+    variations,
+    description,
+    selectedVariations,
+    size
+
   };
 }

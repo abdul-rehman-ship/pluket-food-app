@@ -5,7 +5,7 @@ import usePrice from "@framework/product/use-price";
 export const CheckoutItem: React.FC<{ item: Item }> = ({ item }) => {
 	const { price } = usePrice({
 		amount: item.itemTotal,
-		currencyCode: "USD",
+		currencyCode: "THB",
 	});
 	return (
 		<div className="flex py-4 items-center lg:px-3 border-b border-gray-300">
@@ -17,10 +17,10 @@ export const CheckoutItem: React.FC<{ item: Item }> = ({ item }) => {
 					className="object-cover"
 				/>
 			</div>
-			<h6 className="text-sm ps-3 font-regular text-heading">
+			<h6 className="text-sm ps-3 font-regular text-olive">
 				{generateCartItemName(item.name, item.attributes)}
 			</h6>
-			<div className="flex ms-auto text-heading text-sm ps-2 flex-shrink-0">
+			<div className="flex ms-auto text-olive text-sm ps-2 flex-shrink-0">
 				{price}
 			</div>
 		</div>

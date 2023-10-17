@@ -16,7 +16,9 @@ const AuthMenu: React.FC<Props> = ({
   children,
 }) => {
   return isAuthorized ? (
-    <Link href={href} className={className}>
+    <Link href={href} className={className} 
+    
+    >
       {children}
     </Link>
   ) : (

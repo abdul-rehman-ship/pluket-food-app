@@ -1,9 +1,9 @@
 import { useOrderQuery } from "@framework/order/get-order";
 import usePrice from "@framework/product/use-price";
-import { OrderItem } from "@framework/types";
+
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-const OrderItemCard = ({ product }: { product: OrderItem }) => {
+const OrderItemCard = ({ product }: { product: any }) => {
 	const { price: itemTotal } = usePrice({
 		amount: product.price * product.quantity,
 		currencyCode: "USD",

@@ -10,32 +10,33 @@ export default function AccountPage() {
 	const { t } = useTranslation("common");
 const {isAuthorized}=useUI();
 if(!isAuthorized){
-	return <div>Not Authorized</div>
+	return <div className="text-olive m-4">
+		Please login to see this page</div>
 }
 	return (
 		<AccountLayout>
-			<h2 className="text-lg md:text-xl xl:text-2xl font-bold text-heading mb-3 xl:mb-5">
+			<h2 className="text-lg md:text-xl xl:text-2xl font-bold text-olive mb-3 xl:mb-5">
 				{t("text-dashboard")}
 			</h2>
-			<p className=" text-sm leading-7 md:text-base md:leading-loose lowercase">
+			<p className=" text-olive text-sm leading-7 md:text-base md:leading-loose lowercase">
 				{t("text-account-dashboard")}{" "}
 				<Link
 					href={ROUTES.ORDERS}
-					className="text-heading underline font-semibold"
+					className="text-olive underline font-semibold"
 				>
 					{t("text-recent-orders")}
 				</Link>
 				, {t("text-manage-your")}{" "}
 				<Link
 					href={ROUTES.ACCOUNT_DETAILS}
-					className="text-heading underline font-semibold"
+					className="text-olive underline font-semibold"
 				>
 					{t("text-account-details")}
 				</Link>{" "}
 				{t("text-and")}{" "}
 				<Link
 					href={ROUTES.CHANGE_PASSWORD}
-					className="text-heading underline font-semibold"
+					className="text-olive underline font-semibold"
 				>
 					{t("text-change-your-password")}
 				</Link>

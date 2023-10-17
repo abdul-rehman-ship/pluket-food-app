@@ -43,10 +43,12 @@ const Header: React.FC = () => {
 		<header
 			id="siteHeader"
 			ref={siteHeaderRef}
-			className="w-full h-16 sm:h-20 lg:h-24 relative z-20"
+			className="w-full h-16 sm:h-20 lg:h-24 relative z-20  "  
 		>
-			<div className="innerSticky text-gray-700 body-font fixed bg-white w-full h-16 sm:h-20 lg:h-24 z-20 ps-4 md:ps-0 lg:ps-6 pe-4 lg:pe-6 transition duration-200 ease-in-out">
-				<div className="flex items-center justify-center mx-auto max-w-[1920px] h-full w-full">
+			<div className="innerSticky text-gray-700 body-font fixed w-full h-16 sm:h-20 lg:h-24 z-20 ps-4 md:ps-0 lg:ps-6 pe-4 lg:pe-6 transition duration-200 ease-in-out"  
+			style={{backgroundColor:"#8A2BE2FF !important"}}
+			>
+				<div className="flex items-center justify-center mx-auto max-w-[1920px] h-full w-full" >
 					<button
 						aria-label="Menu"
 						className="menuBtn hidden md:flex lg:hidden flex-col items-center justify-center px-5 2xl:px-7 flex-shrink-0 h-full outline-none focus:outline-none"
@@ -83,10 +85,11 @@ const Header: React.FC = () => {
 							<AuthMenu
 								isAuthorized={isAuthorized}
 								href={ROUTES.ACCOUNT}
-								className="text-sm xl:text-base text-heading font-semibold"
+								className="text-sm xl:text-base  text-olive font-bold hover:text-olive"
+								
 								btnProps={{
 									className:
-										"text-sm xl:text-base text-heading font-semibold focus:outline-none",
+										"text-sm xl:text-base   font-bold text-olive focus:outline-none",
 									children: t("text-sign-in"),
 									onClick: handleLogin,
 								}}

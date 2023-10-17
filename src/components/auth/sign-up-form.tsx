@@ -2,20 +2,30 @@ import Input from "@components/ui/input";
 import PasswordInput from "@components/ui/password-input";
 import Button from "@components/ui/button";
 import { useForm } from "react-hook-form";
+import {
+  
+	collection,
+	addDoc,
+	
+	serverTimestamp,
+  } from "firebase/firestore";
+import { db } from "../../../firebase";
+import {createUserWithEmailAndPassword} from 'firebase/auth'
 
 import { useUI } from "@contexts/ui.context";
 import { useSignUpMutation, SignUpInputType } from "@framework/auth/use-signup";
 import Link from "@components/ui/link";
 import { ROUTES } from "@utils/routes";
 import { useTranslation } from "next-i18next";
-import axios from "axios";
+
+import {auth } from '../../../firebase'
 import cookies from 'js-cookie'
 import { toast,Toaster } from "react-hot-toast";
-import { useRouter } from "next/router";
+
 const SignUpForm: React.FC = () => {
 	const { t } = useTranslation();
 	const { mutate: signUp, isLoading } = useSignUpMutation();
-	const router=useRouter()
+	
 	const { setModalView, openModal, closeModal } = useUI();
 	const {
 		register,
@@ -28,45 +38,48 @@ const SignUpForm: React.FC = () => {
 		return openModal();
 	}
 
-	function onSubmit({ name, email, password }: SignUpInputType) {
-		signUp({
-			name,
-			email,
-			password,
-		});
-		try {
-		cookies.set("email",email)
+	async function   onSubmit({ name, email, password ,address,phone}: SignUpInputType) {
+	toast.loading("Loading...")
+		console.log(name,email,password,address,phone);
+		 createUserWithEmailAndPassword(auth,email,password).then(async()=>{	
 
-			toast.loading("Loading...")
-			axios.post('/api/auth/signin', {
+			await addDoc(collection(db, "users"), {
 				name,
 				email,
-				password,}).then(()=>{
-		cookies.set("email",email)
-		signUp({
-			name,
-			email,
-			password,
-		});
+				password,
+				address,
+				phone,
+				orders:[],
+				referrer:"no",
+				createdAt: serverTimestamp(),
+			})
+			cookies.set("email",email)
+
+			signUp({
+				name,
+				email,
+				password,
+				address,
+				phone
+			});
+
+		toast.dismiss()
+			
+		toast.success("Signin Success")
+
+			
+
+		}).catch((err:any)=>{
+			
+			console.log(err)
+			toast.error(err.message)
+		})
+		toast.dismiss()
 		
-					toast.dismiss()
-					toast.success("Signin Success")
-					router.push("/");
-				}).catch((err:any)=>{	
-					console.log(err)
-					toast.dismiss()
-					toast.error(err.response.data.message)
 		
-				})
-		  
-				  
-			}catch(err:any){
-				console.log(err)
-				toast.dismiss()
+
+
 		
-				toast.error(err.response.data.message)
-				
-			}
 		
 	}
 	return (
@@ -106,6 +119,30 @@ const SignUpForm: React.FC = () => {
 							required: "forms:name-required",
 						})}
 						errorKey={errors.name?.message}
+						detail="no"
+
+					/>
+					<Input
+						labelKey="forms:label-address"
+						type="text"
+						variant="solid"
+						{...register("address", {
+							required: "forms:address-required",
+						})}
+						errorKey={errors.address?.message}
+						detail="no"
+
+					/>
+					<Input
+						labelKey="forms:label-phone"
+						type="number"
+						variant="solid"
+						{...register("phone", {
+							required: "forms:phone-required",
+						})}
+						errorKey={errors.phone?.message}
+						detail="no"
+					
 					/>
 					<Input
 						labelKey="forms:label-email"
@@ -119,6 +156,8 @@ const SignUpForm: React.FC = () => {
 							},
 						})}
 						errorKey={errors.email?.message}
+						detail="no"
+
 					/>
 					<PasswordInput
 						labelKey="forms:label-password"
@@ -134,7 +173,7 @@ const SignUpForm: React.FC = () => {
 							disabled={isLoading}
 							className="h-11 md:h-12 w-full mt-3"
 						>
-							{t("common:text-login")}
+							{t("common:text-register")}
 						</Button>
 					</div>
 				</div>

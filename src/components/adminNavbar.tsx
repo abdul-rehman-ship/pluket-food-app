@@ -37,15 +37,18 @@ export default function VendorNavbar() {
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                <Nav.Link  href="/adminDashboard" className={`mx-3 ${style.menu} `} style={{fontWeight:600}}>Products</Nav.Link>
+                <Nav.Link  href="/adminDashboard" className={`mx-3 ${style.menu} `} style={{fontWeight:600}}>Home</Nav.Link>
 
                 <Nav.Link  href="/adminCategories" className={`mx-3 ${style.menu} `} style={{fontWeight:600}}>Categories</Nav.Link>
                 <Nav.Link  href="/adminPromotions" className={`mx-3 ${style.menu} `} style={{fontWeight:600}}>Promotions</Nav.Link>
                  
-                  <Nav.Link href="/adminOrders" className={`mx-3 ${style.menu} `} style={{fontWeight:600}} > Orders</Nav.Link>
+                  <Nav.Link href="/adminOrders" className={`mx-3 ${style.menu} `} style={{fontWeight:600}} >Kitchen</Nav.Link>
+                  <Nav.Link href="/adminDelivery" className={`mx-3 ${style.menu} `} style={{fontWeight:600}} >Delivery</Nav.Link>
+                  <Nav.Link href="/adminDelivered" className={`mx-3 ${style.menu} `} style={{fontWeight:600}} >Delivered</Nav.Link>
+                  <Nav.Link href="/adminStats" className={`mx-3 ${style.menu} `} style={{fontWeight:600}} > Stats</Nav.Link>
                   
 
-                  <Nav.Link href="/" className={`mx-3 ${style.menu} `} style={{fontWeight:600}} > Sign out</Nav.Link>
+                  <Nav.Link href="/" className={`mx-3 ${style.menu} `} style={{fontWeight:600}} >Log out</Nav.Link>
 
                   
                   

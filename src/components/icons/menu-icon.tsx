@@ -15,7 +15,7 @@ const MenuIcon: React.FC<React.SVGAttributes<{}>> = (props) => {
           height="2.499"
           rx="1.25"
           transform="translate(776 462)"
-          fill="currentColor"
+          fill="#8A2BE2FF"
         ></rect>
         <rect
           id="Rectangle_942"
@@ -24,7 +24,7 @@ const MenuIcon: React.FC<React.SVGAttributes<{}>> = (props) => {
           height="2.499"
           rx="1.25"
           transform="translate(776 469.75)"
-          fill="currentColor"
+          fill="#8A2BE2FF"
         ></rect>
         <rect
           id="Rectangle_943"
@@ -33,7 +33,7 @@ const MenuIcon: React.FC<React.SVGAttributes<{}>> = (props) => {
           height="2.499"
           rx="1.25"
           transform="translate(776 477.501)"
-          fill="currentColor"
+          fill="#8A2BE2FF"
         ></rect>
       </g>
     </svg>

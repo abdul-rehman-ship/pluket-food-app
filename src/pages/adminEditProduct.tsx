@@ -311,7 +311,7 @@ const id=router.asPath.split("=")[1]
                 className="form-control mt-2"
                 name="image"
                 onChange={handleImageChange}
-                required
+                
               />
             </div>
           </div>

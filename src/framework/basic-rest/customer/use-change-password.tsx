@@ -5,6 +5,7 @@ import { useMutation } from "react-query";
 export interface ChangePasswordInputType {
   newPassword: string;
   oldPassword: string;
+  email:string
 }
 async function changePassword(input: ChangePasswordInputType) {
   // return http.post(API_ENDPOINTS.ChangePassword, input);

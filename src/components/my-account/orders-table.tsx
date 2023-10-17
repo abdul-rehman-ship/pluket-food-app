@@ -1,18 +1,20 @@
 import { motion } from "framer-motion";
 import { fadeInTop } from "@utils/motion/fade-in-top";
-import Link from "@components/ui/link";
-import { useWindowSize } from "@utils/use-window-size";
+
 import { useTranslation } from "next-i18next";
 import {useEffect,useState} from 'react'
-import axios from "axios";
+
 import Cookies from 'js-cookie'
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "firebase";
+
 const OrdersTable: React.FC = () => {
-	const { width } = useWindowSize();
+	
 	const { t } = useTranslation("common");
 	const [orders,setOrders]:any=useState([])
-	const [products,setProducts]:any=useState([])
+	
 	useEffect(()=>{
-		if(products.length===0){
+		if(orders.length===0){
 		getOrders()
 		getProducts()
 			
@@ -20,17 +22,17 @@ const OrdersTable: React.FC = () => {
 		
 	},[])
 	const getOrders=async ()=>{
-
+let arr:any=[]
 		try {
-			axios.post('/api/orders',{
-				userEmail:Cookies.get('email')
-			}).then(res=>{
-				setOrders(res.data.orders)
-			}).catch(err=>{
-				console.log(err);
+			const res=await getDocs(collection(db,'orders'))
+			res.forEach((doc:any)=>{
+				 if(doc.data().userEmail===Cookies.get('email')){
+						arr.push({id:doc.id,...doc.data()})
+						
+					}
 				
 			})
-			
+			setOrders(arr)
 		} catch (error:any) {
 			console.log(error)
 
@@ -38,144 +40,71 @@ const OrdersTable: React.FC = () => {
 		}
 	}
 	const getProducts = async () => {
-		try {
-		  const res = await fetch("/api/AllProducts");
-		  const data = await res.json();
-		  
-		  
-		  setProducts(data.products);
-		  
-		} catch (error) {
-		  console.log(error);
-		  
-		}
+		
 	  };
 	return (
 		<>
-			<h2 className="text-lg md:text-xl xl:text-2xl font-bold text-heading mb-6 xl:mb-8">
+			<h2 className="text-lg md:text-xl xl:text-2xl font-bold text-olive mb-6 xl:mb-8">
 				{t("text-orders")}
 			</h2>
 			<motion.div
-				layout
-				initial="from"
-				animate="to"
-				exit="from"
-				//@ts-ignore
-				variants={fadeInTop(0.35)}
-				className={`w-full flex flex-col`}
-			>
-				{width >= 1025 ? (
-					<table>
-						<thead className="text-sm lg:text-base">
-							<tr>
-								
-								<th className="bg-gray-100 p-4 text-heading font-semibold text-start lg:text-center">
-									{t("text-date")}
-								</th>
-								<th className="bg-gray-100 p-4 text-heading font-semibold text-center lg:text-center		 last:rounded-te-md">
-									{t("text-product")}
-								</th>
-								<th className="bg-gray-100 p-4 text-heading font-semibold text-start lg:text-center">
-									{t("shipping Address")}
-								</th>
-								<th className="bg-gray-100 p-4 text-heading font-semibold text-start lg:text-center">
-									{t("text-status")}
-								</th>
-								<th className="bg-gray-100 p-4 text-heading font-semibold text-start lg:text-center">
-									{t("text-total")}
-								</th>
-								<th className="bg-gray-100 p-4 text-heading font-semibold text-start lg:text-center last:rounded-te-md">
-									{t("quantity")}
-								</th>
-								
-							</tr>
-						</thead>
-						<tbody className="text-sm lg:text-base">
-							{orders.map((order:any) => {
-									return <tr key={order._id} className="border-b border-gray-300 last:border-b-0">
-									<td className="px-4 py-5 text-start">
-										<Link
-											href="#"
-											className="underline hover:no-underline text-body"
-										>
-											{order.date}
-										</Link>
-									</td>
-									<td className="text-end px-4 py-5 text-heading">
-										{products.map((prod:any)=>{
-											return  prod._id===order.productId && prod.shoeName
-										})}
-									</td>
-									<td className="text-start lg:text-center px-4 py-5 text-heading">
-										{order.shippingAddress}
-									</td>
-									<td className="text-start lg:text-center px-4 py-5 text-heading">
-										{order.paid_status}
-									</td>
-									<td className="text-start lg:text-center px-4 py-5 text-heading">
-										{order.total}$
-									</td>
-									<td className="text-start lg:text-center px-4 py-5 text-heading">
-										{order.total / order.amount}
-									</td>
-									
-								</tr>
-							})}
-							
-							
-						</tbody>
-					</table>
-				) : (
-					<div className="w-full space-y-4">
-						{orders.map((order:any)=>{
-							return <ul key={order._id} className="text-sm font-semibold text-heading border border-gray-300 rounded-md flex flex-col px-4 pt-5 pb-6 space-y-5">
-							<li className="flex items-center justify-between">
-								{t("text-date")}
-								<span className="font-normal">
-									<Link
-										href="#"
-										className="underline hover:no-underline text-body"
-									>
-									{order.date}
-									</Link>
-								</span>
-							</li>
-							<li className="flex items-center justify-between">
-								{t("product")}
-								<span className="font-normal">{products.map((prod:any)=>{
-											return  prod._id===order.productId && prod.shoeName
-										})}</span>
-							</li>
-							<li className="flex items-center justify-between">
-								{t("shippingAddress")}
-							
-							
-								<span className="font-normal">{order.shippingAddress}</span>
-							</li>
-
-							<li className="flex items-center justify-between">
-								{t("text-status")}
-								<span className="font-normal">{order.paid_status}</span>
-							</li>
-
-
-							<li className="flex items-center justify-between">
-								{t("text-total")}
-								<span className="font-normal">{order.total}</span>
-							</li>
-							<li className="flex items-center justify-between">
-								{t("quantity")}
-								<span className="font-normal">
-								{order.total / order.amount}
-								</span>
-							</li>
-						</ul>
-						})}
-						
-						
-					</div>
-				)}
-			</motion.div>
+      layout
+      initial="from"
+      animate="to"
+      exit="from"
+      //@ts-ignore
+      variants={fadeInTop(0.35)}
+      className="w-full flex flex-col p-4"
+    >
+      {orders.map((order:any) => (
+      <div key={order.id} className="border bg-olive rounded-md p-4 mb-4 grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+	  <div className="md:col-span-1 flex justify-center md:justify-start">
+		<img
+		  src={order.product?.image}
+		  alt="image"
+		  className="rounded-md max-w-full"
+		/>
+	  </div>
+	  <div className="md:col-span-2 flex flex-col justify-between">
+		<div>
+		  <h2 className="text-white mb-2">
+			ID # <span className="font-bold text-maroon">{order.id}</span>
+		  </h2>
+		  <h2 className="text-white mb-2">
+			Product name : <span className="font-bold text-maroon">{order.product?.name}</span>
+		  </h2>
+		  <h2 className="text-white mb-2">
+			Quantity : <span className="font-bold text-maroon">{order.total / order.amount}</span>
+		  </h2>
+		  <h2 className="text-white mb-2">
+			Total : <span className="font-bold text-maroon">THB {order.total}</span>
+		  </h2>
+		</div>
+		<div>
+		  <h2 className="text-white mb-2">
+			Address : <span className="font-bold text-maroon">
+			  {order.shippingAddress ? order.shippingAddress : order.user ? order.user.address : ""}
+			</span>
+		  </h2>
+		  <h2 className="text-white mb-2">
+			Payment : <span className="font-bold text-maroon">{order.paid_status}</span>
+		  </h2>
+		  <h2 className="text-white mb-2">
+			Status : <span className="font-bold text-maroon">{order.status}</span>
+		  </h2>
+		  {
+			order.product?.size? <h2 className="text-white mb-2">
+			Size : <span className="font-bold text-maroon">{order.product.size}</span>
+		  </h2>
+		  :null
+		  }
+		</div>
+		
+	  </div>
+	
+	</div>
+      ))}
+    </motion.div>
 		</>
 	);
 };

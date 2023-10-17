@@ -1,6 +1,10 @@
 import ProductOverlayCard from "@components/product/product-overlay-card";
 import Alert from "@components/ui/alert";
 import { useState, useEffect } from "react";
+import { getDocs,collection } from 'firebase/firestore'
+import { db } from '../../firebase'
+import { toast } from "react-hot-toast";
+import Link from "next/link";
 
 interface ProductsProps {
   sectionHeading: string;
@@ -17,49 +21,93 @@ const ProductsFeatured: React.FC<ProductsProps> = ({
 }) => {
   const [data, setData]: any = useState([]);
   const [searcheddata, setSearcheddata]: any = useState([]);
+  const [categories,setCategories]:any=useState([])
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  
 
-  const [error, setError]: any = useState();
-  const [searchBrand, setSearchBrand] = useState("");
-  const [searchName, setSearchName] = useState("");
-  const [searchPriceMin, setSearchPriceMin] = useState("");
-  const [searchPriceMax, setSearchPriceMax] = useState("");
-
-  const getProducts = async () => {
-    try {
-      const res = await fetch("/api/AllProducts");
-      const data = await res.json();
-	  console.log(data);
-	  
-      setData(data.products);
-	  setSearcheddata(data.products)
-    } catch (error) {
-      setError(error);
-    }
+  const handleCategoryClick = (category:any) => {
+    setSelectedCategory(category);
+  if(category==="all"){
+    setSearcheddata(data)
+  }else{
+let arr:any=[];
+data.forEach((prod:any)=>{
+  if(prod.category===category){
+    arr.push(prod)
+  }
+})
+setSearcheddata(arr)
+  }
+   
+   
   };
+
+  const [error]: any = useState();
+
+
+  const getData = async () => {
+    
+     let arr: any = [];
+     const data = await getDocs(collection(db, "products"));
+     data.forEach((doc: any) => {
+       if(doc.data()){
+         const prod={id:doc.id,...doc.data()}
+         arr.push(prod);
+           
+           
+ 
+       
+       }
+      
+       
+     });
+     let arr2: any = [];
+     const data2 = await getDocs(collection(db, "categories"));
+     data2.forEach((doc: any) => {
+       if(doc.data()){
+         const prod={id:doc.id,...doc.data()}
+         arr2.push(prod);
+           
+           
+ 
+       
+       }
+      
+       
+     });
+   
+    
+           toast.dismiss()
+           setData(arr)
+           setSearcheddata(arr)
+           setCategories(arr2)
+         
+    
+   };
 
   useEffect(() => {
     if (data.length === 0) {
-      getProducts();
+      getData();
     }
   });
 
-  const handleFilter = () => {
-    const filteredProducts = data.filter(
-      (product: any) =>
-        product.brand.toLowerCase().includes(searchBrand.toLowerCase()) &&
-        product.shoeName.toLowerCase().includes(searchName.toLowerCase()) &&
-        (!searchPriceMin ||
-          parseFloat(product.retailPrice) >= parseFloat(searchPriceMin)) &&
-        (!searchPriceMax ||
-          parseFloat(product.retailPrice) <= parseFloat(searchPriceMax))
-    );
-    setSearcheddata(filteredProducts);
-  };
+  // const handleFilter = () => {
+  //   const filteredProducts = data.filter(
+  //     (product: any) =>
+  //       product.brand.toLowerCase().includes(searchBrand.toLowerCase()) &&
+  //       product.shoeName.toLowerCase().includes(searchName.toLowerCase()) &&
+  //       (!searchPriceMin ||
+  //         parseFloat(product.retailPrice) >= parseFloat(searchPriceMin)) &&
+  //       (!searchPriceMax ||
+  //         parseFloat(product.retailPrice) <= parseFloat(searchPriceMax))
+  //   );
+  //   setSearcheddata(filteredProducts);
+  // };
 
   return (
     <div className={className}>
-      <div className="mb-4 md:mb-6">
-        <div className="flex flex-col md:flex-row gap-4 md:gap-6">
+      <div className="mb-4 md:mb-6 font-poppins">
+        {/* <div className="flex flex-col md:flex-row gap-4 md:gap-6">
          {type==="all" ?<input
             type="text"
             placeholder="Search Brand"
@@ -96,35 +144,75 @@ const ProductsFeatured: React.FC<ProductsProps> = ({
           onClick={handleFilter}
         >
           Filter
-        </button>
+        </button> */}
+        <div className="flex justify-center  mt-4  items-center h-auto">
+    <h1 className="text-3xl font-bold text-olive italic   underline" >Products</h1>
+</div>
+<div className="flex flex-wrap justify-center gap-2 space-x-2 md:space-x-4 m-4 lg:space-x-6">
+      {/* All button */}
+      <button
+        style={{width:"10rem !important"}}
+        onClick={() => handleCategoryClick('all')}
+        className={` border-2 border-olive  font-bold px-4 py-2 cursor-pointer transition duration-200 ${
+          selectedCategory === 'all' ? 'bg-olive text-maroon' : ' bg-maroon text-olive hover:bg-olive hover:text-maroon'
+        }`}
+      >
+        All
+      </button>
+
+      {/* Category buttons */}
+      {categories.map((category:any) => (
+     <button
+     key={category.name}
+     onClick={() => handleCategoryClick(category.name)}
+     className={`border-2 border-olive px-4 font-bold py-2 cursor-pointer transition duration-200 
+       ${selectedCategory === category.name ? 'bg-olive text-maroon' : 'bg-maroon text-olive hover:bg-olive hover:text-maroon'}
+       min-w-[10rem]` /* Add the 'min-w-[10rem]' class for a minimum width of 10rem */
+     }
+   >
+     {category.name}
+   </button>
+      ))}
+    </div>
 
       {error ? (
         <Alert message={error?.message} />
       ) : (
-        <div className="mt-6">
-          <div className="grid grid-cols-4 grid-rows-2 gap-3 md:gap-5 xl:gap-7">
-            {searcheddata?.map((product: any, idx: number) => (
+        <div className="mt-6 p-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 grid-rows-2 gap-3 md:gap-5 xl:gap-7">
+  
+            {searcheddata?.map((product: any, idx: any) => (
 				
-             type==="all" ? <ProductOverlayCard
-                key={`product--key${product._id}`}
-                product={product}
-                variant={variant}
-                index={idx}
-              />
-			  :
-			  product.brand.toLowerCase()===type?
-			  <ProductOverlayCard
-                key={`product--key${product._id}`}
-                product={product}
-                variant={variant}
-                index={idx}
-              />
+            
 			  
-			  :""
+			  // if type is all then all products will show otherwise 8 products will show
+        type==="all" ?<ProductOverlayCard
+                key={`product--key${product.id}`}
+                product={product}
+                variant={variant}
+                index={idx}
+              />:idx<8 && <ProductOverlayCard
+                key={`product--key${product.id}`}
+                product={product}
+                variant={variant}
+                index={idx}
+              />
+        
+        
             ))}
           </div>
         </div>
       )}
+     { type!=="all" && searcheddata.length>8   && <div className="flex justify-center items-center m-4 h-auto">
+      <Link href="/allProducts">
+        <a className="block w-full max-w-md p-4 bg-olive text-maroon text-center font-semibold rounded-lg transition ">
+          Show More
+        </a>
+      </Link>
+        </div>}
+
+      
+     
     </div>
 	</div>
   );

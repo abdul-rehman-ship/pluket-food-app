@@ -18,11 +18,11 @@ const ProductOverlayCard: React.FC<ProductProps> = ({
 }) => {
 	const size =
 		(variant === "center" && index === 1) || (variant === "left" && index === 0)
-			? 620
+			? 260
 			: 260;
 	const classes =
 		(variant === "center" && index === 1) || (variant === "left" && index === 0)
-			? "row-span-full lg:row-span-2 col-span-full lg:col-span-2"
+			? "col-span-2 lg:col-span-1"
 			: "col-span-2 lg:col-span-1";
 
 	const { openModal, setModalView, setModalData } = useUI();
@@ -40,41 +40,37 @@ const ProductOverlayCard: React.FC<ProductProps> = ({
 	return (
 		<div
 			onClick={handlePopupView}
-			className={`${classes} cursor-pointer group flex flex-col bg-gray-200 rounded-md relative items-center justify-between overflow-hidden`}>
+			className={`${classes} cursor-pointer group flex flex-col bg-olive rounded-md relative items-center justify-between overflow-hidden`}>
 				
 			<div
-				className="flex justify-center items-center p-4 h-full 3xl:min-h-[330px]"
+				className="flex justify-center items-center p-4 h-auto 3xl:min-h-[330px]"
 				title={product?.name}
 			>
 				<Image
 					src={
-						product.thumbnail
+						product?.image
 					}
+					
 					width={size}
 					height={size}
 					loading={imgLoading}
-					alt={product?.shoeName || "Product Image"}
+					alt={product?.name || "Product Image"}
 					className="transition duration-500 ease-in-out transform group-hover:scale-110"/>
 			</div>
-			<div
-				className="flex flex-col md:flex-row lg:flex-col 2xl:flex-row md:justify-between md:items-center lg:items-start 2xl:items-center w-full px-4 md:px-5 3xl:px-7 pb-4 md:pb-5 3xl:pb-7"
-				title={product?.shoeName}
-			>
-				<div className="md:pe-2 lg:pe-0 2xl:pe-2 overflow-hidden">
-					<h2 className="text-heading font-semibold text-sm md:text-base xl:text-lg mb-1 truncate">
-						{product?.shoeName}
-					</h2>
-					<p className="text-body text-xs xl:text-sm leading-normal xl:leading-relaxed truncate max-w-[250px]">
-						{product?.description}
-					</p>
-				</div>
-				<div className="flex-shrink-0 flex flex-row-reverse md:flex-col lg:flex-row-reverse 2xl:flex-col items-center md:items-end lg:items-start 2xl:items-end justify-end md:text-end lg:text-start xl:text-end mt-2 md:-mt-0.5 lg:mt-2 2xl:-mt-0.5">
-					
-					<div className="text-heading font-segoe font-semibold text-base md:text-xl lg:text-base xl:text-xl 3xl:text-2xl 3xl:mt-0.5 pe-2 md:pe-0 lg:pe-2 2xl:pe-0">
-						{product.retailPrice}$
-					</div>
-				</div>
-			</div>
+			<div className="md:pe-2 lg:pe-0  sm:px-8 2xl:pe-2 overflow-hidden">
+  <div className="flex  justify-between items-center px-4">
+    <h2 className=" text-maroon font-semibold text-sm md:text-base xl:text-lg truncate">
+      {product?.name}
+    </h2>
+    <div className=" font-segoe text-maroon font-semibold text-base md:text-xl lg:text-base xl:text-xl 3xl:text-2xl 3xl:mt-0.5">
+      THB {product.price}
+    </div>
+  </div>
+  <p className="text-xs xl:text-sm text-maroon leading-normal p-4 xl:leading-relaxed truncate max-w-[250px]">
+    {product?.description}
+  </p>
+</div>
+
 		</div>
 	);
 };

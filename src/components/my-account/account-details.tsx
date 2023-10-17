@@ -1,23 +1,26 @@
 import Input from "@components/ui/input";
-import Button from "@components/ui/button";
+
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { fadeInTop } from "@utils/motion/fade-in-top";
 import {
-	useUpdateUserMutation,
+	
 	UpdateUserType,
 } from "@framework/customer/use-update-customer";
-import axios from 'axios';
+
 import {toast,Toaster} from 'react-hot-toast'
 import {useEffect,useState} from 'react'
 import { useTranslation } from "next-i18next";
 import Cookies from 'js-cookie'
+import { getDocs,collection,doc, updateDoc } from "firebase/firestore";
+import {db} from "../../../firebase"
 const defaultValues = {};
 const AccountDetails: React.FC = () => {
-	const {  isLoading } = useUpdateUserMutation();
+	
 	const { t } = useTranslation();
+	const [userId,setUserId]:any=useState("")
 	const [user,setUser]:any=useState()
-	const [username,setUsername]:any=useState("")
+	
 	const {
 		register,
 		handleSubmit,
@@ -30,37 +33,53 @@ const AccountDetails: React.FC = () => {
 	},[])
 	const getUser=async ()=>{
 		try {
-			axios.post('/api/auth/getUser',{
-				email:Cookies.get('email')
-			}).then(res=>{
-				setUser(res.data.user)
-				setUsername(res.data.user?.name)
-				
-			}).catch(err=>{
-				console.log(err);
-				
-			})
 			
+		await getDocs(collection(db, "users")).then((querySnapshot:any) => {
+				querySnapshot.forEach((doc:any) => {
+					if(doc.data().email===Cookies.get("email")){
+						setUserId(doc.id)
+						setUser(doc.data())
+						
+					}
+				});
+		})
+			
+		toast.dismiss()
 		} catch (error:any) {
+			
 			console.log(error)
 
 			
 		}
 	}
 	async function onSubmit(input: any) {
-		console.log(input);
 		toast.loading("loading ...")
-		axios.post('/api/auth/updateUser',{
-			username:username,
-			email:user.email
-		}).catch((error:any)=>{
-			toast.remove()
-			console.log(error);
+		await updateDoc(doc(db, "users",userId), {
+			name:input.name,
+			address:input.address,
+			phone:input.phone,
 			
+		}).catch((error:any)=>{
+			toast.dismiss()
+			console.log(error)
+			toast.error(error.message)
 		}).then(()=>{
-			toast.remove()
-			toast.success("Account updated")
+			getUser()
 		})
+		toast.dismiss()
+		// console.log(input);
+		// toast.loading("loading ...")
+		// axios.post('/api/auth/updateUser',{
+		// 	username:username,
+		// 	email:user.email
+		// }).catch((error:any)=>{
+		// 	toast.remove()
+		// 	console.log(error);
+			
+		// }).then(()=>{
+		// 	toast.remove()
+		// 	toast.success("Account updated")
+		// })
 
 		
 		
@@ -76,7 +95,7 @@ const AccountDetails: React.FC = () => {
 			variants={fadeInTop(0.35)}
 			className={`w-full flex flex-col`}
 		>
-			<h2 className="text-lg md:text-xl xl:text-2xl font-bold text-heading mb-6 xl:mb-8">
+			<h2 className="text-lg md:text-xl xl:text-2xl font-bold text-olive mb-6 xl:mb-8">
 				{t("common:text-account-details")}
 			</h2>
 			<form
@@ -89,26 +108,60 @@ const AccountDetails: React.FC = () => {
 					<div className="flex flex-col sm:flex-row sm:space-s-3 space-y-4 sm:space-y-0">
 						<Input
 							labelKey="forms:Name *"
-							{...register("firstName", {
-								required: "forms:first-name-required",
+							{...register("name", {
+								required: "forms:name-required",
 							})}
 							variant="solid"
 							className="w-full sm:w-1/2"
-							value={username}
-							onChange={(e:any)=>setUsername(e.target.value)}
-							errorKey={errors.firstName?.message}
+							value={user?.name}
+							onChange={(e:any)=>setUser({...user,name:e.target.value})}
+							errorKey={errors.name?.message}
+							detail="yes"
 						/>
 						<Input
 							labelKey="forms:Email *"
-							{...register("lastName", {
+							{...register("email", {
+								
 								
 							})}
 							readOnly
 							variant="solid"
+							
 							value={user?.email}
 							className="w-full sm:w-1/2"
-							errorKey={errors.lastName?.message}
+							errorKey={errors.email?.message}
+							detail="yes"
+
 						/>
+						<Input
+							labelKey="forms:address *"
+							{...register("address", {
+								
+								
+							})}
+							
+							variant="solid"
+							onChange={(e:any)=>setUser({...user,address:e.target.value})}
+							value={user?.address}
+							className="w-full sm:w-1/2"
+							errorKey={errors.address?.message}
+							detail="yes"
+
+						/><Input
+						labelKey="forms:phone *"
+						{...register("phone", {
+							
+							
+						})}
+						
+						variant="solid"
+						onChange={(e:any)=>setUser({...user,phone:e.target.value})}
+						value={user?.phone}
+						className="w-full sm:w-1/2"
+						errorKey={errors.phone?.message}
+						detail="yes"
+
+					/>
 					</div>
 					{/* <Input
 						labelKey="forms:label-display-name"
@@ -162,14 +215,17 @@ const AccountDetails: React.FC = () => {
 						</div>
 					</div> */}
 					<div className="relative">
-						<Button
+						{/* <Button
 							type="submit"
 							loading={isLoading}
 							disabled={isLoading}
-							className="h-12 mt-3 w-full sm:w-32"
+							className="h-12 mt-3  bg-olive text-maroon w-full sm:w-32"
 						>
 							{t("common:button-save")}
-						</Button>
+						</Button> */}
+						<button type="submit" className="bg-olive text-maroon font-bold rounded-md btn hover:text-maroon hover:bg-olive">
+							{t("common:button-save")}
+						</button>
 					</div>
 				</div>
 			</form>

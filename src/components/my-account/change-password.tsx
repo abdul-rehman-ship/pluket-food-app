@@ -1,23 +1,24 @@
-import PasswordInput from "@components/ui/password-input";
-import Button from "@components/ui/button";
+
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { fadeInTop } from "@utils/motion/fade-in-top";
 import {
-	useChangePasswordMutation,
+	
 	ChangePasswordInputType,
 } from "@framework/customer/use-change-password";
 import { useTranslation } from "next-i18next";
-import axios from "axios";
+import {sendPasswordResetEmail} from 'firebase/auth'
+import {auth} from '../../../firebase'
 import cookie from 'js-cookie'
 import {toast,Toaster} from 'react-hot-toast'
+import Input from "@components/ui/input";
 const defaultValues = {
 	oldPassword: "",
 	newPassword: "",
 };
 
 const ChangePassword: React.FC = () => {
-	const {  isLoading } = useChangePasswordMutation();
+	
 
 	const {
 		register,
@@ -27,33 +28,23 @@ const ChangePassword: React.FC = () => {
 		defaultValues,
 	});
 	async function onSubmit(input: ChangePasswordInputType) {
-		try {
-			toast.loading('loading...')
-			axios.post('/api/auth/changePassword',{
-				email:cookie.get("email"),
-				oldPassword:input.oldPassword,
-				newPassword:input.newPassword
-			}).then(()=>{
-				toast.dismiss()
-				toast.success("password updated.")
-			}).catch((error:any)=>{
-				console.log(error);
-				toast.dismiss()
-				toast.error(error.response.data.message)
+		if(input.email===cookie.get("email")){
+			await sendPasswordResetEmail(auth,input.email).then(()=>{
+				toast.success("Reset Password Link Sent. Check Your Email")
+			}).catch((err:any)=>{
+				console.log(err.message)
+
 			})
-	
-		} catch (error:any) {
-			console.log(error);
-			toast.dismiss()
-			toast.error(error.response.data.message)
+		
 			
-			
-		}
+	}else{
+		toast.error("Email Not Matched")
 	}
+}
 	const { t } = useTranslation();
 	return (
 		<>
-			<h2 className="text-lg md:text-xl xl:text-2xl font-bold text-heading mb-6 xl:mb-8">
+			<h2 className="text-lg md:text-xl xl:text-2xl font-bold text-olive mb-6 xl:mb-8">
 				{t("common:text-change-password")}
 			</h2>
 			<motion.div
@@ -71,32 +62,21 @@ const ChangePassword: React.FC = () => {
 				>
 					<Toaster/>
 					<div className="flex flex-col space-y-3">
-						<PasswordInput
-							labelKey="forms:label-old-password"
+						<Input
+							labelKey="forms:label-email"
 							errorKey={errors.oldPassword?.message}
-							{...register("oldPassword", {
-								required: "forms:password-old-required",
+							{...register("email", {
+								required: "forms:email-required",
 							})}
 							className="mb-4"
+							detail="yes"
 						/>
-						<PasswordInput
-							labelKey="forms:label-new-password"
-							errorKey={errors.newPassword?.message}
-							{...register("newPassword", {
-								required: "forms:label-new-password",
-							})}
-							className="mb-4"
-						/>
-
+						
 						<div className="relative">
-							<Button
-								type="submit"
-								loading={isLoading}
-								disabled={isLoading}
-								className="h-13 mt-3"
-							>
-								{t("common:text-change-password")}
-							</Button>
+							
+							<button type="submit" className="bg-olive text-maroon font-bold rounded-md btn hover:text-maroon hover:bg-olive">
+							{t("common:Get link")}
+						</button>
 						</div>
 					</div>
 				</form>

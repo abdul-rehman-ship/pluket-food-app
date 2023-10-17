@@ -15,15 +15,15 @@ type CartItemProps = {
 };
 
 const CartItem: React.FC<CartItemProps> = ({ item }) => {
+
+	
+	
 	const { t } = useTranslation("common");
 	const { addItemToCart, removeItemFromCart, clearItemFromCart } = useCart();
-	const { price } = usePrice({
-		amount: item.price,
-		currencyCode: "USD",
-	});
+	
 	const { price: totalPrice } = usePrice({
 		amount: item.itemTotal,
-		currencyCode: "USD",
+		currencyCode: "THB",
 	});
 
 	return (
@@ -32,38 +32,41 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
 			initial="from"
 			animate="to"
 			exit="from"
+			
 			variants={fadeInOut(0.25)}
-			className={`group w-full h-auto flex justify-start items-center bg-white py-4 md:py-7 border-b border-gray-100 relative last:border-b-0`}
+			className={`group w-full h-auto text-maroon flex justify-start items-center bg-olive py-4 md:py-7 border-b border-gray-100 relative last:border-b-0`}
 			title={item?.name}
 		>
-			<div className="relative flex w-24 md:w-28 h-24 md:h-28 rounded-md overflow-hidden bg-gray-200 flex-shrink-0 cursor-pointer me-4">
-				<Image
-					src={item?.image ?? "/assets/placeholder/cart-item.svg"}
-					width={112}
-					height={112}
-					loading="eager"
-					alt={item.name || "Product Image"}
-					className="bg-gray-300 object-cover"
-				/>
-				<div
-					className="absolute top-0 start-0 h-full w-full bg-black bg-opacity-30 md:bg-opacity-0 flex justify-center items-center transition duration-200 ease-in-out md:group-hover:bg-opacity-30"
-					onClick={() => clearItemFromCart(item.id)}
-					role="button"
-				>
-					<IoIosCloseCircle className="relative text-white text-2xl transform md:scale-0 md:opacity-0 transition duration-300 ease-in-out md:group-hover:scale-100 md:group-hover:opacity-100" />
-				</div>
-			</div>
+	<div className="relative flex text-maroon w-24 md:w-28 h-24 md:h-28 rounded-md overflow-hidden flex-shrink-0 cursor-pointer me-4">
+  <Image
+    src={item.image}
+    width={112}
+    height={112}
+    loading="eager"
+    alt={item.name || "Product Image"}
+    className="bg-maroon object-cover z-8 " // Initially set z-index to 10
+  />
+  <div
+    className="absolute top-0 start-0 z-9 h-full w-full  flex justify-center items-center transition duration-200 ease-in-out md:group-hover:bg-opacity-30 group-hover:opacity-99" style={{background:"rgb(0 0 0 / 0%);"}}
+    onClick={() => clearItemFromCart(item.id)}
+    role="button"
+  >
+    <IoIosCloseCircle className="relative text-white text-2xl transform md:scale-0 md:opacity-0 transition duration-300 ease-in-out md:group-hover:scale-100 md:group-hover:opacity-100" />
+  </div>
+</div>
+
+
 
 			<div className="flex flex-col w-full overflow-hidden">
 				<Link
 					href={`${ROUTES.PRODUCT}/${item?.slug}`}
-					className="truncate text-sm text-heading mb-1.5 -mt-1"
+					className="truncate text-sm  mb-1.5 -mt-1"
 				>
 					{generateCartItemName(item.name, item.attributes)}
 				</Link>
-				<span className="text-sm text-gray-400 mb-2.5">
+				<span className="text-sm text-maroon mb-2.5">
 					{t("text-unit-price")} : &nbsp;
-					{price}
+					{item?.price}
 				</span>
 
 				<div className="flex items-end justify-between">
@@ -73,7 +76,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
 						onDecrement={() => removeItemFromCart(item.id)}
 						variant="dark"
 					/>
-					<span className="font-semibold text-sm md:text-base text-heading leading-5">
+					<span className="font-semibold text-sm md:text-base   text-maroon leading-5">
 						{totalPrice}
 					</span>
 				</div>

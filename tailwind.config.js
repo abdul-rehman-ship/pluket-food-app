@@ -12,8 +12,8 @@ module.exports = {
 				white: "#fff",
 				linen: "#FBF1E9",
 				linenSecondary: "#ECE7E3",
-				olive: "#3D9970",
-				maroon: "#B03060",
+				olive: "#FFD800FF",
+				maroon: "#8A2BE2FF",
 				brown: "#C7844B",
 				placeholder: "#707070",
 				borderBottom: "#f7f7f7",
@@ -78,6 +78,7 @@ module.exports = {
 			body: ["'Open Sans', sans-serif"],
 			satisfy: ["'Satisfy', cursive"],
 			segoe: ["'Segoe UI', sans-serif"],
+			
 		},
 	},
 	plugins: [

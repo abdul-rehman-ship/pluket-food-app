@@ -5,15 +5,18 @@ import { useForm } from "react-hook-form";
 import { useLoginMutation, LoginInputType } from "@framework/auth/use-login";
 import { useUI } from "@contexts/ui.context";
 import { useTranslation } from "next-i18next";
-import axios from "axios";
+
+import { auth } from "../../../firebase";
+import {signInWithEmailAndPassword} from 'firebase/auth'
+
 import cookies from 'js-cookie'
 import { toast,Toaster } from "react-hot-toast";
-import { useRouter } from "next/router";
+
 const LoginForm: React.FC = () => {
 	const { t } = useTranslation();
 	const { setModalView, openModal, closeModal } = useUI();
 	const { mutate: login, isLoading } = useLoginMutation();
-	const router = useRouter();
+	
 	const {
 		register,
 		handleSubmit,
@@ -22,42 +25,32 @@ const LoginForm: React.FC = () => {
 
 async	function onSubmit({ email, password, remember_me }: LoginInputType) {
 
+toast.loading("Loading...")
 
-try {
-	toast.loading("Loading...")
-	axios.post('/api/auth/login', {
+
+await signInWithEmailAndPassword(auth,email,password).then(async()=>{
+	cookies.set("email",email)
+	login({
 		email,
-		password,}).then(()=>{
-cookies.set("email",email)
-			login({
-				email,
-				password,
-				remember_me,
-			});
+		password,
+		remember_me,
+	});
+	toast.dismiss()
 
-			toast.dismiss()
-			toast.success("Login Success")
-			router.push("/");
-		}).catch((err:any)=>{	
-			console.log(err)
-			toast.dismiss()
-			toast.error(err.response.data.message)
-
-		})
-  
-		  
-	}catch(err:any){
-		console.log(err)
-		toast.dismiss()
-
-		toast.error(err.response.data.message)
-		
-	}
-
+}).catch((err:any)=>{
+	toast.dismiss()
+	console.log(err)
+	toast.error(err.message)
+})
+	
 		
 	}
 	function handleSignUp() {
 		setModalView("SIGN_UP_VIEW");
+		return openModal();
+	}
+	function handleForgetPassword() {
+		setModalView("FORGET_PASSWORD");
 		return openModal();
 	}
 
@@ -90,6 +83,8 @@ cookies.set("email",email)
 							},
 						})}
 						errorKey={errors.email?.message}
+						detail="no"
+
 					/>
 					<PasswordInput
 						labelKey="forms:label-password"
@@ -98,6 +93,15 @@ cookies.set("email",email)
 							required: `${t("forms:password-required")}`,
 						})}
 					/>
+					<div className="flex ms-auto">
+							<button
+								type="button"
+								onClick={handleForgetPassword}
+								className="text-end text-sm text-heading ps-3 underline hover:no-underline focus:outline-none"
+							>
+								{t("common:text-forgot-password")}
+							</button>
+						</div>
 					<div className="relative">
 						<Button
 							type="submit"

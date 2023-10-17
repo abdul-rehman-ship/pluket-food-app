@@ -9,6 +9,7 @@ module.exports = withPWA({
   },
   i18n,
   images: {
-    domains: ['images.stockx.com'],
+    domains: ['images.stockx.com','firebasestorage.googleapis.com'],
+
   }
 });

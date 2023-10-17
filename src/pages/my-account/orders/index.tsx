@@ -7,7 +7,9 @@ import { useUI } from "@contexts/ui.context";
 export default function OrdersTablePage() {
 	const {isAuthorized}=useUI();
 	if(!isAuthorized){
-		return <div>Not Authorized</div>
+		return <div
+		className="text-olive font-bold"
+		>Please login to see this page</div>
 	}
 	return (
 		<AccountLayout>

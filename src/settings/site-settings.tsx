@@ -6,20 +6,20 @@ import { DEFlag } from "@components/icons/DEFlag";
 import { ESFlag } from "@components/icons/ESFlag";
 import {ThailandFlag} from "@components/icons/THLFlag";
 export const siteSettings = {
-	name: "FOOTRANGERSS",
+	name: "Phuket Pizza",
 	description:
-		"Fastest Footrangerss app built with React, NextJS, TypeScript, React-Query and Tailwind CSS.",
+		"Phuket Pizza app built with React, NextJS, TypeScript, React-Query and Tailwind CSS.",
 	author: {
-		name: "Footrangerss .",
+		name: "Phuket Pizza .",
 		websiteUrl: "https://",
 		address: "",
 	},
 	logo: {
-		url: "/assets/images/logo.jpeg",
-		alt: "Loho",
+		url: "/assets/images/logo.png",
+		alt: "Logo",
 		href: "/",
-		width: 150,
-		height: 95,
+		width: 100,
+		height: 80,
 	},
 	defaultLanguage: "en",
 	currencyCode: "USD",
@@ -29,27 +29,16 @@ export const siteSettings = {
 			{
 				id: 11,
 				path: "/",
+				label: "Home",
+				
+			},
+			{
+				id: 22,
+				path: "/allProducts",
 				label: "Products",
 				
 			},
-			{
-				id: 9,
-				path: "/Nike",
-				label: "Nike ",
-				
-			},
-			{
-				id: 8,
-				path: "/Puma",
-				label: "Puma",
-				
-			},
-			{
-				id: 6,
-				path: "/Adidas",
-				label: "Adidas",
-				
-			},
+			
 			
 			
 			// {
@@ -117,77 +106,34 @@ export const siteSettings = {
 			
 		],
 		mobileMenu: [
-			// {
-			// 	id: 12,
-			// 	path: "/contact-us",
-			// 	label: "menu-contact-us",
-				
-			// },
+			
 			{
 				id: 11,
 				path: "/",
+				label: "Home",
+				
+			},
+			{
+				id: 22,
+				path: "/allProducts",
 				label: "Products",
 				
 			},
-			{
-				id: 9,
-				path: "/Nike",
-				label: "Nike ",
-				
-			},
-			{
-				id: 8,
-				path: "/Puma",
-				label: "Puma",
-				
-			},
-			{
-				id: 6,
-				path: "/Adidas",
-				label: "Adidas",
-				
-			},
 			
 			
 			
-			// {
-			// 	id: 5,
-			// 	path: "/search",
-			// 	label: "menu-search",
-			// },
+			
+			
+			
+			
 			{
 				id: 1,
 				path: "/my-account",
 				label: "menu-users",
-				// subMenu: [
-				// 	{
-				// 		id: 1,
-				// 		path: "/my-account",
-				// 		label: "menu-my-account",
-				// 	},
-				// 	{
-				// 		id: 2,
-				// 		path: "/signin",
-				// 		label: "menu-sign-in",
-				// 	},
-				// 	{
-				// 		id: 3,
-				// 		path: "/signup",
-				// 		label: "menu-sign-up",
-				// 	},
-				// 	{
-				// 		id: 4,
-				// 		path: "/forget-password",
-				// 		label: "menu-forget-password",
-				// 	},
-				// ],
+			
 			},
 			
-			// {
-			// 			id: 4,
-			// 			path: "/contact-us",
-			// 			label: "menu-contact-us",
-			// 		},
+			
 					{
 						id: 3,
 						path: "/checkout",

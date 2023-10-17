@@ -37,11 +37,29 @@ function VendorAddNewProduct() {
     category: "",
     initialStock: "",
     salePrice: "",
+    sizeSmPrice:"",
+    sizeMdPrice:"",
+    sizeLgPrice:""
   };
   const [productItem, setProductItem] = useState(initailState);
   const [images, setImage]:any = useState([]);
   const [variations, setVariations] = useState<Variation[]>([]);
   const [categories,setCategories]:any=useState([])
+  const [showSizeSmPrice, setShowSizeSmPrice] = useState(false);
+const [showSizeMdPrice, setShowSizeMdPrice] = useState(false);
+const [showSizeLgPrice, setShowSizeLgPrice] = useState(false);
+
+// Handle checkbox change
+const handleSizeChange = (e:any) => {
+  const { name, checked } = e.target;
+  if (name === "sizeSm") {
+    setShowSizeSmPrice(checked);
+  } else if (name === "sizeMd") {
+    setShowSizeMdPrice(checked);
+  } else if (name === "sizeLg") {
+    setShowSizeLgPrice(checked);
+  }
+};
   const router=useRouter()
   const addVariation = () => {
     setVariations([...variations, { name: '', additionalPrice: '' }]);
@@ -130,6 +148,7 @@ function VendorAddNewProduct() {
     
     try {
       
+      
       toast.loading("uploading product...");
 
       const urls = await uploadFiles("images", images);
@@ -143,6 +162,11 @@ function VendorAddNewProduct() {
         image: urls[0]?urls[0]:"",
         variations: variations,
         createdAt: serverTimestamp(),
+        size:{
+          sm:productItem.sizeSmPrice,
+          md:productItem.sizeMdPrice,
+          lg:productItem.sizeLgPrice
+        }
         
       });
       ;toast.dismiss();
@@ -212,7 +236,7 @@ function VendorAddNewProduct() {
               />
             </div>
             <div className="col-md-6">
-              <span>Product Price*</span>
+              <span>Product Price : If has sizes then enter minimum size price*</span>
               <input
                 type="number"
                 value={productItem.price}
@@ -235,7 +259,9 @@ function VendorAddNewProduct() {
     onChange={handleChange}
     required
   >
-    
+    <option value={""}>
+      Select Category
+    </option>
     {categories.map((category:any, index:any) => (
       <option key={index} value={category.name}>
         {category.name}
@@ -281,6 +307,93 @@ function VendorAddNewProduct() {
                 required
               />
             </div>
+          </div>
+          <div className="row mt-4 px-3">
+          <div className="col-md-6">
+  <span>Size (optional)</span>
+  <div>
+    <input
+      type="checkbox"
+      id="size-sm"
+      name="sizeSm"
+      onChange={handleSizeChange}
+    />
+    <label htmlFor="size-sm "  className="m-1 font-semibold">SM</label>
+  </div>
+  <div>
+    <input
+      type="checkbox"
+      id="size-md"
+      name="sizeMd"
+      onChange={handleSizeChange}
+    />
+    <label htmlFor="size-md" className="m-1 font-semibold">MD</label>
+  </div>
+  <div>
+    <input
+      type="checkbox"
+      id="size-lg"
+      name="sizeLg"
+      onChange={handleSizeChange}
+    />
+    <label htmlFor="size-lg" className="m-1 font-semibold">LG</label>
+  </div>
+  <div className="col-md-6">
+  <span
+    className={` ${showSizeSmPrice ? "" : "d-none"}`}
+  
+  >Price for SM</span>
+  <input
+    type="number"
+    className={`form-control mt-2 ${showSizeSmPrice ? "" : "d-none"}`}
+    value={productItem.sizeSmPrice}
+    name="sizeSmPrice"
+    onChange={handleChange}
+    min={0}
+    required
+    disabled={!showSizeSmPrice}
+  />
+</div>
+
+<div className="col-md-6">
+  <span
+    className={` ${showSizeMdPrice ? "" : "d-none"}`}
+  
+  >Price for MD</span>
+  <input
+    type="number"
+    className={`form-control mt-2 ${showSizeMdPrice ? "" : "d-none"}`}
+    value={productItem.sizeMdPrice}
+    name="sizeMdPrice"
+    onChange={handleChange}
+    min={0}
+    required
+    disabled={!showSizeMdPrice}
+
+  />
+</div>
+
+<div className="col-md-6">
+  <span
+    className={` ${showSizeLgPrice ? "" : "d-none"}`}
+  
+  >Price for LG</span>
+  <input
+    type="number"
+    className={`form-control mt-2 ${showSizeLgPrice ? "" : "d-none"}`}
+    value={productItem.sizeLgPrice}
+    name="sizeLgPrice"
+    onChange={handleChange}
+    required
+    min={0}
+    disabled={!showSizeLgPrice}
+
+  />
+</div>
+
+</div>
+
+
           </div>
           <div className="row mt-4 mx-2">
           <div className="col-md-12">

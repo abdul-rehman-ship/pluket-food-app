@@ -2,7 +2,7 @@ import {
 	IoLogoInstagram,
 	IoLogoTwitter,
 	IoLogoFacebook,
-	IoLogoYoutube,
+	IoLogoWhatsapp
 } from "react-icons/io5";
 
 export const footer = {
@@ -26,14 +26,14 @@ export const footer = {
 				{
 					id: 3,
 					title: "link-facebook",
-					path: "https://www.facebook.com/redqinc/",
+					path: "https://web.facebook.com/phuketpizza?_rdc=1&_rdr",
 					icon: <IoLogoFacebook />,
 				},
 				{
 					id: 4,
-					title: "link-youtube",
-					path: "https://www.youtube.com/channel/UCjld1tyVHRNy_pe3ROLiLhw",
-					icon: <IoLogoYoutube />,
+					title: "whatsapp",
+					path: "https://wa.me/+66 0 929967091",
+					icon: <IoLogoWhatsapp />,
 				},
 			],
 		},
@@ -44,7 +44,7 @@ export const footer = {
 				{
 					id: 1,
 					title: "link-contact-us",
-					path: "/contact-us",
+					path: "/",
 				},
 				{
 					id: 2,
@@ -89,27 +89,7 @@ export const footer = {
 				},
 			],
 		},
-		{
-			id: 4,
-			widgetTitle: "widget-title-customer-care",
-			lists: [
-				{
-					id: 1,
-					title: "link-faq",
-					path: "/faq",
-				},
-				{
-					id: 2,
-					title: "link-shipping",
-					path: "/",
-				},
-				{
-					id: 3,
-					title: "link-exchanges",
-					path: "/",
-				},
-			],
-		},
+		
 		{
 			id: 5,
 			widgetTitle: "widget-title-our-information",
@@ -136,73 +116,48 @@ export const footer = {
 				},
 			],
 		},
-		{
-			id: 6,
-			widgetTitle: "widget-title-top-categories",
-			lists: [
-				{
-					id: 1,
-					title: "link-men-wear",
-					path: "/search",
-				},
-				{
-					id: 2,
-					title: "link-men-wear",
-					path: "/search",
-				},
-				{
-					id: 3,
-					title: "link-kids-wear",
-					path: "/search",
-				},
-				{
-					id: 4,
-					title: "link-sports-wear",
-					path: "/search",
-				},
-			],
-		},
+		
 	],
 	payment: [
-		{
-			id: 1,
-			path: "/",
-			image: "/assets/images/payment/mastercard.svg",
-			name: "payment-master-card",
-			width: 34,
-			height: 20,
-		},
-		{
-			id: 2,
-			path: "/",
-			image: "/assets/images/payment/visa.svg",
-			name: "payment-visa",
-			width: 50,
-			height: 20,
-		},
-		{
-			id: 3,
-			path: "/",
-			image: "/assets/images/payment/paypal.svg",
-			name: "payment-paypal",
-			width: 76,
-			height: 20,
-		},
-		{
-			id: 4,
-			path: "/",
-			image: "/assets/images/payment/jcb.svg",
-			name: "payment-jcb",
-			width: 26,
-			height: 20,
-		},
-		{
-			id: 5,
-			path: "/",
-			image: "/assets/images/payment/skrill.svg",
-			name: "payment-skrill",
-			width: 39,
-			height: 20,
-		},
+		// {
+		// 	id: 1,
+		// 	path: "/",
+		// 	image: "/assets/images/payment/mastercard.svg",
+		// 	name: "payment-master-card",
+		// 	width: 34,
+		// 	height: 20,
+		// },
+		// {
+		// 	id: 2,
+		// 	path: "/",
+		// 	image: "/assets/images/payment/visa.svg",
+		// 	name: "payment-visa",
+		// 	width: 50,
+		// 	height: 20,
+		// },
+		// {
+		// 	id: 3,
+		// 	path: "/",
+		// 	image: "/assets/images/payment/paypal.svg",
+		// 	name: "payment-paypal",
+		// 	width: 76,
+		// 	height: 20,
+		// },
+		// {
+		// 	id: 4,
+		// 	path: "/",
+		// 	image: "/assets/images/payment/jcb.svg",
+		// 	name: "payment-jcb",
+		// 	width: 26,
+		// 	height: 20,
+		// },
+		// {
+		// 	id: 5,
+		// 	path: "/",
+		// 	image: "/assets/images/payment/skrill.svg",
+		// 	name: "payment-skrill",
+		// 	width: 39,
+		// 	height: 20,
+		// },
 	],
 };

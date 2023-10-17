@@ -2,10 +2,10 @@ import { NextSeo } from "next-seo";
 import Header from "@components/layout/header/header";
 import Footer from "@components/layout/footer/footer";
 import MobileNavigation from "@components/layout/mobile-navigation/mobile-navigation";
-import Search from "@components/common/search";
+
 
 const Layout: React.FC = ({ children }) => (
-	<div className="flex flex-col min-h-screen">
+	<div className="flex flex-col min-h-screen" style={{background:'#8A2BE2FF'}}>
 		<NextSeo
 			additionalMetaTags={[
 				{
@@ -13,23 +13,23 @@ const Layout: React.FC = ({ children }) => (
 					content: "width=device-width, initial-scale=1.0",
 				},
 			]}
-			title=" React - React Next E-commerce "
-			description="Fastest E-commerce App built with React, NextJS, TypeScript, React-Query and Tailwind CSS."
+			title="Phuket pizza "
+			description=" E-commerce App Phuket pizza"
 			canonical="https://google.com"
 			openGraph={{
 				url: "https://google.com",
-				title: " React - React Next E-commerce App",
+				title: " phuket pizza",
 				description:
-					"Fastest E-commerce template built with React, NextJS, TypeScript, React-Query and Tailwind CSS.",
+					" E-commerce App Phuket pizza",
 				images: [
 					{
-						url: "/assets/images/og-image-01.png",
+						url: "/assets/images/pizza1.png",
 						width: 800,
 						height: 600,
 						alt: "Og Image Alt",
 					},
 					{
-						url: "/assets/images/og-image-02.png",
+						url: "/assets/images/pizza2.png",
 						width: 900,
 						height: 800,
 						alt: "Og Image Alt Second",
@@ -49,7 +49,7 @@ const Layout: React.FC = ({ children }) => (
 		</main>
 		<Footer />
 		<MobileNavigation />
-		<Search />
+		
 	</div>
 );
 
