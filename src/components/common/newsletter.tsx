@@ -26,6 +26,8 @@ export default function Newsletter() {
 								placeholder="Enter your email address"
 								type="email"
 								{...register("email", { required: true })}
+						detail="no"
+
 							/>
 							<Button variant="slim" className="w-full">
 								<span className="py-0.5 lg:py-2 px-4">Subscribe</span>
