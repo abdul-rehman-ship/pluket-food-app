@@ -36,6 +36,7 @@ const ContactForm: React.FC = () => {
 						className="w-full md:w-1/2 "
 						errorKey={errors.name?.message}
 						variant="solid"
+						detail="no"
 					/>
 					<Input
 						labelKey="forms:label-email-required"
@@ -51,6 +52,8 @@ const ContactForm: React.FC = () => {
 						className="w-full md:w-1/2 md:ms-2.5 lg:ms-5 mt-2 md:mt-0"
 						errorKey={errors.email?.message}
 						variant="solid"
+						detail="no"
+
 					/>
 				</div>
 				<Input
@@ -60,6 +63,8 @@ const ContactForm: React.FC = () => {
 					placeholderKey="forms:placeholder-subject"
 					errorKey={errors.subject?.message}
 					variant="solid"
+					detail="no"
+
 				/>
 				<TextArea
 					labelKey="forms:label-message"
