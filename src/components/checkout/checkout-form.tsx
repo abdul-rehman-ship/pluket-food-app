@@ -1,6 +1,6 @@
 import Input from "@components/ui/input";
 import { useForm } from "react-hook-form";
-
+import Router from "next/router";
 import { useCheckoutMutation } from "@framework/checkout/use-checkout";
 import Map from "@components/map";
 import { getDownloadURL,ref,uploadBytesResumable } from "firebase/storage";
@@ -13,8 +13,11 @@ import Cookies from 'js-cookie';
 import { useUI } from "@contexts/ui.context";
 import axios from "axios"
 import { db,storage } from "../../../firebase";
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+
 import { toast ,Toaster} from "react-hot-toast";
-import { collection, getDocs,doc, updateDoc, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, getDocs, addDoc, serverTimestamp } from "firebase/firestore";
 
 interface CheckoutInputType {
 	name: string;
@@ -34,7 +37,24 @@ const CheckoutForm: React.FC = () => {
 	const {isAuthorized}=useUI();
 	const [user,setUser]:any=useState({})
 	const [type,setType]:any=useState("delivery")
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [mInput,setInput]:any=useState({})
 	
+  // Function to open the modal
+  const openModal = () => {
+    setIsModalOpen(true);
+
+  };
+
+  // Function to close the modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+	if(items.length===0){
+		return <div className="text-olive font-semibold">
+		Please Add product to cart to see this page
+	</div>
+	}
 if(!isAuthorized){
 	return <div className="text-olive font-semibold">
 		Please login to see this page
@@ -118,210 +138,216 @@ if(!isAuthorized){
 		handleSubmit,
 		formState: { errors },
 	} = useForm<CheckoutInputType>();
-async	function onSubmit(input: CheckoutInputType) {
-	setUser({...user,address:input.address})
-let flag=true
-items.map((item)=>{
-	let quan:any=item.quantity
-	if(quan>item?.stock){
-		flag=false
-		return
-	}
+const loadWhatsapp=async(item:any)=>{
+	let input:any=mInput
 	
-})
-if(!flag){
-	toast.error("low stock")
-	return
-}else{
-	if(paymentMethod=="whatsapp"){
-		const userEmail= Cookies.get('email');
-		if(userEmail){
-			toast.loading("Placing Order...");
-			try {
-				items.map(async (item:any)=>{
-  
-  const quan:any=item.quantity
-				  const stock:any=item.stock
-				  await updateDoc(doc(db, "products", item.id), {
-					stock: stock-quan
-				  })
-				  await addDoc(collection(db, "orders"), {
-					user:{...user},
-					userEmail,
-					product:item,
-					amount:item.price,
-					total:item.itemTotal,
-					createdAt:serverTimestamp(),
-					paymentMethod:paymentMethod,
-					shippingAddress:input.address?input.address:user.address,
-					type:type,
-					lat:Cookies.get('lat'),
-					lng:Cookies.get('lng'),
-					paid_status:"cash on delivery",
-					status:"pending"
-				  })
-				.then((doc:any)=>{
-					toast.dismiss();
-				toast.success("Order Placed Successfully");
+	const phoneNumber = '+66 0 929967091 ';
 
-				const phoneNumber = '+66 0 929967091 ';
-				const orderRef = doc.id;
-				const productName = encodeURIComponent(item.name);
-				const productSize = encodeURIComponent(item.size);
-				const productQuantity = encodeURIComponent(item.quantity);
-				const productPrice = encodeURIComponent(item.price);
-				
-				
-				const total = encodeURIComponent(item.itemTotal);
-				const customerName = encodeURIComponent(user.name);
-				const customerPhone = encodeURIComponent(user.phone);
-				const customerEmail = encodeURIComponent(user.email);
-				const customerAddress = encodeURIComponent(input.address);
-				const location = `https://www.google.com/maps?q=${Cookies.get('lat')},${Cookies.get('lng')}`;
-				const type =encodeURIComponent( 'Cash on delivery')
-				
-				
-				const encodedText = encodeURIComponent(`New order from Phuket Pizza\n(Ref: ${orderRef})\n\n*Delivery order*\n🍕${productName}\nSize: ${productSize}\nQuantity: ${productQuantity}\nPrice: ${productPrice}\n\nTotal: ${total}\n\n*Customer Details*\nName: ${customerName}\nPhone: ${customerPhone}\nEmail: ${customerEmail}\nAddress: ${customerAddress}\n\nLocation: ${location}\n\payment:\n${type}`);
-				
-				const whatsappUrl = `https://api.whatsapp.com/send?phone=${encodeURIComponent(phoneNumber)}&text=${encodedText}`;
-				window.open(whatsappUrl, '_blank');
-				
-				})
-			})
-			
-			} catch (error:any) {
-				toast.dismiss()
-				toast.error("Something went wrong");
-			}
-			
-		}else{
-			toast.error("Please Login First");
-		}
-	}else if(paymentMethod=="stripe"){
-		let state=true
-		items.map((item:any)=>{
-			  
-			const quan:any=parseInt(item.quantity)
-			const stock:any=parseInt(item.stock)
-			if(stock<quan){
-					state=false
-			}
-		  }	)
-		if(state){
-		Cookies.set('address',input.address?input.address:user.address);
-		const encodedArr = encodeURIComponent(JSON.stringify({...items}));
-		Cookies.set('data',encodedArr);
-        const {
-			data: { id },
-		  } = await axios.post('/api/checkout_sessions', {
-			items: prodItems,
-			total:subtotal,
-			
-		  });
-		
-		  // Redirect to checkout
-		  const stripe = await getStripe();
-		  await stripe.redirectToCheckout({ sessionId: id });
-		}else{
-			toast.error("low stock")
-		}
-	}else if(paymentMethod==="scanlater"){
-		const userEmail= Cookies.get('email');
-		if(userEmail){
-			toast.loading("Placing Order...");
-			try {items.map(async (item:any)=>{
-  
-  const quan:any=item.quantity
-				  const stock:any=item.stock
-				  await updateDoc(doc(db, "products", item.id), {
-					stock: stock-quan
-				  })
-				  await addDoc(collection(db, "orders"), {
-					user:{...user,address:input.address},
-					product:item,
-					userEmail,
-					amount:item.price,
-					total:item.itemTotal,
-					createdAt:serverTimestamp(),
-					paymentMethod:paymentMethod,
-					shippingAddress:input.address?input.address:user.address,
-					type:type,
-					lat:Cookies.get('lat'),
-					lng:Cookies.get('lng'),
-					paid_status:"scan and pay",
-					status:"pending"
-				  })
-				.then(()=>{
-					toast.dismiss();
-				toast.success("Order Placed Successfully");
-				})
-			})
-			
-			} catch (error:any) {
-				toast.dismiss()
-				toast.error("Something went wrong");
-			}
-			
-		}else{
-			toast.error("Please Login First");
-		}
-
-	}else if(paymentMethod==="scannow"){
-		if(!selectedFile){
-			toast.error("Please upload reciept")
-			return
-		}
-		const userEmail= Cookies.get('email');
-		if(userEmail){
-			toast.loading("Placing Order...");
-			const urls = await uploadFiles("images", [selectedFile]);
-			try {items.map(async (item:any)=>{
-  
-  				const quan:any=item.quantity
-				  const stock:any=item.stock
-				  await updateDoc(doc(db, "products", item.id), {
-					stock: stock-quan
-				  })
-				  await addDoc(collection(db, "orders"), {
-					user:{...user,address:input.address},
-					product:item,
-					userEmail,
-					amount:item.price,
-					total:item.itemTotal,
-					createdAt:serverTimestamp(),
-					paymentMethod:paymentMethod,
-					shippingAddress:input.address?input.address:user.address,
-					type:type,
-					lat:Cookies.get('lat'),
-					lng:Cookies.get('lng'),
-					paid_status:"paid",
-					status:"pending",
-					reciept:urls[0]?urls[0]:""
-					
-				  })
-				.then(()=>{
-					toast.dismiss();
-					setSelectedFile(null)
-				toast.success("Order Placed Successfully");
-				})
-			})
-			
-			} catch (error:any) {
-				toast.dismiss()
-				toast.error("Something went wrong");
-			}
-			
-		}else{
-			toast.error("Please Login First");
-		}
-		setSelectedFile(null)
-
-	}
+	const productName = encodeURIComponent(item.name);
+	const productSize = encodeURIComponent(item.size);
+	const productQuantity = encodeURIComponent(item.quantity);
+	const productPrice = encodeURIComponent(item.price);
+	
+	
+	const total = encodeURIComponent(item.itemTotal);
+	const customerName = encodeURIComponent(user.name);
+	const customerPhone = encodeURIComponent(user.phone);
+	const customerEmail = encodeURIComponent(user.email);
+	const customerAddress = encodeURIComponent(input.address);
+	const location = `https://www.google.com/maps?q=${Cookies.get('lat')},${Cookies.get('lng')}`;
+	const type =encodeURIComponent( 'Cash on delivery')
+	
+	
+	const encodedText = encodeURIComponent(`New order from Phuket Pizza\n\n*Delivery order*\n🍕${productName}\nSize: ${productSize}\nQuantity: ${productQuantity}\nPrice: ${productPrice}\n\nTotal: ${total}\n\n*Customer Details*\nName: ${customerName}\nPhone: ${customerPhone}\nEmail: ${customerEmail}\nAddress: ${customerAddress}\n\nLocation: ${location}\n\payment:\n${type}`);
+	
+	const whatsappUrl = `https://api.whatsapp.com/send?phone=${encodeURIComponent(phoneNumber)}&text=${encodedText}`;
+	window.open(whatsappUrl, '_blank');
 }
-	
+	const handleProcessOrder=async()=>{
+		const input:any=mInput
+		setUser({...user,address:input.address})
+		let flag=true
+		
+		if(!flag){
+			toast.error("low stock")
+			return
+		}else{
+			if(paymentMethod=="whatsapp"){
+				const userEmail= Cookies.get('email');
+				if(userEmail){
+					toast.loading("Placing Order...");
+					try {
+						items.map(async (item:any)=>{
+		  
+		 
+						  await addDoc(collection(db, "orders"), {
+							user:{...user},
+							userEmail,
+							product:item,
+							amount:item.price,
+							total:item.itemTotal,
+							createdAt:serverTimestamp(),
+							paymentMethod:paymentMethod,
+							shippingAddress:input.address?input.address:user.address,
+							type:type,
+							lat:Cookies.get('lat'),
+							lng:Cookies.get('lng'),
+							paid_status:"cash on delivery",
+							status:"pending"
+						  })
+						.then(()=>{
+							toast.dismiss();
+						toast.success("Order Placed Successfully");
+						setTimeout(() => {
+							Router.push("/");
+						}, 2000);
+		
+						
+						setTimeout(() => {
+							loadWhatsapp(item)
 
-	}
+						},2000)
+						
+						})
+					})
+					
+					} catch (error:any) {
+						toast.dismiss()
+						toast.error("Something went wrong");
+					}
+					
+				}else{
+					toast.error("Please Login First");
+				}
+			}else if(paymentMethod=="stripe"){
+				let state=true
+				
+				if(state){
+				Cookies.set('address',input.address?input.address:user.address);
+				const encodedArr = encodeURIComponent(JSON.stringify({...items}));
+				Cookies.set('data',encodedArr);
+				const {
+					data: { id },
+				  } = await axios.post('/api/checkout_sessions', {
+					items: prodItems,
+					total:subtotal,
+					
+				  });
+				
+				  // Redirect to checkout
+				  const stripe = await getStripe();
+				  await stripe.redirectToCheckout({ sessionId: id });
+				}else{
+					toast.error("low stock")
+				}
+			}else if(paymentMethod==="scanlater"){
+				const userEmail= Cookies.get('email');
+				if(userEmail){
+					toast.loading("Placing Order...");
+					try {items.map(async (item:any)=>{
+		  
+		
+						  await addDoc(collection(db, "orders"), {
+							user:{...user,address:input?.address},
+							product:item,
+							userEmail,
+							amount:item.price,
+							total:item.itemTotal,
+							createdAt:serverTimestamp(),
+							paymentMethod:paymentMethod,
+							shippingAddress:input.address?input.address:user.address?user.address:"",
+							type:type,
+							lat:Cookies.get('lat'),
+							lng:Cookies.get('lng'),
+							paid_status:"scan and pay",
+							status:"pending"
+						  })
+						.then(()=>{
+							toast.dismiss();
+						toast.success("Order Placed Successfully");
+						setTimeout(() => {
+							Router.push("/");
+						}, 2000);
+						})
+						
+						setTimeout(() => {
+							loadWhatsapp(item)
 
+						},2000)
+					})
+					
+					} catch (error:any) {
+						toast.dismiss()
+						toast.error("Something went wrong");
+					}
+					
+				}else{
+					toast.error("Please Login First");
+				}
+		
+			}else if(paymentMethod==="scannow"){
+				if(!selectedFile){
+					toast.error("Please upload reciept")
+					return
+				}
+				const userEmail= Cookies.get('email');
+				if(userEmail){
+					toast.loading("Placing Order...");
+					const urls = await uploadFiles("images", [selectedFile]);
+					try {items.map(async (item:any)=>{
+		  
+						  await addDoc(collection(db, "orders"), {
+							user:{...user,address:input.address},
+							product:item,
+							userEmail,
+							amount:item.price,
+							total:item.itemTotal,
+							createdAt:serverTimestamp(),
+							paymentMethod:paymentMethod,
+							shippingAddress:input.address?input.address:user.address,
+							type:type,
+							lat:Cookies.get('lat'),
+							lng:Cookies.get('lng'),
+							paid_status:"paid",
+							status:"pending",
+							reciept:urls[0]?urls[0]:""
+							
+						  })
+						.then(()=>{
+							toast.dismiss();
+							setSelectedFile(null)
+						toast.success("Order Placed Successfully");
+						setTimeout(() => {
+							Router.push("/");
+						}, 2000);
+						})
+						
+						setTimeout(() => {
+							loadWhatsapp(item)
+
+						},2000)
+					})
+					
+					} catch (error:any) {
+						toast.dismiss()
+						toast.error("Something went wrong");
+					}
+					
+				}else{
+					toast.error("Please Login First");
+				}
+				setSelectedFile(null)
+		
+			}
+		}
+			
+		
+			}
+async	function onSubmit(input: CheckoutInputType) {
+setInput(input)
+openModal();
+
+}
 	const handleType=async(e:any)=>{
 		setType(e)
 	}
@@ -329,7 +355,7 @@ if(!flag){
 		<>
 		<Toaster/>
 			<h2 className="text-lg md:text-xl xl:text-2xl font-bold text-olive mb-6 xl:mb-8">
-				{t("text-shipping-address")}
+				{t("text-Delivery-address")}
 			</h2>
 			<div className="flex gap-2 m-2">
 			<button
@@ -349,7 +375,7 @@ if(!flag){
             type === "takeout" ? 'bg-olive text-maroon' : ' bg-maroon text-olive hover:bg-olive hover:text-maroon'
           }`}
         >
-          Takeout
+          Pick up
         </button>
 			</div>
 			
@@ -402,6 +428,49 @@ if(!flag){
 				value={user?.email}
 				disabled
 			/>
+			{
+				user.referrer==="yes"?<>
+				<Input
+				labelKey="forms:Venue Name"
+				{...register("email", {
+					
+				})}
+				errorKey={errors.email?.message}
+				variant="solid"
+				detail="yes"
+				value={user?.venueName}
+				disabled
+			/><Input
+			labelKey="forms:Venue Location"
+			{...register("email", {
+				
+			})}
+			errorKey={errors.email?.message}
+			variant="solid"
+			detail="yes"
+			value={user?.venueLocation}
+			disabled
+		/>
+		<Input
+				labelKey="forms:social Media Link"
+				{...register("email", {
+					
+				})}
+				errorKey={errors.email?.message}
+				variant="solid"
+				detail="yes"
+				value={user?.socialMediaLink}
+				disabled
+			/>
+			
+		<div>
+		<h3 className="text-olive font-bold my-2">Logo</h3>
+		<img src={user?.logo} style={{width:"20rem",height:"auto"}}/>
+			
+		</div>
+				</>:""
+			}
+			
 					{type==="delivery"&&<Input
 						labelKey="forms:label-address"
 						{...register("address", {
@@ -433,7 +502,7 @@ if(!flag){
                 checked={paymentMethod === "whatsapp"}
                 onChange={()=>handlePaymentChange("whatsapp")}
               />
-              <span className="ml-2 text-olive">What's App</span>
+              <span className="ml-2 text-olive">Cash on delivery</span>
             </label>
           </div>
           <div>
@@ -446,7 +515,7 @@ if(!flag){
                 checked={paymentMethod === "stripe"}
                 onChange={()=>handlePaymentChange("stripe")}
               />
-              <span className="ml-2 text-olive">Stripe Payment</span>
+              <span className="ml-2 text-olive">Credit Card</span>
             </label>
           </div>
 		  <div>
@@ -517,6 +586,23 @@ if(!flag){
 					</div>
 				</div>
 			</form>
+			<Modal show={isModalOpen} onHide={closeModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Order</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Are you sure you want to place the order?</p>
+        </Modal.Body>
+        <Modal.Footer>
+
+          <Button variant="secondary" onClick={closeModal}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleProcessOrder}>
+            Confirm Order
+          </Button>
+        </Modal.Footer>
+      </Modal>
 		</>
 	);
 };

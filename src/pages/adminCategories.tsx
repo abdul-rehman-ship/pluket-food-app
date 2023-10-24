@@ -29,6 +29,18 @@ function VendorAddNewProduct() {
   const [isEdit,setIsEdit]:any=useState(false)
   const [editId,setEditId]:any=useState('')
   const router = useRouter();
+  const [sortOrder, setSortOrder] = useState('asc');
+  const sortedCategories = [...allCategories].sort((a, b) => {
+// sort categories by name according to assending or desending order
+    if (sortOrder === 'asc') {
+      return a.name > b.name ? 1 : -1;
+    } else {
+      return a.name < b.name ? 1 : -1;
+    }
+
+  });
+
+
  
 
   
@@ -172,7 +184,7 @@ const handleEdit=async()=>{
       <Toaster />
       
       <div className={`${style.formContainer} container mt-5 `}>
-      <div className="input-group">
+      <div className="input-group ">
   <div className="form-outline">
     <input type="search"  name="search" value={category} onChange={handleChange} className="form-control"  placeholder='Write category name...'/>
     
@@ -186,6 +198,19 @@ Add New
     
 Update
   </button>}
+  <div className="sort-dropdown mx-4">
+  <label htmlFor="sortOrder">Sorted by:</label>
+  <select
+    id="sortOrder"
+    value={sortOrder}
+    onChange={(e) => setSortOrder(e.target.value)}
+  >
+    <option value="asc">A-Z</option>
+    <option value="desc">Z-A</option>
+  </select>
+</div>
+
+
 </div>
         <div className="row mt-5 ">
       <Table striped bordered hover responsive className="col-sm-12 col-md-12 col-lg-8 " >
@@ -202,7 +227,7 @@ Update
       </thead>
       <tbody style={{color:"#1c1b1bbb",fontWeight:600}}>
        {
-      allCategories.length>0 ?  allCategories.map((item:any)=>{
+      sortedCategories.length>0 ?  sortedCategories.map((item:any)=>{
            return <tr>
             <td className=" ">{item.name}</td>
             <td className="text-success text-sm"><span className=" p-1 rounded" style={{background:"#c1c1d4 "}}>active</span></td>

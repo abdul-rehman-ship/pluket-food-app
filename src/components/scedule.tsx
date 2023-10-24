@@ -4,14 +4,40 @@ import Button from 'react-bootstrap/Button';
 import { FiClock } from 'react-icons/fi'; // You may need to install react-icons
 import { useUI } from "@contexts/ui.context";
 import { useEffect } from "react";
-import { collection, getDocs,doc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, addDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import Cookies from "js-cookie";
 import toast, { Toaster } from 'react-hot-toast';
+import {
+  getDownloadURL,
+  
+  ref,
+  
+  uploadBytesResumable,
+} from "firebase/storage";
+import { storage } from "../../firebase";
+import Form from 'react-bootstrap/Form';
 const OpeningHoursButton = () => {
   const [showModal, setShowModal] = useState(false);
   const {isAuthorized}	= useUI()
 	const [user,setUser]:any=useState({})
+  const [showForm, setShowForm]:any = useState(false);
+
+
+  
+
+  const onHide = () => {
+    // Hide the form when the user closes it
+    setShowForm(false);
+  };
+
+  const ShowForm = () => {
+    // Hide the form when the user closes it
+    setShowForm(true);
+  };
+
+
+
 
 	const getUser=async()=>{
 		getDocs(collection(db, "users")).then((querySnapshot) => {
@@ -29,25 +55,113 @@ const OpeningHoursButton = () => {
 		}
 	})
 
-
+  const [venueData, setVenueData]:any = useState({
+    name: '',
+    location: '',
+    logo: null, // Store the file object
+    socialMediaLink: '',
+  });
   
 
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
-const handleReferrer=async()=>{
+  
+  const handleInputChange = (e:any) => {
+    const { name, value, type } = e.target;
+    if (type === 'file') {
+      const file:any = e.target.files[0];
+      setVenueData({
+        ...venueData,
+        logo: file,
+      });
+    } else {
+      setVenueData({
+        ...venueData,
+        [name]: value,
+      });
+    }
+  };
+  const uploadFiles = async (folder: string, files: File[]) => {
+    const promises: any[] = [];
+
+    files.forEach((file) => {
+      const storageRef = ref(storage, `${folder}/${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      promises.push(uploadTask);
+    });
+
+    const result = await Promise.all(promises);
+    const urlPromises = result.map(async (item) => {
+      const path = item.ref.toString();
+      return await downloadFile(path);
+    });
+
+    return await Promise.all(urlPromises);
+  };
+  const downloadFile = async (path: string) => {
+    let item: string = "";
+    await getDownloadURL(ref(storage, path))
+      .then((url) => (item = url))
+      .catch((err) => {
+        return toast.error(err.message);
+      });
+
+    return item;
+  };
+
+const handleReferrer=async(e:any)=>{
+  e.preventDefault()
+  
+  
+  toast.loading("Sending request")
   if(!isAuthorized){ 
+    toast.error(" please login first")
     return
    }
   if(user?.referrer==="yes"){
+    toast.dismiss()
     toast.error("You're already a referrer")
     return
   }
- await updateDoc(doc(db, "users", user?.id), {
-    referrer: "yes",
-  });
-  toast.success("You're now a referrer")
+  if(venueData.logo){
+const logo= await uploadFiles("logos", [venueData.logo]);
+//check user request is already sent
+const requests = await getDocs(collection(db, "requests"));
+let isRequestSent=false
+requests.forEach((doc) => {
+  if(doc.data().email===user.email){
+    isRequestSent=true
+  }
+});
+if(isRequestSent){
+  toast.dismiss()
 
-  getUser()
+  toast.error("Your request is already sent")
+  return
+}
+
+await addDoc(collection(db, "requests"), {
+  venueName: venueData.venueName,
+  venueLocation: venueData.venueLocation,
+  logo: logo[0]?logo[0]:"",
+  socialMediaLink: venueData.socialMediaLink,
+  email:user.email,
+  userId:user.id,
+  status:"pending"
+
+})
+  toast.dismiss()
+    toast.success("Your request sent successfully")
+    getUser()
+    onHide()
+    return
+  }
+//  await updateDoc(doc(db, "users", user?.id), {
+//     referrer: "yes",
+//   });
+//   toast.success("You're now a referrer")
+
+//   getUser()
 }
 
   const isOpen = isRestaurantOpen(); // Implement your logic for checking opening hours here
@@ -60,12 +174,21 @@ const handleReferrer=async()=>{
         <FiClock className="mr-2" />
         {isOpen ? 'Open' : 'Closed'}
       </Button>
-      <Button  className="flex gap-2  bg-olive text-maroon ml-auto font-bold items-center justify-center m-4 hover:text-maroon hover:bg-olive" onClick={handleReferrer}>
-        {isAuthorized?
-        user?.referrer==="yes"?"You're Referrer": "Become a Referrer"
-        :"Login to become a Referrer"
-       }
+      {
+        isAuthorized ? user?.referrer==="yes"?
+         <Button  className="flex gap-2  bg-olive text-maroon ml-auto font-bold items-center justify-center m-4 hover:text-maroon hover:bg-olive" >
+       Registered Referrer
+      </Button>:<Button  className="flex gap-2  bg-olive text-maroon ml-auto font-bold items-center justify-center m-4 hover:text-maroon hover:bg-olive" onClick={ShowForm}>
+       Become a Referrer
       </Button>
+      
+      :
+        <Button  className="flex gap-2  bg-olive text-maroon ml-auto font-bold items-center justify-center m-4 hover:text-maroon hover:bg-olive" >
+        Login to become a Referrer
+       </Button>
+      
+      }
+    
 
     </div>
    
@@ -86,6 +209,72 @@ const handleReferrer=async()=>{
           </Button>
         </Modal.Footer>
       </Modal>
+      <Modal show={showForm} onHide={onHide}>
+      <Modal.Header closeButton>
+        <Modal.Title>Send Request</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+      <Form onSubmit={handleReferrer}>
+      <Form.Group controlId="venueName">
+        <Form.Label>Name of Venue</Form.Label>
+        <Form.Control
+          required
+          type="text"
+          name="venueName"
+          value={venueData.venueName}
+          onChange={handleInputChange}
+          placeholder="Enter the name of the venue"
+        />
+      </Form.Group>
+
+      <Form.Group controlId="venueLocation">
+        <Form.Label>Short Location</Form.Label>
+        <Form.Control
+          required
+          type="text"
+          name="venueLocation"
+          value={venueData.venueLocation}
+          onChange={handleInputChange}
+          placeholder="Enter short location"
+        />
+      </Form.Group>
+
+      <Form.Group controlId="logoUpload">
+        <Form.Label>Logo Upload</Form.Label>
+        <Form.Control
+          type="file"
+          name="logoUpload"
+          onChange={handleInputChange}
+        />
+      </Form.Group>
+
+      <Form.Group controlId="socialMediaLink">
+        <Form.Label>Social Media Link</Form.Label>
+        <Form.Control
+          required
+          type="text"
+          name="socialMediaLink"
+          value={venueData.socialMediaLink}
+          onChange={handleInputChange}
+          placeholder="Enter Facebook or Instagram link"
+        />
+      </Form.Group>
+      <Button variant="primary"  className="mt-3" type="submit" >
+          send
+        </Button>
+
+      
+    </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        {/* <Button variant="secondary" onClick={onHide}>
+          Close
+        </Button>
+        <Button variant="primary"  type="submit" onClick={onHide}>
+          send
+        </Button> */}
+      </Modal.Footer>
+    </Modal>
     </>
   );
 };

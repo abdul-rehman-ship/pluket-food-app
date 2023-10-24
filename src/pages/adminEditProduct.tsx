@@ -156,22 +156,24 @@ const id=router.asPath.split("=")[1]
       toast.loading("updating product...");
 
       const urls = await uploadFiles("images", images);
-
-      await updateDoc(doc(db, "products", id), {
+setTimeout(async()=>{
+  
+  await updateDoc(doc(db, "products", id), {
     
-        name: productItem.name,
-        price: productItem.price,
-        description: productItem.description,
-        category: productItem.category,
-        initialStock: productItem.initialStock,
-        image: urls[0]?urls[0]:"",
-        variations: variations,
-        createdAt: serverTimestamp(),
-        
-      });
-      ;toast.dismiss();
-      toast.success("product updated successfully");
-      getData()
+    name: productItem.name,
+    price: productItem.price,
+    description: productItem.description,
+    category: productItem.category,
+    initialStock: productItem.initialStock,
+    image: urls[0]?urls[0]:"",
+    variations: variations,
+    createdAt: serverTimestamp(),
+    
+  });
+  ;toast.dismiss();
+  toast.success("product updated successfully");
+  getData()
+},2000)
     } catch (error:any) {
       
       toast.error(error.message);

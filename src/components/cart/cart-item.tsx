@@ -39,7 +39,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
 		>
 	<div className="relative flex text-maroon w-24 md:w-28 h-24 md:h-28 rounded-md overflow-hidden flex-shrink-0 cursor-pointer me-4">
   <Image
-    src={item.image}
+    src={item.image?item.image:"https://firebasestorage.googleapis.com/v0/b/pluket-food-app.appspot.com/o/images%2FMargharitaL.jpg?alt=media&token=ac9cd778-6f2f-4c9d-a22d-83f8f0dcb497&_gl=1*1q9c3nz*_ga*MTc1OTI0NTc5MC4xNjQ4OTA2MTQ5*_ga_CW55HF8NVT*MTY5ODA3OTMyOC41Ni4xLjE2OTgwODExMjguNDUuMC4w"}
     width={112}
     height={112}
     loading="eager"

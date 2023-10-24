@@ -57,7 +57,7 @@ let arr:any=[]
       className="w-full flex flex-col p-4"
     >
       {orders.map((order:any) => (
-      <div key={order.id} className="border bg-olive rounded-md p-4 mb-4 grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+      <div key={order.id} className="border bg-black rounded-md p-4 mb-4 grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
 	  <div className="md:col-span-1 flex justify-center md:justify-start">
 		<img
 		  src={order.product?.image}

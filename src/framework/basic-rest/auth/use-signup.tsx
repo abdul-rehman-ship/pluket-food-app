@@ -10,6 +10,7 @@ export interface SignUpInputType {
   name: string;
   address:string;
   phone:string;
+  country:string;
 
 }
 async function signUp(input: SignUpInputType) {

@@ -2,6 +2,8 @@ import Input from "@components/ui/input";
 import PasswordInput from "@components/ui/password-input";
 import Button from "@components/ui/button";
 import { useForm } from "react-hook-form";
+
+
 import {
   
 	collection,
@@ -27,6 +29,7 @@ const SignUpForm: React.FC = () => {
 	const { mutate: signUp, isLoading } = useSignUpMutation();
 	
 	const { setModalView, openModal, closeModal } = useUI();
+	
 	const {
 		register,
 		handleSubmit,
@@ -38,9 +41,9 @@ const SignUpForm: React.FC = () => {
 		return openModal();
 	}
 
-	async function   onSubmit({ name, email, password ,address,phone}: SignUpInputType) {
+	async function   onSubmit({ name, email, password ,address,phone,country}: SignUpInputType) {
 	toast.loading("Loading...")
-		console.log(name,email,password,address,phone);
+		
 		 createUserWithEmailAndPassword(auth,email,password).then(async()=>{	
 
 			await addDoc(collection(db, "users"), {
@@ -48,7 +51,7 @@ const SignUpForm: React.FC = () => {
 				email,
 				password,
 				address,
-				phone,
+				phone:country+phone,
 				orders:[],
 				referrer:"no",
 				createdAt: serverTimestamp(),
@@ -60,7 +63,8 @@ const SignUpForm: React.FC = () => {
 				email,
 				password,
 				address,
-				phone
+				phone,
+				country
 			});
 
 		toast.dismiss()
@@ -133,6 +137,18 @@ const SignUpForm: React.FC = () => {
 						detail="no"
 
 					/>
+					<Input
+						labelKey="forms:country-code"
+						type="number"
+						variant="solid"
+						{...register("country", {
+							required: "forms:country-required",
+						})}
+						errorKey={errors.country?.message}
+						detail="no"
+					
+					/>
+
 					<Input
 						labelKey="forms:label-phone"
 						type="number"

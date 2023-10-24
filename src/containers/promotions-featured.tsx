@@ -33,9 +33,15 @@ const ProductsFeatured: React.FC<ProductsProps> = ({
         
         
        if(doc.data()){
-         const prod={id:doc.id,image:doc.data().image[0],name:doc.data().name,description:doc.data().description}
-         arr.push(prod);
-           
+        const currentDate:any=new Date()
+        const promoStartDate = new Date(doc.data().promoStart); // Convert promo start date from Firestore to a Date object
+    const promoEndDate = new Date(doc.data().promoEnd); // Convert promo end date from Firestore to a Date object
+    if (currentDate >= promoStartDate && currentDate <= promoEndDate) {
+      const prod={id:doc.id,image:doc.data().image[0],name:doc.data().name,description:doc.data().description}
+      arr.push(prod);
+        
+    }
+         
            
  
        

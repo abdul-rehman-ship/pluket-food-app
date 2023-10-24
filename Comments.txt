@@ -1,0 +1,49 @@
+1:done.
+2:done.
+3:?
+4:done.
+5:done.
+6:Translator in App needs translation of each word in the app. i have attached the file with all some words but i can't do all words used in app. it needs {word:translation} format 
+. if you can write files for word and its translation.  i will paste in app.by the way all browser has its own translators.they can translate automatically.you need to enable this feature in browser.
+7:done .total is total price. i have added price with it .
+8:done.
+9:done.
+10:?
+11:done
+12:done
+13:done
+14:done
+15:done
+16:done
+17:done
+18:done
+19:done
+20:done
+21:done
+22:done
+23:language is hard coded. user can olny change when web page is fully rendered.
+24:changing language is hard refresh . current web refetching its data.it is not logging out but takes little time to regain data.
+25:done.
+26:?
+27:i don't think there is need of note for cart. note might be for order. 
+28:done
+29:done
+30:done.how customer will select location  if map is not there.
+31:done
+32:done. we only convert order into text and customer will send you msg.whatsapp not allowing to send msg from any account programtically.
+33:done
+34:done
+35:done
+36:done
+37:done
+38:done
+39:done
+40:done
+41:done
+42:done
+43:?
+44:done
+45:done
+46:there is no fix size of images. website is responsive but try to same height and width images.
+47:done
+

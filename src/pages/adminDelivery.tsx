@@ -4,7 +4,8 @@ import Table from 'react-bootstrap/Table';
 import style from '../styles/vendor.module.css'
 import JsCookie from 'js-cookie'
 import Router from 'next/router';
-
+import Link from 'next/link';
+import { Modal, Button, Form } from "react-bootstrap";
 
 import VendorNavbar from '../components/adminNavbar';
 import { getDocs,collection, updateDoc,doc, serverTimestamp } from 'firebase/firestore';
@@ -24,7 +25,18 @@ function VendorCustomers() {
   
     
   const [customers, setCustomers]: any = useState([]);
-  
+  const [showDialog, setShowDialog] = useState(false);
+const [inputValue, setInputValue] = useState("");
+const [Id,setId]:any=useState("")
+const handleShowDialog = (id:any) => {
+  setId(id)
+  setShowDialog(true);
+};
+
+const handleCloseDialog = () => {
+  setShowDialog(false);
+};
+
   
   const getData = async () => {
     let arr: any = [];
@@ -91,7 +103,23 @@ toast.dismiss()
         
   }
 
-
+const notDeliverable=async()=>{
+  if(inputValue===""){
+    toast.error("Enter reason")
+    return
+  }
+  handleCloseDialog()
+  toast.loading("Updating order...")
+  await updateDoc(doc(db, "orders", Id), {
+    status: "not deliverable",
+    reason:inputValue,
+    deliveredAt:serverTimestamp()
+  }).then(()=>{
+    toast.dismiss()
+    toast.dismiss()
+    getData()
+  })
+}
   return (<>
     <VendorNavbar/>
     
@@ -115,15 +143,14 @@ toast.dismiss()
         <Table  bordered className='border shadow-sm' responsive hover>
       <thead  className={style.table_head}>
         <tr>    
-        <th>Kitchen in</th>
-        <th>Kitchen out</th>
+   
           
-          <th>Id</th>
           <th>Name </th>
-          <th> Total</th>
+          
          
-          <th>Quantity</th>
+          {/* <th>Quantity</th> */}
           <th>Status</th>
+          <th>Location</th>
           <th>Mark as</th>
           <th></th>
         </tr>
@@ -133,15 +160,22 @@ toast.dismiss()
     customers.map((customer:any,index:number)=>{
 
      return <tr key={index} className='py-4'>
-          <td>{customer.date +","+ customer.time }</td>
+          {/* <td>{customer.date +","+ customer.time }</td>
           <td>{customer.date2 +","+ customer.time2 }</td>
-          
-          <td>{customer.id}</td>
+           */}
+          {/* <td>{customer.id}</td> */}
           <td>{customer.product.name}</td>
-          <td>{customer.total}</td>
-          <td>{customer.total/customer.amount}</td>
-          <td className='alert alert-primary font-semibold'  >{customer.paid_status?customer.paid_status==="scan and pay"?"scan on delivery":customer.paid_status:""}</td>
-          <td className='flex gap-2'><button onClick={()=>completeOrder(customer.id)} className='btn btn-success'>Delivered</button> </td>
+          {/* <td>{customer.total}</td> */}
+          {/* <td>{customer.total/customer.amount}</td> */}
+          <td className='alert alert-primary font-semibold'  >{customer.paid_status?customer.paid_status==="scan and pay"?"not paid":customer.paid_status==="cash on delivery"?"not paid":customer.paid_status:""}</td>
+         <td>
+         <Link href={`https://www.google.com/maps/search/?api=1&query=${customer.lat},${customer.lng}`}>
+                <a target="_blank" rel="noopener noreferrer">View on Google Maps</a>
+              </Link>
+         </td>
+          <td className='flex gap-2'><button onClick={()=>completeOrder(customer.id)} className='btn btn-success'>Delivered</button>
+          
+           <button onClick={()=>handleShowDialog(customer.id)} className='btn btn-danger'>Not deliverable</button></td>
           <td><button className='btn btn-secondary' onClick={()=>handleClick(customer.id)}>View</button></td>
         </tr>
         
@@ -165,6 +199,34 @@ toast.dismiss()
             
             </div>
         </div>
+        <Modal show={showDialog} onHide={handleCloseDialog}>
+  <Modal.Header closeButton>
+    <Modal.Title>Enter reason</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <Form.Control
+      type="text"
+      placeholder="Enter here..."
+      value={inputValue}
+      onChange={(e) => setInputValue(e.target.value)}
+    />
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" onClick={handleCloseDialog}>
+      Close
+    </Button>
+    <Button
+      variant="primary"
+      onClick={() => {
+        // Handle the submission here
+        notDeliverable()
+      }}
+    >
+      Submit
+    </Button>
+  </Modal.Footer>
+</Modal>
+
     </>
 
 

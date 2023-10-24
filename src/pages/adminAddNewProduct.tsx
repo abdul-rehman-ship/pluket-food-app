@@ -153,7 +153,8 @@ const handleSizeChange = (e:any) => {
 
       const urls = await uploadFiles("images", images);
 
-       await addDoc(collection(db, "products"), {
+     setTimeout(async()=>{
+      await addDoc(collection(db, "products"), {
         name: productItem.name,
         price: productItem.price,
         description: productItem.description,
@@ -174,6 +175,7 @@ const handleSizeChange = (e:any) => {
       setProductItem(initailState);
       setImage([]);
       setVariations([]);
+     },2000)
     } catch (error:any) {
       
       toast.error(error.message);

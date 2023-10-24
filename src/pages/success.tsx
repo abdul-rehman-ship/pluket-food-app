@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
-
+import Router from 'next/router';
 
 
 
@@ -87,6 +87,10 @@ const uploadData=async()=>{
             toast.dismiss()
             setPendiing(true)
             toast.success("Order Placed Successfully");
+            setTimeout(() => {
+              Cookies.set("data","")
+            Router.push('/')
+            },2000)
           }).catch((error:any)=>{
             toast.dismiss()
             console.log(error.message);

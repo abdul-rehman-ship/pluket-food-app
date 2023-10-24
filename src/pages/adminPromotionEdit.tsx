@@ -38,6 +38,9 @@ function VendorAddNewProduct() {
   };
   const [productItem, setProductItem] = useState(initailState);
   const [images, setImage]:any = useState([]);
+  const [promoStart, setPromoStart] = useState('');
+  const [promoEnd, setPromoEnd] = useState('');
+  
   
   
 const router = useRouter()
@@ -71,6 +74,8 @@ const id=router.asPath.split("=")[1]
         if(doc.id===id){
             const prod={id:doc.id,...doc.data()}
             setProductItem(prod)
+            setPromoStart(prod.promoStart)
+            setPromoEnd(prod.promoEnd)
               
         }
        
@@ -130,17 +135,21 @@ if(images.length>0){
 
 
 
-  
+  setTimeout(async() => {
     await updateDoc(doc(db, "promotions", productItem.id), {
-        name: productItem.name,
-        description: productItem.description,
-        image: urls[0]?urls[0]:productItem.image
-        
-    })
-      getData()
-      toast.dismiss()
-      toast.success("promotion updated successfully");
+      name: productItem.name,
+      description: productItem.description,
+      image: urls[0]?urls[0]:productItem.image,
+      promoStart: promoStart, // Add promo start date to the Firestore document
+      promoEnd: promoEnd,
       
+  })
+    getData()
+    toast.dismiss()
+    toast.success("promotion updated successfully");
+    
+  },2000)
+ 
     } catch (error:any) {
         toast.dismiss()
       toast.error(error);
@@ -243,7 +252,30 @@ if(images.length>0){
               />
             </div>
           </div>
-
+          <div className="row mt-4 px-3">
+  <div className="col-md-6">
+    <span>Date of promo start*</span>
+    <input
+      type="date"
+      value={promoStart}
+      name="promoStart"
+      onChange={(e) => setPromoStart(e.target.value)}
+      className="form-control mt-2"
+      required
+    />
+  </div>
+  <div className="col-md-6">
+    <span>Date of promo end*</span>
+    <input
+      type="date"
+      value={promoEnd}
+      name="promoEnd"
+      onChange={(e) => setPromoEnd(e.target.value)}
+      className="form-control mt-2"
+      required
+    />
+  </div>
+</div>
         
       
           <div className="row mt-4 mx-2">

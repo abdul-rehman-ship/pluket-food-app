@@ -24,7 +24,7 @@ function VendorCustomers() {
   
     
   const [customers, setCustomers]: any = useState([]);
-  
+  const [users,setUser]:any=useState([])
   
   const getData = async () => {
     let arr: any = [];
@@ -57,14 +57,24 @@ function VendorCustomers() {
     await setCustomers(arr);
     
   };
-
+const getUsers=async()=>{
+  let arr:any=[]
+  await getDocs(collection(db, "users")).then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      arr.push({id:doc.id,...doc.data()});
+    });
+  
+ })
+  arr.reverse()    
+  await setUser(arr);
+}
 
 
     useEffect(()=>{
       if(JsCookie.get("admin_key")==="admin"){
         if(customers.length===0){
           getData()
-          
+          getUsers()
 
         }
 
@@ -107,6 +117,8 @@ function VendorCustomers() {
         <Table  bordered className='border shadow-sm' responsive hover>
       <thead  className={style.table_head}>
         <tr>    
+        <th>Referrer Logo</th>
+
         <th>Kitchen in</th>
         <th>Kitchen out</th>
         <th>Delivered </th>
@@ -118,6 +130,7 @@ function VendorCustomers() {
          
           <th>Quantity</th>
           <th>Status</th>
+
           
           <th></th>
         </tr>
@@ -127,6 +140,17 @@ function VendorCustomers() {
     customers.map((customer:any,index:number)=>{
 
      return <tr key={index} className='py-4'>
+          <td>
+            {
+              users.map((user:any)=>{
+                if(user.email===customer.userEmail && user.referrer==="yes"){
+                  return user.logo && <img src={user.logo} key={user.id + new Date()} alt="logo" className='rounded-circle' style={{width:"50px",height:"50px"}}/>
+
+                }
+              })
+            }
+          </td>
+
           <td>{customer.date +","+ customer.time }</td>
           <td>{customer.date2 +","+ customer.time2 }</td>
           <td>{customer.date3 +","+ customer.time3 }</td>
@@ -139,6 +163,7 @@ function VendorCustomers() {
           <td className='alert alert-primary font-semibold'  >{customer.paid_status?customer.paid_status==="scan and pay"?"scan on delivery":customer.paid_status:""}</td>
           
           <td><button className='btn btn-secondary' onClick={()=>handleClick(customer.id)}>View</button></td>
+       
         </tr>
         
       

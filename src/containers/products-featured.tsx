@@ -23,7 +23,8 @@ const ProductsFeatured: React.FC<ProductsProps> = ({
   const [searcheddata, setSearcheddata]: any = useState([]);
   const [categories,setCategories]:any=useState([])
   const [selectedCategory, setSelectedCategory] = useState('all');
-  
+  const [searchName, setSearchName] = useState('');
+
 
   const handleCategoryClick = (category:any) => {
     setSelectedCategory(category);
@@ -103,10 +104,20 @@ setSearcheddata(arr)
   //   );
   //   setSearcheddata(filteredProducts);
   // };
+const search=(value:any)=>{
 
+  setSearchName(value)
+  const filteredProducts = data.filter(
+    (product: any) =>
+      product.name.toLowerCase().includes(value.toLowerCase()) 
+      
+  );
+  setSearcheddata(filteredProducts);
+}
   return (
     <div className={className}>
       <div className="mb-4 md:mb-6 font-poppins">
+
         {/* <div className="flex flex-col md:flex-row gap-4 md:gap-6">
          {type==="all" ?<input
             type="text"
@@ -146,7 +157,7 @@ setSearcheddata(arr)
           Filter
         </button> */}
         <div className="flex justify-center  mt-4  items-center h-auto">
-    <h1 className="text-3xl font-bold text-olive italic   underline" >Products</h1>
+    <h1 className="text-3xl font-bold text-olive italic   underline" >Categories</h1>
 </div>
 <div className="flex flex-wrap justify-center gap-2 space-x-2 md:space-x-4 m-4 lg:space-x-6">
       {/* All button */}
@@ -159,6 +170,7 @@ setSearcheddata(arr)
       >
         All
       </button>
+  
 
       {/* Category buttons */}
       {categories.map((category:any) => (
@@ -174,6 +186,15 @@ setSearcheddata(arr)
    </button>
       ))}
     </div>
+    <div className="row m-4">
+      <input
+            type="text"
+            placeholder="Search By Name..."
+            className="py-2 px-4 border-2  border-gray-300 rounded-md  md:w-1/4 focus:outline-none"
+            value={searchName}
+            onChange={(e) => search(e.target.value)}
+          />
+      </div>
 
       {error ? (
         <Alert message={error?.message} />

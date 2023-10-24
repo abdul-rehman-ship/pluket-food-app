@@ -74,7 +74,7 @@ function VendorCustomers() {
   const getPastSixMonths = () => {
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const today = new Date();
-    const previousMonths = [];
+    let previousMonths :any= [];
 
     for (let i = 0; i < 6; i++) {
       let currentMonth = today.getMonth() - i;
@@ -85,6 +85,7 @@ function VendorCustomers() {
       }
       previousMonths.push(`${months[currentMonth]} ${currentYear}`);
     }
+    previousMonths.reverse();
 
     return previousMonths;
   };
@@ -99,6 +100,8 @@ function VendorCustomers() {
           <Table bordered className="border shadow-sm" responsive hover>
             <thead className={style.table_head}>
               <tr>
+                <th>Logo</th>
+                <th>Short location</th>
                 <th>Referrer</th>
                 <th>Email</th>
                 {months.map((month: any) => (
@@ -109,6 +112,11 @@ function VendorCustomers() {
             <tbody>
               {referrers.map((referrer: any) => (
                 <tr key={referrer.email}>
+                  <td>{
+                    <img src={referrer.logo}   className='rounded-circle' style={{width:"50px",height:"50px"}} alt="" />
+                    }</td>
+                  <td>{referrer.venueLocation}</td>
+
                   <td>{referrer.name}</td>
                   <td>{referrer.email}</td>
                   {months.map((month: any) => {

@@ -33,6 +33,9 @@ function VendorAddNewProduct() {
   };
   const [productItem, setProductItem] = useState(initailState);
   const [images, setImage]:any = useState([]);
+  const [promoStart, setPromoStart] = useState('');
+const [promoEnd, setPromoEnd] = useState('');
+
 
   
 
@@ -71,24 +74,28 @@ function VendorAddNewProduct() {
     
     
     try {
-        console.log(productItem,);
+        
         
       
 toast.loading("Uploading...")
       const urls:any = await uploadFiles("images", images);
 
 
-      await addDoc(collection(db, "promotions"), {
-        name: productItem.name,
-        description: productItem.description,
-        image: urls,
-        createdAt: serverTimestamp(),
-        
-      });
-      ;
-      toast.dismiss()
-      toast.success("product uploaded successfully");
-      setProductItem(initailState)
+   setTimeout(async() => {
+    await addDoc(collection(db, "promotions"), {
+      name: productItem.name,
+      description: productItem.description,
+      image: urls,
+      createdAt: serverTimestamp(),
+      promoStart: promoStart, // Add promo start date to the Firestore document
+        promoEnd: promoEnd,
+      
+    });
+    ;
+    toast.dismiss()
+    toast.success("product uploaded successfully");
+    setProductItem(initailState)
+   },2000)
     } catch (error:any) {
         toast.dismiss()
       toast.error(error);
@@ -181,12 +188,35 @@ toast.loading("Uploading...")
               />
             </div>
           </div>
-
+          <div className="row mt-4 px-3">
+  <div className="col-md-6">
+    <span>Date of promo start*</span>
+    <input
+      type="date"
+      value={promoStart}
+      name="promoStart"
+      onChange={(e) => setPromoStart(e.target.value)}
+      className="form-control mt-2"
+      required
+    />
+  </div>
+  <div className="col-md-6">
+    <span>Date of promo end*</span>
+    <input
+      type="date"
+      value={promoEnd}
+      name="promoEnd"
+      onChange={(e) => setPromoEnd(e.target.value)}
+      className="form-control mt-2"
+      required
+    />
+  </div>
+</div>
  
           <div className="row mt-4 mx-2">
             <div className="col-md-6">
               <button type="submit" className="btn">
-                Upload product
+                Upload promotion
               </button>
             </div>
             <div className="col-md-6"></div>

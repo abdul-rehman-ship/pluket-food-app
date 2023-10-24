@@ -2,9 +2,10 @@
 	import Button from "@components/ui/button";
 	import Counter from "@components/common/counter";
 	import { useRouter } from "next/router";
+	import Router from "next/router";
 	import { useProductQuery } from "@framework/product/get-product";
 
-
+	import  {useTranslation} from 'next-i18next'
 	import { useCart } from "@contexts/cart/cart.context";
 	import { generateCartItem } from "@utils/generate-cart-item";
 
@@ -23,7 +24,7 @@
 			query: { slug },
 		} = useRouter();
 		
-		
+		const {t}=useTranslation("common")
 		const { width } = useWindowSize();
 		const {  isLoading } = useProductQuery(slug as string);
 		const { addItemToCart } = useCart();
@@ -94,6 +95,9 @@
 			const item = generateCartItem({...product,size:selectedSize,selectedVariations,price:price},attributes);
 			addItemToCart(item, quantity);
 			toast.success("Product added to cart")
+			setTimeout(() => {
+				Router.push("/");
+			}, 2000);
 			
 		}
 
@@ -159,23 +163,23 @@
 				<div className="col-span-4 pt-8 lg:pt-0">
 					<div className="pb-7 mb-7 border-b border-gray-300">
 						<h2 className="text-olive text-lg md:text-xl lg:text-2xl 2xl:text-3xl font-bold hover:text-black mb-3.5">
-							{product?.name}
+							{t(product?.name)}
 						</h2>
 						
 						<p className="text-olive text-sm lg:text-base leading-6 lg:leading-8">
-							{product?.description}
+							{t(product?.description)}
 						</p>
 						<h2 className="text-olive text-lg mt-3 md:text-xl lg:text-2xl 2xl:text-3xl font-bold  mb-3.5">
-							stock : {product?.initialStock}
+							
 						</h2>
 						<h2 className="text-olive text-lg mt-3 md:text-xl lg:text-2xl 2xl:text-3xl font-bold  mb-3.5">
-							category : {product?.category}
+							{t("category : ")}  {t(product?.category)}
 						</h2>
 						<div className="mb-4">
 						
 							
 						<h2 className="text-olive text-lg mt-3 md:text-xl lg:text-2xl 2xl:text-3xl font-bold  mb-3.5">
-							Size :
+							{t("Size :")}
 						</h2>:
   {sizesWithPrices.map((size:any) => (
   sizePrices[size]?
@@ -188,7 +192,7 @@
         onChange={() => handleSizeChange(size)}
         className="form-radio text-olive"
       />
-      <span className="text-olive">{size.toUpperCase()}</span>
+      <span className="text-olive">{t(size.toUpperCase())}</span>
       
     </label>:""
   ))}
@@ -202,15 +206,15 @@
                 onChange={() => handleVariationChange(variation.name,variation.additionalPrice)}
                 className="form-checkbox text-olive"
               />
-              <span className="text-olive">{variation.name}</span>
-              <span className="text-olive">(+{variation.additionalPrice} THB)</span>
+              <span className="text-olive">{t(variation.name)}</span>
+              <span className="text-olive">(t(+{variation.additionalPrice} THB))</span>
             </label>
           ))}
         </div>
 
         {/* Updated product details with the calculated price */}
         <h2 className="text-olive text-lg mt-3 md:text-xl lg:text-xl 2xl:text-2xl font-bold  mb-3.5">
-           Price: THB {updatedPrice ?parseInt(updatedPrice) + parseInt(variationsPrice) :"" }
+          {t(" Price: THB")} {updatedPrice ?parseInt(updatedPrice) + parseInt(variationsPrice) :"" }
         </h2>
 					</div>
 					<div className="col-span-4 pt-8 lg:pt-0">
@@ -237,7 +241,7 @@
 							loading={addToCartLoader}
 						
 						style={{background:"#FFD800FF",fontWeight:"bold"}}>
-							<span className="py-2 text-maroon text-lg  font-bold 3xl:px-8 ">Add to cart</span>
+							<span className="py-2 text-maroon text-lg  font-bold 3xl:px-8 ">{t("Add to cart")}</span>
 						</Button>
 					</div>
 					
