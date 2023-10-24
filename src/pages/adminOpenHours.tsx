@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from "react";
 import VendorNavbar from "@components/adminNavbar";
-import { db } from "../../firebase";
-import {
-  collection,
-  addDoc,
-  getDocs,
-  doc,
-  setDoc,
-} from "firebase/firestore";
+
 import { toast, Toaster } from "react-hot-toast";
 import JsCookie from "js-cookie";
 import { useRouter } from "next/router";
@@ -38,7 +31,7 @@ function AdminManageHours() {
       toast.loading("Saving opening and closing hours...");
 
       // Save the hours data to the Firestore database
-      const hoursData = { ...hours };
+      
       
 
     
