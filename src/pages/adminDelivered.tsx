@@ -118,6 +118,7 @@ const getUsers=async()=>{
       <thead  className={style.table_head}>
         <tr>    
         <th>Referrer Logo</th>
+        <th>Name </th>
 
         <th>Kitchen in</th>
         <th>Kitchen out</th>
@@ -125,10 +126,9 @@ const getUsers=async()=>{
 
           
           <th>Id</th>
-          <th>Name </th>
           <th> Total</th>
          
-          <th>Quantity</th>
+          
           <th>Status</th>
 
           
@@ -150,6 +150,16 @@ const getUsers=async()=>{
               })
             }
           </td>
+          <td>{
+            
+            
+              users.map((user:any)=>{
+                if(user.email===customer.userEmail ){
+                  return user.name
+                 }
+              })
+            
+            }</td>
 
           <td>{customer.date +","+ customer.time }</td>
           <td>{customer.date2 +","+ customer.time2 }</td>
@@ -157,9 +167,8 @@ const getUsers=async()=>{
 
           
           <td>{customer.id}</td>
-          <td>{customer.product.name}</td>
           <td>{customer.total}</td>
-          <td>{customer.total/customer.amount}</td>
+          
           <td className='alert alert-primary font-semibold'  >{customer.paid_status?customer.paid_status==="scan and pay"?"scan on delivery":customer.paid_status:""}</td>
           
           <td><button className='btn btn-secondary' onClick={()=>handleClick(customer.id)}>View</button></td>

@@ -63,6 +63,10 @@ getOrder()
               <span>{order.product.name}</span>
             </div>
             <div className="flex justify-between mb-2">
+              <span className="font-bold">Size</span>
+              <span>{order.product.size?order.product.size:"..."}</span>
+            </div>
+            <div className="flex justify-between mb-2">
               <span className="font-bold">Quantity:</span>
               <span>{order.total / order.amount}</span>
             </div>
@@ -79,10 +83,10 @@ getOrder()
       .join(', ')}
 </span>
             </div>
-            <div className="flex justify-between mb-2">
+            {/* <div className="flex justify-between mb-2">
               <span className="font-bold">Shipping Address:</span>
               <span>{order.shippingAddress}</span>
-            </div>
+            </div> */}
             <div className="flex justify-between mb-2">
               <span className="font-bold">Payment :</span>
               <span>{order.paid_status}</span>
@@ -106,24 +110,21 @@ getOrder()
               <span className="font-bold">Status:</span>
               <span>{order.status}</span>
             </div>
-            <div className="flex justify-between mb-2">
-              <span className="font-bold">Size</span>
-              <span>{order.product.size?order.product.size:"..."}</span>
-            </div>
+           
             <div className="flex justify-between mb-2">
               <span className="font-bold">Date:</span>
               <span>{order.date}</span>
             </div>
             <div className="flex justify-between mb-2">
-              <span className="font-bold">Time:</span>
+              <span className="font-bold">Time Ordered:</span>
               <span>{order.time}</span>
             </div>
             <div className="flex justify-between mb-2">
-              <span className="font-bold">Location :</span>
-              <Link href={googleMapsLink}>
-                <a target="_blank" rel="noopener noreferrer">View on Google Maps</a>
-              </Link>
+              <span className="font-bold">Time completed in kitchen:</span>
+             
+              <span>{order?.updatedAt?order?.updatedAt?.toDate().toLocaleString():"not completed yet"}</span>
             </div>
+            
           </div>
         </div>
         <div>
@@ -144,6 +145,27 @@ getOrder()
             <div className="flex justify-between mb-2">
               <span className="font-bold">Address:</span>
               <span>{user?.address}</span>
+            </div>
+            <div className="flex justify-between mb-2">
+              <span className="font-bold">Location :</span>
+              <Link href={googleMapsLink}>
+                <a target="_blank" rel="noopener noreferrer">View on Google Maps</a>
+              </Link>
+            </div>
+            <div className="flex justify-between mb-2">
+              <span className="font-bold">Referrer :</span>
+              <span>{user?.referrer}</span>
+            </div>
+            <div className="flex justify-between mb-2">
+              <span className="font-bold"> {order?.deliveredAt? "Delivered At : ":""}</span>
+              <span>{order?.deliveredAt?.toDate().toLocaleString()}</span>
+            </div>
+            
+            <div className='mt-4'>
+              <button className='btn btn-secondary'>
+              <Link href="/adminOrders" > Back </Link>
+
+              </button>
             </div>
           </div>
         </div>

@@ -75,6 +75,7 @@ const uploadData=async()=>{
         userEmail,
         product:item,
         amount:item.price,
+        note:Cookies.get('note')? Cookies.get('note'):"",
         total:item.itemTotal, 
         paymentMethod:"stripe payment",
         shippingAddress:Cookies.get('address')? Cookies.get('address'):"",

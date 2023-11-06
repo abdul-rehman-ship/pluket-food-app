@@ -184,6 +184,7 @@ const loadWhatsapp=async(item:any)=>{
 							user:{...user},
 							userEmail,
 							product:item,
+							note:input.note?input.note:"",
 							amount:item.price,
 							total:item.itemTotal,
 							createdAt:serverTimestamp(),
@@ -224,6 +225,7 @@ const loadWhatsapp=async(item:any)=>{
 				
 				if(state){
 				Cookies.set('address',input.address?input.address:user.address);
+				Cookies.set('note',input.note?input.note:"")
 				const encodedArr = encodeURIComponent(JSON.stringify({...items}));
 				Cookies.set('data',encodedArr);
 				const {
@@ -250,6 +252,7 @@ const loadWhatsapp=async(item:any)=>{
 						  await addDoc(collection(db, "orders"), {
 							user:{...user,address:input?.address},
 							product:item,
+							note:input.note?input.note:"",
 							userEmail,
 							amount:item.price,
 							total:item.itemTotal,
@@ -300,6 +303,7 @@ const loadWhatsapp=async(item:any)=>{
 							user:{...user,address:input.address},
 							product:item,
 							userEmail,
+							note:input.note?input.note:"",
 							amount:item.price,
 							total:item.itemTotal,
 							createdAt:serverTimestamp(),
@@ -428,6 +432,17 @@ openModal();
 				value={user?.email}
 				disabled
 			/>
+			 <Input
+      labelKey="forms:Note"
+      {...register("note", {
+        
+      })}
+      errorKey={errors.note?.message}
+      variant="solid"
+      detail="yes"
+	  value={user?.note}
+	  
+    />
 			{
 				user.referrer==="yes"?<>
 				<Input

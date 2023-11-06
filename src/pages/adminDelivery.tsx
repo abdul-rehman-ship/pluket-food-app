@@ -28,6 +28,7 @@ function VendorCustomers() {
   const [showDialog, setShowDialog] = useState(false);
 const [inputValue, setInputValue] = useState("");
 const [Id,setId]:any=useState("")
+const [users,setUser]:any=useState()
 const handleShowDialog = (id:any) => {
   setId(id)
   setShowDialog(true);
@@ -36,7 +37,17 @@ const handleShowDialog = (id:any) => {
 const handleCloseDialog = () => {
   setShowDialog(false);
 };
-
+const getUsers=async()=>{
+  let arr:any=[]
+  await getDocs(collection(db, "users")).then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      arr.push({id:doc.id,...doc.data()});
+    });
+  
+ })
+  arr.reverse()    
+  await setUser(arr);
+}
   
   const getData = async () => {
     let arr: any = [];
@@ -84,6 +95,7 @@ toast.dismiss()
       if(JsCookie.get("admin_key")==="admin"){
         if(customers.length===0){
           getData()
+          getUsers()
           
 
         }
@@ -151,6 +163,7 @@ const notDeliverable=async()=>{
           {/* <th>Quantity</th> */}
           <th>Status</th>
           <th>Location</th>
+          <th>Payment Method</th>
           <th>Mark as</th>
           <th></th>
         </tr>
@@ -164,7 +177,14 @@ const notDeliverable=async()=>{
           <td>{customer.date2 +","+ customer.time2 }</td>
            */}
           {/* <td>{customer.id}</td> */}
-          <td>{customer.product.name}</td>
+          <td>{
+               users?.map((user:any)=>{
+                if(user.email===customer.userEmail ){
+                  return user.name
+                 }
+              })
+            
+            }</td>
           {/* <td>{customer.total}</td> */}
           {/* <td>{customer.total/customer.amount}</td> */}
           <td className='alert alert-primary font-semibold'  >{customer.paid_status?customer.paid_status==="scan and pay"?"not paid":customer.paid_status==="cash on delivery"?"not paid":customer.paid_status:""}</td>
@@ -173,6 +193,9 @@ const notDeliverable=async()=>{
                 <a target="_blank" rel="noopener noreferrer">View on Google Maps</a>
               </Link>
          </td>
+         <td className='alert alert-primary font-semibold'>
+            
+            </td>
           <td className='flex gap-2'><button onClick={()=>completeOrder(customer.id)} className='btn btn-success'>Delivered</button>
           
            <button onClick={()=>handleShowDialog(customer.id)} className='btn btn-danger'>Not deliverable</button></td>
