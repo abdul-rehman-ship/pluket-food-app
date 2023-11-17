@@ -160,17 +160,10 @@ getOrder()
               <span className="font-bold"> {order?.deliveredAt? "Delivered At : ":""}</span>
               <span>{order?.deliveredAt?.toDate().toLocaleString()}</span>
             </div>
-            <div className="flex justify-between mb-2">
-              <span className="font-bold"> {order?.deliveredBy? "Delivered By : ":""}</span>
-              <span>{order?.deliveredBy?order?.deliveredBy:""}</span>
-            </div>
-            <div className="flex justify-between mb-2">
-              <span className="font-bold"> {order?.payment_type? " Paid By : ":""}</span>
-              <span>{order?.payment_type? order?.payment_type==="failedPayment"?order?.payment_type: "" +order?.payment_type:""}</span>
-            </div>
+            
             <div className='mt-4'>
               <button className='btn btn-secondary'>
-              <Link href="/adminOrders" > Back </Link>
+              <Link href="/deliveryPersonDelivery" > Back </Link>
 
               </button>
             </div>

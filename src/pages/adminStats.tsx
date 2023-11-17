@@ -4,9 +4,9 @@ import style from '../styles/vendor.module.css';
 import JsCookie from 'js-cookie';
 import Router from 'next/router';
 import VendorNavbar from '../components/adminNavbar';
-import { getDocs, collection } from 'firebase/firestore';
+import { getDocs, doc,collection, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
-import  { Toaster } from 'react-hot-toast';
+import  toast, { Toaster } from 'react-hot-toast';
 
 
 function VendorCustomers() {
@@ -14,6 +14,7 @@ function VendorCustomers() {
   const [orders, setOrders]: any = useState([]);
   const [months, setMonths]: any = useState([]);
   const [totalPaid,setTotalPaid]:any=useState(0)
+  const [currentReferrer,setCurrentReferrer]:any=useState('')
   const [totalUnpaid,setTotalUnpaid]:any=useState(0)
   const [displayedMonths, setDisplayedMonths]: any = useState(1); // ['January 2021', 'February 2021', 'March 2021'
   const getUsers = async () => {
@@ -21,11 +22,16 @@ function VendorCustomers() {
       let arr: any = [];
       querySnapshot.forEach((doc) => {
         if (doc.data().referrer === "yes") {
+          if(currentReferrer===''){
+            setCurrentReferrer(doc.data().email)
+          }
           arr.push(doc.data());
         }
       });
+      
       setReferrers(arr);
     });
+
 
     getOrders();
   };
@@ -66,6 +72,8 @@ function VendorCustomers() {
         }
       });
       setOrders(arr);
+      console.log(arr);
+      
       setTotalPaid(paid)
       setTotalUnpaid(unpaid)
     });
@@ -81,7 +89,20 @@ function VendorCustomers() {
       getUsers();
     }
   }, [orders, referrers]);
-
+const payReferrer=async(id:any)=>{
+  try {
+    toast.loading("loading ... ")
+    await updateDoc(doc(db, "orders", id), {
+      paid_referrerAt: new Date(),
+    });
+    toast.remove()
+    getOrders()
+    toast.success("Referrer paid")
+    
+  } catch (error:any) {
+    toast.error(error.message)
+  }
+}
   const getPastSixMonths = () => {
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const today = new Date();
@@ -182,6 +203,84 @@ function VendorCustomers() {
               ))}
             </tbody>
           </Table>
+
+          <div className="my-4"></div>
+          <Table bordered className="border shadow-sm" responsive hover>
+          <thead className={style.table_head}>
+            <tr>
+              <th>Select Referrer</th>
+              <th>
+                Total orders made
+              </th>
+              <th>Total orders paid</th>
+              <th>Total orders unpaid</th>
+             
+            </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <select className="form-control" value={currentReferrer} onChange={(e)=>setCurrentReferrer(e.target.value)}>
+                    {referrers.map((referrer: any) => (
+                      <option key={referrer.email} value={referrer.email}>{referrer.name}</option>
+                    ))}
+                  </select>
+                </td>
+                <td>{orders.filter((order: any) => order.email===currentReferrer).length}</td>
+                <td>{orders.filter((order: any) => order.email===currentReferrer && (order.payment_type!=="" && order.payment_type!=="failedPayment")).length}</td>
+                <td>{orders.filter((order: any) => order.email===currentReferrer && (order.payment_type==="" || order.payment_type==="failedPayment")).length}</td>
+              
+              </tr>
+            </tbody>
+
+          </Table>
+          <div className="my-4"></div>
+          <Table bordered className="border shadow-sm" responsive hover>
+          <thead className={style.table_head}>
+            <tr>
+              <th>Logo</th>
+              
+              <th>Order Date</th>
+              <th>Delivered Date</th>
+              <th>Order payment</th>
+              
+              <th>Pay referrer</th>
+              <th>Paid Date</th>
+              
+            </tr>
+            </thead>
+            <tbody>
+              {
+                orders.filter((order: any) => order.email===currentReferrer).map((order: any) => (
+                  <tr key={order.id}>
+                    <td>{
+                     referrers.filter((referrer: any) => referrer.email===order.email).map((referrer: any) => (
+                      <img src={referrer.logo}   className='rounded-circle' style={{width:"50px",height:"50px"}} alt="" />
+                     ))
+                     }</td>
+                     
+                    <td>{order?.createdAt?.toDate().toLocaleString()}</td>
+                    <td>{order?.deliveredAt?order?.deliveredAt?.toDate().toLocaleString():""}</td>
+                    
+                    <td>{order.payment_type?order.payment_type:""}</td>
+                    <td>
+                      {
+                        order?.paid_referrerAt?"Paid":<button className='btn btn-success' onClick={()=>payReferrer(order.id)}>Pay referrer</button>
+                      }
+
+                    </td>
+                    <td>
+                      {
+                        order?.paid_referrerAt?.toDate().toLocaleString()?order?.paid_referrerAt?.toDate().toLocaleString():""
+                      }
+                    </td>
+                    
+                  </tr>
+                ))
+              }
+            </tbody>
+            </Table>
+
         </div>
       </div>
     </>

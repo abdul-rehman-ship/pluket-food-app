@@ -25,7 +25,7 @@ const LoginForm: React.FC = () => {
 
 async	function onSubmit({ email, password, remember_me }: LoginInputType) {
 
-toast.loading("Loading...")
+
 
 
 await signInWithEmailAndPassword(auth,email,password).then(async()=>{
@@ -35,11 +35,11 @@ await signInWithEmailAndPassword(auth,email,password).then(async()=>{
 		password,
 		remember_me,
 	});
-	toast.dismiss()
+	toast.success("logged in successfully")
 
 }).catch((err:any)=>{
-	toast.dismiss()
-	console.log(err)
+	
+	
 	toast.error(err.message)
 })
 	

@@ -60,6 +60,7 @@ useEffect(()=>{
 				<ProductSingleDetails product={product} />
 				
 				
+				
 
 			</Container>
 			</div>

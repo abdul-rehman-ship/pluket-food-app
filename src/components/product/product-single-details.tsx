@@ -163,23 +163,23 @@
 				<div className="col-span-4 pt-8 lg:pt-0">
 					<div className="pb-7 mb-7 border-b border-gray-300">
 						<h2 className="text-olive text-lg md:text-xl lg:text-2xl 2xl:text-3xl font-bold hover:text-black mb-3.5">
-							{t(product?.name)}
+							{product?.name}
 						</h2>
 						
 						<p className="text-olive text-sm lg:text-base leading-6 lg:leading-8">
-							{t(product?.description)}
+							{product?.description}
 						</p>
 						<h2 className="text-olive text-lg mt-3 md:text-xl lg:text-2xl 2xl:text-3xl font-bold  mb-3.5">
 							
 						</h2>
 						<h2 className="text-olive text-lg mt-3 md:text-xl lg:text-2xl 2xl:text-3xl font-bold  mb-3.5">
-							{t("category : ")}  {t(product?.category)}
+							{"category : "}  {product?.category}
 						</h2>
 						<div className="mb-4">
 						
 							
 						<h2 className="text-olive text-lg mt-3 md:text-xl lg:text-2xl 2xl:text-3xl font-bold  mb-3.5">
-							{t("Size :")}
+							{"Size :"}
 						</h2>:
   {sizesWithPrices.map((size:any) => (
   sizePrices[size]?
@@ -192,7 +192,7 @@
         onChange={() => handleSizeChange(size)}
         className="form-radio text-olive"
       />
-      <span className="text-olive">{t(size.toUpperCase())}</span>
+      <span className="text-olive">{size.toUpperCase()}</span>
       
     </label>:""
   ))}
@@ -206,8 +206,8 @@
                 onChange={() => handleVariationChange(variation.name,variation.additionalPrice)}
                 className="form-checkbox text-olive"
               />
-              <span className="text-olive">{t(variation.name)}</span>
-              <span className="text-olive">(t(+{variation.additionalPrice} THB))</span>
+              <span className="text-olive">{variation.name}</span>
+              <span className="text-olive">(+{variation.additionalPrice} THB)</span>
             </label>
           ))}
         </div>

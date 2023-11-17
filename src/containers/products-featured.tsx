@@ -5,6 +5,9 @@ import { getDocs,collection } from 'firebase/firestore'
 import { db } from '../../firebase'
 import { toast } from "react-hot-toast";
 import Link from "next/link";
+import Router from "next/router";
+import { Modal, Button, Row, Col } from 'react-bootstrap';
+import Cookies from "js-cookie";
 
 interface ProductsProps {
   sectionHeading: string;
@@ -21,9 +24,49 @@ const ProductsFeatured: React.FC<ProductsProps> = ({
 }) => {
   const [data, setData]: any = useState([]);
   const [searcheddata, setSearcheddata]: any = useState([]);
+  
   const [categories,setCategories]:any=useState([])
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchName, setSearchName] = useState('');
+
+
+
+  const [isProductModalOpen, setProductModalOpen] = useState(false);
+  const [firstHalfProduct, setFirstHalfProduct] = useState<any | null>(null);
+  const [secondHalfProduct, setSecondHalfProduct] = useState<any | null>(null);
+
+  const openProductModal = () => {
+    setProductModalOpen(true);
+  };
+
+  const closeProductModal = () => {
+    setProductModalOpen(false);
+    setFirstHalfProduct(null);
+    setSecondHalfProduct(null);
+  };
+
+  const handleSelectFirstHalf = (selectedProduct: any) => {
+    setFirstHalfProduct(selectedProduct);
+    setProductModalOpen(true);
+  };
+
+  const handleSelectSecondHalf = (selectedProduct: any) => {
+    if(firstHalfProduct.id===selectedProduct.id){
+      toast.error(" select other one product",{ duration: 2000 })
+      return
+    }
+    setSecondHalfProduct(selectedProduct);
+    Cookies.set("firstHalfProduct",firstHalfProduct)
+    Cookies.set("secondHalfProduct",selectedProduct)
+
+    closeProductModal()
+    Router.push("/products/halfHalf")
+  };
+
+  // Filter products based on the category of the first selected product
+  const filteredProducts = searcheddata.filter(
+    (product: any) => !firstHalfProduct || firstHalfProduct.category === product.category
+  );
 
 
   const handleCategoryClick = (category:any) => {
@@ -82,6 +125,7 @@ setSearcheddata(arr)
            setData(arr)
            setSearcheddata(arr)
            setCategories(arr2)
+           
          
     
    };
@@ -118,83 +162,82 @@ const search=(value:any)=>{
     <div className={className}>
       <div className="mb-4 md:mb-6 font-poppins">
 
-        {/* <div className="flex flex-col md:flex-row gap-4 md:gap-6">
-         {type==="all" ?<input
-            type="text"
-            placeholder="Search Brand"
-            className="py-2 px-4 border-2 border-gray-300 rounded-md w-full md:w-1/3 focus:outline-none"
-            value={searchBrand}
-            onChange={(e) => setSearchBrand(e.target.value)}
-          /> :" "} 
-          <input
-            type="text"
-            placeholder="Search Name"
-            className="py-2 px-4 border-2 border-gray-300 rounded-md w-full md:w-1/3 focus:outline-none"
-            value={searchName}
-            onChange={(e) => setSearchName(e.target.value)}
-          />
-          <div className="flex gap-2 w-full md:w-1/3">
-            <input
-              type="number"
-              placeholder="Min Price"
-              className="py-2 px-4 border-2 border-gray-300 rounded-md w-full focus:outline-none"
-              value={searchPriceMin}
-              onChange={(e) => setSearchPriceMin(e.target.value)}
-            />
-            <input
-              type="number"
-              placeholder="Max Price"
-              className="py-2 px-4 border-2 border-gray-300 rounded-md w-full focus:outline-none"
-              value={searchPriceMax}
-              onChange={(e) => setSearchPriceMax(e.target.value)}
-            />
-          </div>
-        </div>
-        <button
-          className="bg-blue-600 text-white px-6 py-2 rounded-md mt-4 focus:outline-none"
-          onClick={handleFilter}
-        >
-          Filter
-        </button> */}
-        <div className="flex justify-center  mt-4  items-center h-auto">
-    <h1 className="text-3xl font-bold text-olive italic   underline" >Categories</h1>
-</div>
-<div className="flex flex-wrap justify-center gap-2 space-x-2 md:space-x-4 m-4 lg:space-x-6">
-      {/* All button */}
-      <button
-        style={{width:"10rem !important"}}
-        onClick={() => handleCategoryClick('all')}
-        className={` border-2 border-olive  font-bold px-4 py-2 cursor-pointer transition duration-200 ${
-          selectedCategory === 'all' ? 'bg-olive text-maroon' : ' bg-maroon text-olive hover:bg-olive hover:text-maroon'
-        }`}
-      >
-        All
-      </button>
-  
+ 
+   
+   <div className="flex row flex-wrap  gap-3 px-4">
+  {/* Category dropdown */}
+  <select
+    value={selectedCategory}
+    onChange={(e) => handleCategoryClick(e.target.value)}
+    className={`border-2 border-olive px-4 py-2 font-bold cursor-pointer transition duration-200 
+      bg-maroon text-olive hover:bg-olive w-[12rem] hover:text-maroon  `}
+  >
+    <option value="all">All categories</option>
+    {categories.map((category: any) => (
+      <option key={category.name} value={category.name}>
+        {category.name}
+      </option>
+    ))}
+  </select>
 
-      {/* Category buttons */}
-      {categories.map((category:any) => (
-     <button
-     key={category.name}
-     onClick={() => handleCategoryClick(category.name)}
-     className={`border-2 border-olive px-4 font-bold py-2 cursor-pointer transition duration-200 
-       ${selectedCategory === category.name ? 'bg-olive text-maroon' : 'bg-maroon text-olive hover:bg-olive hover:text-maroon'}
-       min-w-[10rem]` /* Add the 'min-w-[10rem]' class for a minimum width of 10rem */
-     }
-   >
-     {category.name}
-   </button>
-      ))}
-    </div>
-    <div className="row m-4">
-      <input
-            type="text"
-            placeholder="Search By Name..."
-            className="py-2 px-4 border-2  border-gray-300 rounded-md  md:w-1/4 focus:outline-none"
-            value={searchName}
-            onChange={(e) => search(e.target.value)}
-          />
-      </div>
+  {/* Search input */}
+  
+    <input
+      type="text"
+      placeholder="Search By Name..."
+      className="py-2 px-4 border-2 border-olive  outline-none md:w-1/4 focus:outline-none"
+      value={searchName}
+      onChange={(e) => search(e.target.value)}
+    />
+<button onClick={openProductModal} className="bg-olive btn text-maroon font-bold w-auto  hover:bg-olive hover:text-maroon ">
+  Buy Half-Half of two products
+</button>
+
+
+{/* Bootstrap Modal for product selection */}
+<Modal show={isProductModalOpen} onHide={closeProductModal} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Select Two Products to Half-Half</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Row>
+            {filteredProducts.map((product: any) => (
+              <Col key={product.id} xs={6} md={3} className="mb-3 ">
+                <div className=" bg-olive p-2">
+                  <input
+                    type="checkbox"
+                    
+                    checked={firstHalfProduct === product || secondHalfProduct === product}
+                    onChange={() => {
+                      if (!firstHalfProduct) {
+                        handleSelectFirstHalf(product);
+                      } else {
+                        handleSelectSecondHalf(product);
+                        
+                      }
+                    }}
+                  />
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    style={{ width: '100%', height: '7rem', objectFit: 'cover' }}
+                  />
+                  <p className="text-maroon">{product.name}</p>
+                  <p className="text-maroon">THB {product.price}</p>
+                </div>
+              </Col>
+            ))}
+          </Row>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closeProductModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+</div>
+
 
       {error ? (
         <Alert message={error?.message} />

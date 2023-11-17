@@ -58,6 +58,10 @@ export default function VendorNavbar() {
                   <NavDropdown.Item  href="/adminStats" className={`mx-3 ${style.menu} `} style={{fontWeight:600,color:"#000000BC !important",fontFamily:'Poppins !important'}} >Referrer Stats</NavDropdown.Item>
 
             <NavDropdown.Item  className={`mx-3 ${style.menu} `}  style={{fontWeight:600}} href="/adminOpenHours">Timing</NavDropdown.Item>
+            <NavDropdown.Item  className={`mx-3 ${style.menu} `}  style={{fontWeight:600}} href="/adminDeliveryPersons">Delivery Persons</NavDropdown.Item>
+
+            <NavDropdown.Item  className={`mx-3 ${style.menu} `}  style={{fontWeight:600}} href="/adminCustomers">Customers</NavDropdown.Item>
+
             <NavDropdown.Item  className={`mx-3 ${style.menu} `}  style={{fontWeight:600}} href="/adminRequests">Referrer Requests</NavDropdown.Item>
             <NavDropdown.Item  className={`mx-3 ${style.menu} `}  style={{fontWeight:600}} href="/adminUndeliverable">Un deliverable</NavDropdown.Item>
 

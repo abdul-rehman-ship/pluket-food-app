@@ -231,7 +231,7 @@ toast.dismiss()
         }
       })
     }</h2>
-    <Table  bordered className='border shadow-sm' responsive hover>
+    <Table  bordered className='border table-responsive shadow-sm' responsive hover>
       <thead className={style.table_head}>
         <tr>
           <th>Date & Time</th>

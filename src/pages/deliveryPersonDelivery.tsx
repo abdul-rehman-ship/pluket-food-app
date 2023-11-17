@@ -1,13 +1,15 @@
+
+
 import React, { useEffect,useState } from 'react'
 
 import Table from 'react-bootstrap/Table';
 import style from '../styles/vendor.module.css'
-import JsCookie from 'js-cookie'
+import JsCookie, { set } from 'js-cookie'
 import Router from 'next/router';
 import Link from 'next/link';
 import { Modal, Button, Form } from "react-bootstrap";
 
-import VendorNavbar from '../components/adminNavbar';
+
 import { getDocs,collection, updateDoc,doc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../firebase';
 import toast, { Toaster } from 'react-hot-toast';
@@ -95,12 +97,12 @@ const getUsers=async()=>{
 await updateDoc(doc(db, "orders", id), {
     status: "delivered",
     payment_type:selectedPaymentMethod,
-    deliveredBy:"Admin",
+    deliveredBy:JsCookie.get("delivery_person_key")?JsCookie.get("delivery_person_key"):"xyz",
     deliveredAt:serverTimestamp()
   }).then(()=>{
 toast.dismiss()
       toast.dismiss()
-      setShowDialog2(false)
+setShowDialog2(false)
 
     getData()
 })
@@ -109,24 +111,24 @@ toast.dismiss()
   }
   
 
-    useEffect(()=>{
-      if(JsCookie.get("admin_key")==="admin"){
-        if(customers.length===0){
-          getData()
-          getUsers()
-          
+  useEffect(()=>{
+    if(JsCookie.get("delivery_person_key")!=="" || JsCookie.get("delivery_person_key")!==undefined || JsCookie.get("delivery_person_key")!==null){
+      if(customers.length===0){
+        getData()
+        getUsers()
+        
 
-        }
-
-      }else{
-        Router.push("/admin")
       }
-      
-    })
+
+    }else{
+      Router.push("/deliveryPerson")
+    }
+    
+  })
    
 
     const handleClick=(id:any)=>{
-        Router.push("/adminOrderDetail?id="+id
+        Router.push("/deliveryPersonOrderDetail?id="+id
         )
         
         
@@ -151,7 +153,7 @@ const notDeliverable=async()=>{
   })
 }
   return (<>
-    <VendorNavbar/>
+    
     
 
 
@@ -329,3 +331,17 @@ const notDeliverable=async()=>{
 }
 
 export default VendorCustomers
+
+
+
+
+
+
+
+
+
+
+
+
+
+

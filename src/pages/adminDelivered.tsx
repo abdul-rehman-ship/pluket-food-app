@@ -123,6 +123,8 @@ const getUsers=async()=>{
         <th>Kitchen in</th>
         <th>Kitchen out</th>
         <th>Delivered </th>
+        <th>Delivered By </th>
+
 
           
           <th>Id</th>
@@ -165,11 +167,11 @@ const getUsers=async()=>{
           <td>{customer.date2 +","+ customer.time2 }</td>
           <td>{customer.date3 +","+ customer.time3 }</td>
 
-          
+          <td>{customer?.deliveredBy}</td>
           <td>{customer.id}</td>
           <td>{customer.total}</td>
           
-          <td className='alert alert-primary font-semibold'  >{customer.paid_status?customer.paid_status==="scan and pay"?"scan on delivery":customer.paid_status:""}</td>
+          <td className='alert alert-primary font-semibold'  >{customer?.payment_type?customer?.payment_type==="failedPayment"?"failedPayment":`paid by ${customer?.payment_type}`:""}</td>
           
           <td><button className='btn btn-secondary' onClick={()=>handleClick(customer.id)}>View</button></td>
        
