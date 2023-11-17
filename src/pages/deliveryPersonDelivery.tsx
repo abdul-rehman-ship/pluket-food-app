@@ -4,7 +4,7 @@ import React, { useEffect,useState } from 'react'
 
 import Table from 'react-bootstrap/Table';
 import style from '../styles/vendor.module.css'
-import JsCookie, { set } from 'js-cookie'
+import JsCookie from 'js-cookie'
 import Router from 'next/router';
 import Link from 'next/link';
 import { Modal, Button, Form } from "react-bootstrap";
