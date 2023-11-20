@@ -86,7 +86,7 @@ const id=router.asPath.split("=")[1]
             const prod={id:doc.id,...doc.data()}
             setProductItem(prod)
             setVariations(prod.variations)
-            setImage([prod.image])
+            
               
         }
        
@@ -120,7 +120,10 @@ const id=router.asPath.split("=")[1]
   })
    
   
+
   const uploadFiles = async (folder: string, files: File[]) => {
+  console.log(files);
+  
     const promises: any[] = [];
 
     files.forEach((file) => {
@@ -155,8 +158,13 @@ const id=router.asPath.split("=")[1]
       
       toast.loading("updating product...");
 
+      console.log(images);
+      
       const urls = await uploadFiles("images", images);
+
 setTimeout(async()=>{
+  console.log(urls[0]?urls[0]:productItem.image);
+  
   
   await updateDoc(doc(db, "products", id), {
     
@@ -165,7 +173,7 @@ setTimeout(async()=>{
     description: productItem.description,
     category: productItem.category,
     initialStock: productItem.initialStock,
-    image: urls[0]?urls[0]:"",
+    image: urls[0] ? urls[0]:productItem.image,
     variations: variations,
     createdAt: serverTimestamp(),
     

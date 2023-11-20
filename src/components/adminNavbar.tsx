@@ -38,32 +38,35 @@ export default function VendorNavbar() {
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
                 <Nav.Link  href="/adminDashboard" className={`mx-3 ${style.menu} `} style={{fontWeight:600}}>Home</Nav.Link>
-
-                <Nav.Link  href="/adminCategories" className={`mx-3 ${style.menu} `} style={{fontWeight:600}}>Categories</Nav.Link>
-                <Nav.Link  href="/adminPromotions" className={`mx-3 ${style.menu} `} style={{fontWeight:600}}>Promotions</Nav.Link>
-                 
-                  <Nav.Link href="/adminOrders" className={`mx-3 ${style.menu} `} style={{fontWeight:600}} >Kitchen</Nav.Link>
-                  <Nav.Link href="/adminAllStats" className={`mx-3 ${style.menu} `} style={{fontWeight:600}} >Stats</Nav.Link>
-
-                  <Nav.Link href="/adminDelivery" className={`mx-3 ${style.menu} `} style={{fontWeight:600}} >Delivery</Nav.Link>
+                <Nav.Link href="/adminOrders" className={`mx-3 ${style.menu} `} style={{fontWeight:600}} >Kitchen</Nav.Link>
+                <Nav.Link href="/adminDelivery" className={`mx-3 ${style.menu} `} style={{fontWeight:600}} >Delivery</Nav.Link>
                   <Nav.Link href="/adminDelivered" className={`mx-3 ${style.menu} `} style={{fontWeight:600}} >Delivered</Nav.Link>
+
+
+               
+                 
                   
                   <NavDropdown
-            title="More"
+            title="Admin"
             id="basic-nav-dropdown"
             className={`mx-3 ${style.menu}`}
             style={{ fontWeight: 600,color:"#000000BC !important" }}
           >
-                  
+                   <NavDropdown.Item  href="/adminCategories" className={`mx-3 ${style.menu} `} style={{fontWeight:600}}>Categories</NavDropdown.Item>
+                <NavDropdown.Item  href="/adminPromotions" className={`mx-3 ${style.menu} `} style={{fontWeight:600}}>Promotions</NavDropdown.Item>
+                <NavDropdown.Item href="/adminAllStats" className={`mx-3 ${style.menu} `} style={{fontWeight:600}} >Stats</NavDropdown.Item>
+
                   <NavDropdown.Item  href="/adminStats" className={`mx-3 ${style.menu} `} style={{fontWeight:600,color:"#000000BC !important",fontFamily:'Poppins !important'}} >Referrer Stats</NavDropdown.Item>
+                  <NavDropdown.Item  className={`mx-3 ${style.menu} `}  style={{fontWeight:600}} href="/adminRequests">Referrer Requests</NavDropdown.Item>
+                  <NavDropdown.Item  className={`mx-3 ${style.menu} `}  style={{fontWeight:600}} href="/adminUndeliverable">Un deliverable</NavDropdown.Item>
+
 
             <NavDropdown.Item  className={`mx-3 ${style.menu} `}  style={{fontWeight:600}} href="/adminOpenHours">Timing</NavDropdown.Item>
             <NavDropdown.Item  className={`mx-3 ${style.menu} `}  style={{fontWeight:600}} href="/adminDeliveryPersons">Delivery Persons</NavDropdown.Item>
 
             <NavDropdown.Item  className={`mx-3 ${style.menu} `}  style={{fontWeight:600}} href="/adminCustomers">Customers</NavDropdown.Item>
-
-            <NavDropdown.Item  className={`mx-3 ${style.menu} `}  style={{fontWeight:600}} href="/adminRequests">Referrer Requests</NavDropdown.Item>
-            <NavDropdown.Item  className={`mx-3 ${style.menu} `}  style={{fontWeight:600}} href="/adminUndeliverable">Un deliverable</NavDropdown.Item>
+           
+                 
 
            
           </NavDropdown>
