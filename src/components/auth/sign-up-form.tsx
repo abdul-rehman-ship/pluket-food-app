@@ -13,7 +13,7 @@ import {
   } from "firebase/firestore";
 import { db } from "../../../firebase";
 import {createUserWithEmailAndPassword} from 'firebase/auth'
-
+import { useState } from "react";
 import { useUI } from "@contexts/ui.context";
 import { useSignUpMutation, SignUpInputType } from "@framework/auth/use-signup";
 import Link from "@components/ui/link";
@@ -22,12 +22,13 @@ import { useTranslation } from "next-i18next";
 
 import {auth } from '../../../firebase'
 import cookies from 'js-cookie'
-import { toast,Toaster } from "react-hot-toast";
+
 
 const SignUpForm: React.FC = () => {
 	const { t } = useTranslation();
 	const { mutate: signUp, isLoading } = useSignUpMutation();
-	
+	const[loading,setLoading]:any=useState(false)
+	const [msg,setMsg]:any=useState("")
 	const { setModalView, openModal, closeModal } = useUI();
 	
 	const {
@@ -42,43 +43,48 @@ const SignUpForm: React.FC = () => {
 	}
 
 	async function   onSubmit({ name, email, password ,address,phone,country}: SignUpInputType) {
-	toast.loading("Loading...")
+	try {
+		setLoading(true)
+		setMsg("loading ...")
 		
-		 createUserWithEmailAndPassword(auth,email,password).then(async()=>{	
+		await createUserWithEmailAndPassword(auth,email,password)
 
-			await addDoc(collection(db, "users"), {
-				name,
-				email,
-				password,
-				address,
-				phone:country+phone,
-				orders:[],
-				referrer:"no",
-				createdAt: serverTimestamp(),
-			})
-			cookies.set("email",email)
-
-			signUp({
-				name,
-				email,
-				password,
-				address,
-				phone,
-				country
-			});
-
-		toast.dismiss()
-			
-		toast.success("Signin Success")
-
-			
-
-		}).catch((err:any)=>{
-			
-			console.log(err)
-			toast.error(err.message)
+		await addDoc(collection(db, "users"), {
+			name,
+			email,
+			password,
+			address,
+			phone:country+phone,
+			orders:[],
+			referrer:"no",
+			createdAt: serverTimestamp(),
 		})
-		toast.dismiss()
+		cookies.set("email",email)
+
+		signUp({
+			name,
+			email,
+			password,
+			address,
+			phone,
+			country
+		});
+		
+		setLoading(false)
+		setMsg("")
+		
+	} catch (error:any) {
+		setLoading(false)
+
+		setMsg(error.message)
+		
+		
+		
+	}
+
+		
+		
+		
 		
 		
 
@@ -90,7 +96,7 @@ const SignUpForm: React.FC = () => {
 		<div className="py-6 px-5 sm:p-8 bg-white mx-auto rounded-lg w-full sm:w-96 md:w-450px border border-gray-300">
 			<div className="text-center mb-9 pt-2.5">
 				<div onClick={closeModal}>
-					<Toaster/>
+					
 				</div>
 				<p className="text-sm md:text-base text-body mt-3 sm:mt-4 mb-8 sm:mb-10">
 					{t("common:registration-helper")}{" "}
@@ -182,6 +188,11 @@ const SignUpForm: React.FC = () => {
 							required: `${t("forms:password-required")}`,
 						})}
 					/>
+					<span>
+						{
+							loading ? <div className="text-center my-2 text-red-500">{msg}</div> : msg
+						}
+					</span>
 					<div className="relative">
 						<Button
 							type="submit"

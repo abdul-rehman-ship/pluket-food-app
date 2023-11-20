@@ -5,43 +5,52 @@ import { useForm } from "react-hook-form";
 import { useLoginMutation, LoginInputType } from "@framework/auth/use-login";
 import { useUI } from "@contexts/ui.context";
 import { useTranslation } from "next-i18next";
-
+import {useState} from 'react'
 import { auth } from "../../../firebase";
 import {signInWithEmailAndPassword} from 'firebase/auth'
 
 import cookies from 'js-cookie'
-import { toast,Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 
 const LoginForm: React.FC = () => {
 	const { t } = useTranslation();
 	const { setModalView, openModal, closeModal } = useUI();
 	const { mutate: login, isLoading } = useLoginMutation();
+	const [loading,setLoading]:any=useState(false)
+	const [msg,stMsg]:any=useState("")
 	
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<LoginInputType>();
+	
+	
 
 async	function onSubmit({ email, password, remember_me }: LoginInputType) {
 
 
-
-
-await signInWithEmailAndPassword(auth,email,password).then(async()=>{
+try {
+	
+	setLoading(true)
+	await signInWithEmailAndPassword(auth,email,password)
 	cookies.set("email",email)
 	login({
 		email,
 		password,
 		remember_me,
 	});
-	toast.success("logged in successfully")
+setLoading(false)
+stMsg("Login Successfull")
+} catch (error:any) {
+	
+setLoading(false)
+stMsg(error.message)
 
-}).catch((err:any)=>{
 	
-	
-	toast.error(err.message)
-})
+}
+
+
 	
 		
 	}
@@ -55,16 +64,19 @@ await signInWithEmailAndPassword(auth,email,password).then(async()=>{
 	}
 
 	return (
+		<>
+		<Toaster/>
 		<div className="py-6 px-5 sm:p-8 bg-white mx-auto rounded-lg w-full sm:w-96 md:w-450px border border-gray-300">
+		
 			<div className="text-center mb-9 pt-2.5">
 				<div onClick={closeModal}>
-					<Toaster/>
 					
 				</div>
-				<p className="text-sm md:text-base text-body mt-3 sm:mt-4 mb-8 sm:mb-10">
-					{t("common:login-helper")}
+				<p className="text-sm md:text-base font-bold text-body mt-3 sm:mt-4 mb-8 sm:mb-10">
+					{loading?"Loading...":msg}
 				</p>
 			</div>
+			
 			<form
 				onSubmit={handleSubmit(onSubmit)}
 				className="flex flex-col justify-center"
@@ -131,6 +143,7 @@ await signInWithEmailAndPassword(auth,email,password).then(async()=>{
 				</button>
 			</div>
 		</div>
+		</>
 	);
 };
 

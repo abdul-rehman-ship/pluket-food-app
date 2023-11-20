@@ -9,6 +9,7 @@ import { addActiveScroll } from "@utils/add-active-scroll";
 import dynamic from "next/dynamic";
 import { useTranslation } from "next-i18next";
 import Logo from '@components/ui/logo'
+import { Toaster } from "react-hot-toast";
 
 const AuthMenu = dynamic(() => import("./auth-menu"), { ssr: false }) as any;
 const CartButton = dynamic(() => import("@components/cart/cart-button"), {
@@ -45,6 +46,7 @@ const Header: React.FC = () => {
 			ref={siteHeaderRef}
 			className="w-full h-16 sm:h-20 lg:h-24 relative z-20  "  
 		>
+			<Toaster />
 			<div className="innerSticky text-gray-700 body-font fixed w-full h-16 sm:h-20 lg:h-24 z-20 ps-4 md:ps-0 lg:ps-6 pe-4 lg:pe-6 transition duration-200 ease-in-out"  
 			style={{backgroundColor:"#8A2BE2FF !important"}}
 			>

@@ -11,7 +11,7 @@ import { ToastContainer } from "react-toastify";
 // import { ReactQueryDevtools } from "react-query/devtools";
 import { appWithTranslation } from "next-i18next";
 import { DefaultSeo } from "@components/common/default-seo";
-
+import { Toaster } from "react-hot-toast";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Load Open Sans and satisfy typeface font
@@ -55,7 +55,7 @@ const CustomApp = ({ Component, pageProps }: any) => {
 					<ManagedUIContext>
 						<Layout pageProps={pageProps}>
 							<DefaultSeo />
-							
+							<Toaster/>
 							<Component {...pageProps} key={router.route} />
 
 							
