@@ -58,17 +58,17 @@ const ProductOverlayCard: React.FC<ProductProps> = ({
 					className="transition duration-500 ease-in-out transform group-hover:scale-110"/>
 			</div>
 			<div className="md:pe-2 lg:pe-0  sm:px-8 2xl:pe-2 overflow-hidden">
-  <div className="flex  justify-between items-center px-4">
+  <div className="py-2">
     <h2 className=" text-maroon font-semibold text-sm md:text-base xl:text-lg truncate">
       {product?.name}
     </h2>
-    <div className=" font-segoe text-maroon font-semibold text-base md:text-xl lg:text-base xl:text-xl 3xl:text-2xl 3xl:mt-0.5">
+    <h2 className=" font-segoe text-maroon font-semibold text-base md:text-xl lg:text-base xl:text-xl 3xl:text-2xl 3xl:mt-0.5">
       THB {product.price}
-    </div>
+    </h2>
   </div>
-  <p className="text-xs xl:text-sm text-maroon leading-normal p-4 xl:leading-relaxed truncate max-w-[250px]">
+  {/* <p className="text-xs xl:text-sm text-maroon leading-normal p-4 xl:leading-relaxed truncate max-w-[250px]">
     {product?.description}
-  </p>
+  </p> */}
 </div>
 
 		</div>

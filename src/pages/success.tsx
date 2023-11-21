@@ -83,7 +83,8 @@ const uploadData=async()=>{
         lat:Cookies.get('lat'),
         lng:Cookies.get('lng'),
         status:"pending",
-        createdAt: serverTimestamp()  
+        createdAt: serverTimestamp()  ,
+        discountCode:Cookies.get('discountCode')? Cookies.get('discountCode'):"",
       }).then(()=>{
             toast.dismiss()
             setPendiing(true)

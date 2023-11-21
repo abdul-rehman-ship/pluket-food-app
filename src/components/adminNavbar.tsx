@@ -49,11 +49,11 @@ export default function VendorNavbar() {
                   <NavDropdown
             title="Admin"
             id="basic-nav-dropdown"
-            className={`mx-3 ${style.menu}`}
-            style={{ fontWeight: 600,color:"#000000BC !important" }}
+            className={`mx-3 `}
+            style={{ fontWeight: 600,fontFamily:'"Open-sans" , sans-serif !important' }}
           >
-                   <NavDropdown.Item  href="/adminCategories" className={`mx-3 ${style.menu} `} style={{fontWeight:600}}>Categories</NavDropdown.Item>
-                <NavDropdown.Item  href="/adminPromotions" className={`mx-3 ${style.menu} `} style={{fontWeight:600}}>Promotions</NavDropdown.Item>
+                   <NavDropdown.Item   href="/adminCategories" className={`mx-3  `} style={{color:'#686363ba !important',fontWeight:600, fontFamily:'"Open-sans" , sans-serif'}}>Categories</NavDropdown.Item>
+                <NavDropdown.Item  href="/adminPromotions" className={`mx-3  `} style={{fontWeight:600}}>Promotions</NavDropdown.Item>
                 <NavDropdown.Item href="/adminAllStats" className={`mx-3 ${style.menu} `} style={{fontWeight:600}} >Stats</NavDropdown.Item>
 
                   <NavDropdown.Item  href="/adminStats" className={`mx-3 ${style.menu} `} style={{fontWeight:600,color:"#000000BC !important",fontFamily:'Poppins !important'}} >Referrer Stats</NavDropdown.Item>

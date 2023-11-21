@@ -105,6 +105,7 @@ setSearcheddata(arr)
       
        
      });
+     arr.sort((a:any, b:any) => a.name.localeCompare(b.name));
      let arr2: any = [];
      const data2 = await getDocs(collection(db, "categories"));
      data2.forEach((doc: any) => {
@@ -119,6 +120,7 @@ setSearcheddata(arr)
       
        
      });
+     arr2.sort((a:any, b:any) => a.name.localeCompare(b.name));
    
     
            toast.dismiss()

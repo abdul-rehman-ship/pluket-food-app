@@ -27,6 +27,8 @@ import cookies from 'js-cookie'
 const SignUpForm: React.FC = () => {
 	const { t } = useTranslation();
 	const { mutate: signUp, isLoading } = useSignUpMutation();
+	
+
 	const[loading,setLoading]:any=useState(false)
 	const [msg,setMsg]:any=useState("")
 	const { setModalView, openModal, closeModal } = useUI();
@@ -47,7 +49,10 @@ const SignUpForm: React.FC = () => {
 		setLoading(true)
 		setMsg("loading ...")
 		
-		await createUserWithEmailAndPassword(auth,email,password)
+		await createUserWithEmailAndPassword(auth,email,password).catch((error:any)=>{	
+			setLoading(false)
+			setMsg(error.message)
+		 })
 
 		await addDoc(collection(db, "users"), {
 			name,
@@ -61,21 +66,13 @@ const SignUpForm: React.FC = () => {
 		})
 		cookies.set("email",email)
 
-		signUp({
-			name,
-			email,
-			password,
-			address,
-			phone,
-			country
-		});
 		
 		setLoading(false)
-		setMsg("")
+		setMsg("Account created Successfully.  ")
+		signUp({ email, password, name, address,phone,country });
 		
 	} catch (error:any) {
 		setLoading(false)
-
 		setMsg(error.message)
 		
 		

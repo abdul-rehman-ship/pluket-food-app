@@ -1,6 +1,5 @@
 import {
-	IoLogoInstagram,
-	IoLogoTwitter,
+
 	IoLogoFacebook,
 	IoLogoWhatsapp
 } from "react-icons/io5";
@@ -11,18 +10,18 @@ export const footer = {
 			id: 1,
 			widgetTitle: "widget-title-social",
 			lists: [
-				{
-					id: 1,
-					title: "link-instagram",
-					path: "https://www.instagram.com/redqinc/",
-					icon: <IoLogoInstagram />,
-				},
-				{
-					id: 2,
-					title: "link-twitter",
-					path: "https://twitter.com/redqinc",
-					icon: <IoLogoTwitter />,
-				},
+				// {
+				// 	id: 1,
+				// 	title: "link-instagram",
+				// 	path: "https://www.instagram.com/redqinc/",
+				// 	icon: <IoLogoInstagram />,
+				// },
+				// {
+				// 	id: 2,
+				// 	title: "link-twitter",
+				// 	path: "https://twitter.com/redqinc",
+				// 	icon: <IoLogoTwitter />,
+				// },
 				{
 					id: 3,
 					title: "link-facebook",
@@ -41,16 +40,16 @@ export const footer = {
 			id: 2,
 			widgetTitle: "widget-title-contact",
 			lists: [
-				{
-					id: 1,
-					title: "link-contact-us",
-					path: "/",
-				},
-				{
-					id: 2,
-					title: "link-email",
-					path: "/",
-				},
+				// {
+				// 	id: 1,
+				// 	title: "link-contact-us",
+				// 	path: "/",
+				// },
+				// {
+				// 	id: 2,
+				// 	title: "link-email",
+				// 	path: "/",
+				// },
 				{
 					id: 3,
 					title: "link-email-two",
@@ -58,64 +57,64 @@ export const footer = {
 				},
 				{
 					id: 4,
-					title: "link-phone",
+					title: "+66 0 929967091",
 					path: "/",
 				},
 			],
 		},
-		{
-			id: 3,
-			widgetTitle: "widget-title-about",
-			lists: [
-				{
-					id: 1,
-					title: "link-support-center",
-					path: "/contact-us",
-				},
-				{
-					id: 2,
-					title: "link-customer-support",
-					path: "/",
-				},
-				{
-					id: 3,
-					title: "link-about-us",
-					path: "/contact-us",
-				},
-				{
-					id: 4,
-					title: "link-copyright",
-					path: "/",
-				},
-			],
-		},
+		// {
+		// 	id: 3,
+		// 	widgetTitle: "widget-title-about",
+		// 	lists: [
+		// 		{
+		// 			id: 1,
+		// 			title: "link-support-center",
+		// 			path: "/contact-us",
+		// 		},
+		// 		{
+		// 			id: 2,
+		// 			title: "link-customer-support",
+		// 			path: "/",
+		// 		},
+		// 		{
+		// 			id: 3,
+		// 			title: "link-about-us",
+		// 			path: "/contact-us",
+		// 		},
+		// 		{
+		// 			id: 4,
+		// 			title: "link-copyright",
+		// 			path: "/",
+		// 		},
+		// 	],
+		// },
 		
-		{
-			id: 5,
-			widgetTitle: "widget-title-our-information",
-			lists: [
-				{
-					id: 1,
-					title: "link-privacy",
-					path: "/privacy",
-				},
-				{
-					id: 2,
-					title: "link-terms",
-					path: "/terms",
-				},
-				{
-					id: 3,
-					title: "link-return-policy",
-					path: "/privacy",
-				},
-				{
-					id: 4,
-					title: "link-site-map",
-					path: "/",
-				},
-			],
-		},
+		// {
+		// 	id: 5,
+		// 	widgetTitle: "widget-title-our-information",
+		// 	lists: [
+		// 		{
+		// 			id: 1,
+		// 			title: "link-privacy",
+		// 			path: "/privacy",
+		// 		},
+		// 		{
+		// 			id: 2,
+		// 			title: "link-terms",
+		// 			path: "/terms",
+		// 		},
+		// 		{
+		// 			id: 3,
+		// 			title: "link-return-policy",
+		// 			path: "/privacy",
+		// 		},
+		// 		{
+		// 			id: 4,
+		// 			title: "link-site-map",
+		// 			path: "/",
+		// 		},
+		// 	],
+		// },
 		
 	],
 	payment: [

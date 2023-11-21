@@ -29,6 +29,7 @@ interface CheckoutInputType {
 	zipCode: string;
 	save: boolean;
 	note: string;
+	discountCode:string
 }
 
 const CheckoutForm: React.FC = () => {
@@ -194,7 +195,8 @@ const loadWhatsapp=async(item:any)=>{
 							lat:Cookies.get('lat'),
 							lng:Cookies.get('lng'),
 							paid_status:"cash on delivery",
-							status:"pending"
+							status:"pending",
+							discountCode:input.discountCode?input.discountCode:""
 						  })
 						.then(()=>{
 							toast.dismiss();
@@ -226,6 +228,7 @@ const loadWhatsapp=async(item:any)=>{
 				if(state){
 				Cookies.set('address',input.address?input.address:user.address);
 				Cookies.set('note',input.note?input.note:"")
+				Cookies.set('DiscountCode',input.discountCode?input.discountCode:"")
 				const encodedArr = encodeURIComponent(JSON.stringify({...items}));
 				Cookies.set('data',encodedArr);
 				const {
@@ -263,7 +266,9 @@ const loadWhatsapp=async(item:any)=>{
 							lat:Cookies.get('lat'),
 							lng:Cookies.get('lng'),
 							paid_status:"scan and pay",
-							status:"pending"
+							status:"pending",
+							discountCode:input.discountCode?input.discountCode:""
+
 						  })
 						.then(()=>{
 							toast.dismiss();
@@ -314,7 +319,9 @@ const loadWhatsapp=async(item:any)=>{
 							lng:Cookies.get('lng'),
 							paid_status:"paid",
 							status:"pending",
-							reciept:urls[0]?urls[0]:""
+							reciept:urls[0]?urls[0]:"",
+							discountCode:input.discountCode?input.discountCode:""
+
 							
 						  })
 						.then(()=>{
@@ -441,6 +448,17 @@ openModal();
       variant="solid"
       detail="yes"
 	  value={user?.note}
+	  
+    />
+	 <Input
+      labelKey="forms:Discount Code"
+      {...register("discountCode", {
+        
+      })}
+      errorKey={errors.discountCode?.message}
+      variant="solid"
+      detail="yes"
+	  value={user?.discountCode}
 	  
     />
 			{

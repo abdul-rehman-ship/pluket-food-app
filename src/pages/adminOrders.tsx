@@ -241,6 +241,8 @@ toast.dismiss()
           <th>Actions</th>
           <th>View</th>
           <th>Note</th>
+          <th>Discount Code</th>
+
         </tr>
       </thead>
       <tbody>
@@ -278,6 +280,8 @@ toast.dismiss()
               </button>
             </td>
             <td>{order?.note?order.note:""}</td>
+            <td>{order?.discountCode?order.discountCode:""}</td>
+
           </tr>
         ))}
       </tbody>
