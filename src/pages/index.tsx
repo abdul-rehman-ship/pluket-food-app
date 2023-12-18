@@ -43,24 +43,17 @@ export default function Home() {
 				<Toaster/>
 				<OpeningHoursButton />
 			<div className=" p-0 m-0" style={{background:"#6630BCFF"}}>
-  <div className="row g-0 lg-h-[70vh] md-h-auto sm-h-auto " >
-  
-    <div className="col-lg-6  text-white showcase-img">
-	  <img
-		src="/assets/images/appheader.png"
-		alt="Pizza Image"
-		className="img-fluid h-100"
-	  />
-	  						</div>
-							  <div className="col-lg-6  showcase-img ">
-      <img
-        src="/assets/images/webpreview.jpg" 
-        alt="Pizza Image"
-        className="img-fluid h-100"
-      />
-    </div>
-   
+			<div className="row g-0 lg-h-[70vh] md-h-auto sm-h-auto">
+  <div className="col-12  showcase-img text-center">
+    <img
+      src="/assets/images/Web-App-Banner-1.png"
+      alt="Pizza Image"
+      className=" w-100"
+
+    />
   </div>
+</div>
+
 </div>
 
 

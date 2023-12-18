@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import {
   
 	collection,
+	
 	addDoc,
 	
 	serverTimestamp,
@@ -45,31 +46,41 @@ const SignUpForm: React.FC = () => {
 	}
 
 	async function   onSubmit({ name, email, password ,address,phone,country}: SignUpInputType) {
+		
 	try {
 		setLoading(true)
 		setMsg("loading ...")
 		
-		await createUserWithEmailAndPassword(auth,email,password).catch((error:any)=>{	
-			setLoading(false)
-			setMsg(error.message)
-		 })
+		 createUserWithEmailAndPassword(auth,email,password)
+		 setMsg("uploading data ...")
 
-		await addDoc(collection(db, "users"), {
-			name,
-			email,
-			password,
-			address,
-			phone:country+phone,
-			orders:[],
-			referrer:"no",
-			createdAt: serverTimestamp(),
-		})
-		cookies.set("email",email)
+		
+		 setTimeout(async()=>{
+			await addDoc(collection(db, "users"), {
+			
+				name,
+				email,
+				password,
+				address,
+				phone: country + phone,
+				orders: [],
+				referrer: 'no',
+				createdAt: serverTimestamp(),
+			  });
+			  cookies.set("email",email)
 
 		
 		setLoading(false)
 		setMsg("Account created Successfully.  ")
 		signUp({ email, password, name, address,phone,country });
+		
+
+		 },2000)
+		
+	  
+		  // Add more documents if needed
+	  
+		  
 		
 	} catch (error:any) {
 		setLoading(false)

@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { collection, getDocs, addDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import Cookies from "js-cookie";
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import {
   getDownloadURL,
   
@@ -22,6 +22,7 @@ const OpeningHoursButton = () => {
   const {isAuthorized}	= useUI()
 	const [user,setUser]:any=useState({})
   const [showForm, setShowForm]:any = useState(false);
+  const [msg,setMsg]:any=useState('')
 
 
   
@@ -33,23 +34,43 @@ const OpeningHoursButton = () => {
 
   const ShowForm = () => {
     // Hide the form when the user closes it
+    if(!isAuthorized){
+      return toast("Please login first");
+    }
+
     setShowForm(true);
   };
 
 
 
 
-	const getUser=async()=>{
-		getDocs(collection(db, "users")).then((querySnapshot) => {
-			querySnapshot.forEach((doc) => {
-				if(doc.data().email===Cookies.get("email")){
-					setUser({id:doc.id,...doc.data()})
-				}
-			});
-		})
-	}
+	const getUser = async () => {
+    const email = Cookies.get("email");
+  
+    if (!email) {
+      console.error("No email found");
+      return;
+    }
+  
+    try {
+     const querySnapshot=await  getDocs(collection(db, "users"))
+        querySnapshot.forEach((doc:any) => {
+          
+          
+          if(doc.data().email===Cookies.get("email")){
+            setUser({id:doc.id,...doc.data()})
+          }
+        });
+      
+    
+    }
+
+    catch(error:any){
+
+    }
+  };
 	useEffect(() => {
-		if(isAuthorized || !user.email){
+		if(isAuthorized && (!user.email || user.email===undefined || user.email===null)){
 			getUser()
 
 		}
@@ -109,83 +130,91 @@ const OpeningHoursButton = () => {
     return item;
   };
 
-const handleReferrer=async(e:any)=>{
-  e.preventDefault()
-  
-  
-  toast.loading("Sending request")
-  if(!isAuthorized){ 
-    toast.error(" please login first")
-    return
-   }
-  if(user?.referrer==="yes"){
-    toast.dismiss()
-    toast.error("You're already a referrer")
-    return
-  }
-  if(venueData.logo){
-const logo= await uploadFiles("logos", [venueData.logo]);
-//check user request is already sent
-const requests = await getDocs(collection(db, "requests"));
-let isRequestSent=false
-requests.forEach((doc) => {
-  if(doc.data().email===user.email){
-    isRequestSent=true
-  }
-});
-if(isRequestSent){
-  toast.dismiss()
-
-  toast.error("Your request is already sent")
-  return
-}
-
-await addDoc(collection(db, "requests"), {
-  venueName: venueData.venueName,
-  venueLocation: venueData.venueLocation,
-  logo: logo[0]?logo[0]:"",
-  socialMediaLink: venueData.socialMediaLink,
-  email:user.email,
-  userId:user.id,
-  status:"pending"
-
-})
-  toast.dismiss()
-    toast.success("Your request sent successfully")
+  const handleReferrer = async (e: any) => {
     getUser()
-    onHide()
-    return
-  }
-//  await updateDoc(doc(db, "users", user?.id), {
-//     referrer: "yes",
-//   });
-//   toast.success("You're now a referrer")
 
-//   getUser()
-}
+    e.preventDefault();
+    
+    
+    try {
+      e.preventDefault();
+  
+      setMsg('Sending Request ...')
+  
+      if (!isAuthorized) {
+        toast("Please login first");
+        return;
+      }
+  
+      if (user?.referrer === "yes") {
+        setMsg('You are already a referrer')
+        
+        return;
+      }
+  
+      if (venueData.logo) {
+        const logo = await uploadFiles("logos", [venueData.logo]);
+  
+        // Check if the user's request is already sent
+        const requests = await getDocs(collection(db, "requests"));
+        const isRequestSent = requests.docs.some((doc) => doc.data().email === user.email);
+  
+        if (isRequestSent) {
+          
+          setMsg('Your request is already sent')
+          
+          return;
+        }
+  
+        await addDoc(collection(db, "requests"), {
+          venueName: venueData.venueName,
+          venueLocation: venueData.venueLocation,
+          logo: logo[0] ? logo[0] : "",
+          socialMediaLink: venueData.socialMediaLink,
+          email: user?.email?user.email:Cookies.get("email"),
+          
+          status: "pending",
+        });
+  
+        setMsg('Your request sent successfully')
+        
+        getUser();
+        onHide();
+        return;
+      }
+  
+      // Uncomment the following lines if you want to update the user as a referrer
+      // await updateDoc(doc(db, "users", user?.id), {
+      //   referrer: "yes",
+      // });
+      // toast.success("You're now a referrer");
+      // getUser();
+    } catch (error: any) {
+      console.error(error.message);
+      setMsg(error.message)
+    }
+  };
+  
 
   const isOpen = isRestaurantOpen(); // Implement your logic for checking opening hours here
 
   return (
     <>
     <div className="w-full flex  gap-1 justify-end">
-   <Toaster/>
+   
     <Button  className="flex gap-2  bg-olive text-maroon ml-auto font-bold items-center justify-center m-4 hover:bg-olive" onClick={handleShow}>
         <FiClock className="mr-2" />
         {isOpen ? 'Open' : 'Closed'}
       </Button>
       {
-        isAuthorized ? user?.referrer==="yes"?
+        isAuthorized && user?.referrer==="yes"?
          <Button  className="flex gap-2  bg-olive text-maroon ml-auto font-bold items-center justify-center m-4 hover:text-maroon hover:bg-olive" >
        Registered Referrer
       </Button>:<Button  className="flex gap-2  bg-olive text-maroon ml-auto font-bold items-center justify-center m-4 hover:text-maroon hover:bg-olive" onClick={ShowForm}>
-       Become a Referrer
+      { isAuthorized? 'Become a Referrer': 'Login to become a Referrer' } 
       </Button>
       
-      :
-        <Button  className="flex gap-2  bg-olive text-maroon ml-auto font-bold items-center justify-center m-4 hover:text-maroon hover:bg-olive" >
-        Login to become a Referrer
-       </Button>
+  
       
       }
     
@@ -211,7 +240,7 @@ await addDoc(collection(db, "requests"), {
       </Modal>
       <Modal show={showForm} onHide={onHide}>
       <Modal.Header closeButton>
-        <Modal.Title>Send Request</Modal.Title>
+        <Modal.Title className='text-danger'>{msg===''?'Send Request':msg}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
       <Form onSubmit={handleReferrer}>
