@@ -51,9 +51,9 @@ const UserProfilePage = () => {
     const password:string="123456753"
     login({ email, password, remember_me });
     setTimeout(()=>{
-      router.replace('/');
+      router.push('/');
 
-    },1500)
+    },3000)
   };
 
   return (

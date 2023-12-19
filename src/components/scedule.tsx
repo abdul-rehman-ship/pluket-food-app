@@ -17,12 +17,14 @@ import {
 } from "firebase/storage";
 import { storage } from "../../firebase";
 import Form from 'react-bootstrap/Form';
+
 const OpeningHoursButton = () => {
   const [showModal, setShowModal] = useState(false);
   const {isAuthorized}	= useUI()
 	const [user,setUser]:any=useState({})
   const [showForm, setShowForm]:any = useState(false);
   const [msg,setMsg]:any=useState('')
+  const [image,setImage]:any=useState('')
 
 
   
@@ -90,10 +92,11 @@ const OpeningHoursButton = () => {
   const handleInputChange = (e:any) => {
     const { name, value, type } = e.target;
     if (type === 'file') {
-      const file:any = e.target.files[0];
+       setImage( e.target.files[0])
+
       setVenueData({
         ...venueData,
-        logo: file,
+        logo:  e.target.files[0],
       });
     } else {
       setVenueData({
@@ -102,10 +105,11 @@ const OpeningHoursButton = () => {
       });
     }
   };
-  const uploadFiles = async (folder: string, files: File[]) => {
+ 
+  const uploadFiles = async (folder:any,files:any) => {
     const promises: any[] = [];
 
-    files.forEach((file) => {
+    files.forEach((file:any) => {
       const storageRef = ref(storage, `${folder}/${file.name}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
       promises.push(uploadTask);
@@ -139,7 +143,7 @@ const OpeningHoursButton = () => {
     try {
       e.preventDefault();
   
-      setMsg('Sending Request ...')
+      setMsg('Please wait ite takes some time to Send Request ...')
   
       if (!isAuthorized) {
         toast("Please login first");
@@ -152,8 +156,14 @@ const OpeningHoursButton = () => {
         return;
       }
   
+
       if (venueData.logo) {
-        const logo = await uploadFiles("logos", [venueData.logo]);
+        const logo:any =await uploadFiles("logos",[...image]);
+        if(logo===''){
+          setMsg('Error uploading logo')
+          
+          return;
+        }
   
         // Check if the user's request is already sent
         // const requests:any = await getDocs(collection(db, "requests"));
@@ -166,6 +176,8 @@ const OpeningHoursButton = () => {
         //   return;
         // }
   
+        //use setDoc here
+
         await addDoc(collection(db, "requests"), {
           venueName: venueData.venueName,
           venueLocation: venueData.venueLocation,
