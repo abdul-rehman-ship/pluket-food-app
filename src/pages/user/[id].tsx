@@ -1,6 +1,6 @@
 // pages/user/[...].tsx
 
-import { useRouter } from 'next/router';
+import Router from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { getDocs, collection } from 'firebase/firestore';
@@ -8,8 +8,8 @@ import { db } from '../../../firebase';
 import { useLoginMutation } from "@framework/auth/use-login";
 import Cookies from 'js-cookie';
 const UserProfilePage = () => {
-  const router = useRouter();
-  const {id}=router.query
+  
+  const {id}=Router.query
   
   
   
@@ -51,7 +51,7 @@ const UserProfilePage = () => {
     const password:string="123456753"
     login({ email, password, remember_me });
     setTimeout(()=>{
-      router.push('/');
+      Router.push('/');
 
     },3000)
   };
