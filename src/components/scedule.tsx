@@ -156,15 +156,15 @@ const OpeningHoursButton = () => {
         const logo = await uploadFiles("logos", [venueData.logo]);
   
         // Check if the user's request is already sent
-        const requests = await getDocs(collection(db, "requests"));
-        const isRequestSent = requests.docs.some((doc) => doc.data().email === user.email);
+        // const requests:any = await getDocs(collection(db, "requests"));
+        // const isRequestSent = requests.docs.some((doc) => doc.data().email === user.email);
   
-        if (isRequestSent) {
+        // if (isRequestSent) {
           
-          setMsg('Your request is already sent')
+        //   setMsg('Your request is already sent')
           
-          return;
-        }
+        //   return;
+        // }
   
         await addDoc(collection(db, "requests"), {
           venueName: venueData.venueName,
