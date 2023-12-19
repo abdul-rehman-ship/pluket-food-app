@@ -1,6 +1,7 @@
 // pages/user/[...].tsx
 
 import Router from 'next/router';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { getDocs, collection } from 'firebase/firestore';
@@ -8,8 +9,8 @@ import { db } from '../../../firebase';
 import { useLoginMutation } from "@framework/auth/use-login";
 import Cookies from 'js-cookie';
 const UserProfilePage = () => {
-  
-  const {id}=Router.query
+  const router=useRouter()
+  const {id}=router.query
   
   
   
