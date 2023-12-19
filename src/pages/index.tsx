@@ -23,7 +23,7 @@ export default function Home() {
 	const router=useRouter()
 	const {login}=router.query
 	if(login==="yes"){
-		Router.reload()
+		Router.replace("/")
 	}
 
 
