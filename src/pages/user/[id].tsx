@@ -51,10 +51,8 @@ const UserProfilePage = () => {
     const email:string=userData.email
     const password:string="123456753"
     login({ email, password, remember_me });
-    Router.push({
-      pathname:"/",
-      query:{login:"yes"}
-    })
+ Cookies.set('login', "yes");
+    Router.push('/')
   };
 
   return (
