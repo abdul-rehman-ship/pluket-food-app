@@ -13,11 +13,19 @@ import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 import Cookies from "js-cookie";
+import { useRouter } from "next/router";
+import Router from "next/router";
 export default function Home() {
 	JsCookie.remove("admin_key")
 	// Example initial center coordinates
 	const {isAuthorized}	= useUI()
 	const [user,setUser]:any=useState({})
+	const router=useRouter()
+	const {login}=router.query
+	if(login==="yes"){
+		Router.reload()
+	}
+
 
 	const getUser=async()=>{
 		getDocs(collection(db, "users")).then((querySnapshot) => {

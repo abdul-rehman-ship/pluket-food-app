@@ -51,10 +51,10 @@ const UserProfilePage = () => {
     const email:string=userData.email
     const password:string="123456753"
     login({ email, password, remember_me });
-    setTimeout(()=>{
-      Router.push('/');
-
-    },3000)
+    Router.push({
+      pathname:"/",
+      query:{login:"yes"}
+    })
   };
 
   return (
