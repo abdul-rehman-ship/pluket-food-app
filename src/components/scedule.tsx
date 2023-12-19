@@ -106,10 +106,10 @@ const OpeningHoursButton = () => {
     }
   };
  
-  const uploadFiles = async (folder:any,files:any) => {
+  const uploadFiles = async (folder: string, files: File[]) => {
     const promises: any[] = [];
 
-    files.forEach((file:any) => {
+    files.forEach((file) => {
       const storageRef = ref(storage, `${folder}/${file.name}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
       promises.push(uploadTask);
@@ -135,15 +135,15 @@ const OpeningHoursButton = () => {
   };
 
   const handleReferrer = async (e: any) => {
-    getUser()
+    
 
-    e.preventDefault();
+    
     
     
     try {
       e.preventDefault();
   
-      setMsg('Please wait ite takes some time to Send Request ...')
+      setMsg('Please wait it takes some time to Send Request ...')
   
       if (!isAuthorized) {
         toast("Please login first");
@@ -157,13 +157,16 @@ const OpeningHoursButton = () => {
       }
   
 
-      if (venueData.logo) {
-        const logo:any =await uploadFiles("logos",[...image]);
-        if(logo===''){
-          setMsg('Error uploading logo')
+      if (!venueData.logo) {
+        setMsg("please select logo")
+        return
+      }
+        const logo:any =await uploadFiles("logos",[image]);
+        // if(logo===''){
+        //   setMsg('Error uploading logo')
           
-          return;
-        }
+        //   return;
+        // }
   
         // Check if the user's request is already sent
         // const requests:any = await getDocs(collection(db, "requests"));
@@ -193,7 +196,7 @@ const OpeningHoursButton = () => {
         getUser();
         onHide();
         return;
-      }
+      
   
       // Uncomment the following lines if you want to update the user as a referrer
       // await updateDoc(doc(db, "users", user?.id), {
