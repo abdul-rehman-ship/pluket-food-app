@@ -29,7 +29,7 @@ const ProductsFeatured: React.FC<ProductsProps> = ({
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchName, setSearchName] = useState('');
 
-
+  const [isTrue,setIsTrue]:any=useState(false)
   const [firstHalfProduct, setFirstHalfProduct] = useState<any | null>(null);
   const [isProductModalOpen, setProductModalOpen] = useState(false);
   
@@ -58,9 +58,9 @@ const ProductsFeatured: React.FC<ProductsProps> = ({
     setSecondHalfProduct(selectedProduct);
     Cookies.set("firstHalfProduct",firstHalfProduct.id)
     Cookies.set("secondHalfProduct",selectedProduct.id)
-
+    setIsTrue(true)
     
-    Router.replace('/product/halfHalf')
+    // Router.replace('/product/halfHalf')
   };
 
   // Filter products based on the category of the first selected product
@@ -131,7 +131,12 @@ setSearcheddata(arr)
          
     
    };
+const handleLink=async()=>{
+  if(isTrue){
+    Router.replace('/product/halfHalf')
+  }
 
+}
   useEffect(() => {
     if (data.length === 0) {
       getData();
@@ -234,6 +239,9 @@ const search=(value:any)=>{
         <Modal.Footer>
           <Button variant="secondary" onClick={closeProductModal}>
             Close
+          </Button>
+          <Button variant="success" onClick={handleLink}>
+            Next
           </Button>
         </Modal.Footer>
       </Modal> 
