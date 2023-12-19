@@ -5,9 +5,9 @@ import { getDocs,collection } from 'firebase/firestore'
 import { db } from '../../firebase'
 import { toast } from "react-hot-toast";
 import Link from "next/link";
-// import Router from "next/router";
-// import { Modal, Button, Row, Col } from 'react-bootstrap';
-// import Cookies from "js-cookie";
+import Router from "next/router";
+import { Modal, Button, Row, Col } from 'react-bootstrap';
+import Cookies from "js-cookie";
 
 interface ProductsProps {
   sectionHeading: string;
@@ -30,43 +30,43 @@ const ProductsFeatured: React.FC<ProductsProps> = ({
   const [searchName, setSearchName] = useState('');
 
 
-  // const [firstHalfProduct, setFirstHalfProduct] = useState<any | null>(null);
-  // const [isProductModalOpen, setProductModalOpen] = useState(false);
+  const [firstHalfProduct, setFirstHalfProduct] = useState<any | null>(null);
+  const [isProductModalOpen, setProductModalOpen] = useState(false);
   
-  // const [secondHalfProduct, setSecondHalfProduct] = useState<any | null>(null);
+  const [secondHalfProduct, setSecondHalfProduct] = useState<any | null>(null);
 
-  // const openProductModal = () => {
-  //   setProductModalOpen(true);
-  // };
+  const openProductModal = () => {
+    setProductModalOpen(true);
+  };
 
-  // const closeProductModal = () => {
-  //   setProductModalOpen(false);
-  //   setFirstHalfProduct(null);
-  //   setSecondHalfProduct(null);
-  // };
+  const closeProductModal = () => {
+    setProductModalOpen(false);
+    setFirstHalfProduct(null);
+    setSecondHalfProduct(null);
+  };
 
-  // const handleSelectFirstHalf = (selectedProduct: any) => {
-  //   setFirstHalfProduct(selectedProduct);
-  //   setProductModalOpen(true);
-  // };
+  const handleSelectFirstHalf = (selectedProduct: any) => {
+    setFirstHalfProduct(selectedProduct);
+    setProductModalOpen(true);
+  };
 
-  // const handleSelectSecondHalf = (selectedProduct: any) => {
-  //   if(firstHalfProduct.id===selectedProduct.id){
-  //     toast.error(" select other one product",{ duration: 2000 })
-  //     return
-  //   }
-  //   setSecondHalfProduct(selectedProduct);
-  //   Cookies.set("firstHalfProduct",firstHalfProduct)
-  //   Cookies.set("secondHalfProduct",selectedProduct)
+  const handleSelectSecondHalf = (selectedProduct: any) => {
+    if(firstHalfProduct.id===selectedProduct.id){
+      toast.error(" select other one product",{ duration: 2000 })
+      return
+    }
+    setSecondHalfProduct(selectedProduct);
+    Cookies.set("firstHalfProduct",firstHalfProduct.id)
+    Cookies.set("secondHalfProduct",selectedProduct.id)
 
-  //   closeProductModal()
-  //   Router.push("/products/halfHalf")
-  // };
+    
+    Router.replace('/product/halfHalf')
+  };
 
-  // // Filter products based on the category of the first selected product
-  // const filteredProducts = searcheddata.filter(
-  //   (product: any) => !firstHalfProduct || firstHalfProduct.category === product.category
-  // );
+  // Filter products based on the category of the first selected product
+  const filteredProducts = searcheddata.filter(
+    (product: any) => !firstHalfProduct || firstHalfProduct.category === product.category
+  );
 
 
   const handleCategoryClick = (category:any) => {
@@ -191,7 +191,7 @@ const search=(value:any)=>{
       value={searchName}
       onChange={(e) => search(e.target.value)}
     />
-{/* <button onClick={openProductModal} className="bg-olive btn text-maroon font-bold w-auto  hover:bg-olive hover:text-maroon ">
+<button onClick={openProductModal} className="bg-olive btn text-maroon font-bold w-auto  hover:bg-olive hover:text-maroon ">
   Buy Half-Half of two products
 </button>
 
@@ -236,7 +236,8 @@ const search=(value:any)=>{
             Close
           </Button>
         </Modal.Footer>
-      </Modal> */}
+      </Modal> 
+      
 
 </div>
 

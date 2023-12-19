@@ -25,6 +25,7 @@ const OpeningHoursButton = () => {
   const [showForm, setShowForm]:any = useState(false);
   const [msg,setMsg]:any=useState('')
   const [image,setImage]:any=useState('')
+  
 
 
   
@@ -63,6 +64,7 @@ const OpeningHoursButton = () => {
             setUser({id:doc.id,...doc.data()})
           }
         });
+        
       
     
     }
@@ -78,17 +80,17 @@ const OpeningHoursButton = () => {
 		}
 	})
 
+ 
+  
+
+  const handleClose = () => setShowModal(false);
+  const handleShow = () => setShowModal(true);
   const [venueData, setVenueData]:any = useState({
     name: '',
     location: '',
     logo: null, // Store the file object
     socialMediaLink: '',
   });
-  
-
-  const handleClose = () => setShowModal(false);
-  const handleShow = () => setShowModal(true);
-  
   const handleInputChange = (e:any) => {
     const { name, value, type } = e.target;
     if (type === 'file') {
@@ -136,8 +138,8 @@ const OpeningHoursButton = () => {
 
   const handleReferrer = async (e: any) => {
     
+  
 
-    
     
     
     try {
@@ -225,8 +227,10 @@ const OpeningHoursButton = () => {
         isAuthorized && user?.referrer==="yes"?
          <Button  className="flex gap-2  bg-olive text-maroon ml-auto font-bold items-center justify-center m-4 hover:text-maroon hover:bg-olive" >
        Registered Referrer
-      </Button>:<Button  className="flex gap-2  bg-olive text-maroon ml-auto font-bold items-center justify-center m-4 hover:text-maroon hover:bg-olive" onClick={ShowForm}>
-      { isAuthorized? 'Become a Referrer': 'Login to become a Referrer' } 
+      </Button>
+      :
+       isAuthorized && <Button  className="flex gap-2  bg-olive text-maroon ml-auto font-bold items-center justify-center m-4 hover:text-maroon hover:bg-olive" onClick={ShowForm}>
+      Become a Referrer
       </Button>
       
   
@@ -272,16 +276,21 @@ const OpeningHoursButton = () => {
       </Form.Group>
 
       <Form.Group controlId="venueLocation">
-        <Form.Label>Short Location</Form.Label>
-        <Form.Control
-          required
-          type="text"
-          name="venueLocation"
-          value={venueData.venueLocation}
-          onChange={handleInputChange}
-          placeholder="Enter short location"
-        />
-      </Form.Group>
+      <Form.Label>Short Location</Form.Label>
+      <Form.Control
+        as="select"  // Use "as" prop to render a select dropdown
+        required
+        name="venueLocation"
+        value={venueData.venueLocation}
+        onChange={handleInputChange}
+      >
+        <option value="">Select a location</option>
+        <option value="Location a">Location A</option>
+        <option value="Location b">Location B</option>
+        <option value= "Location c">Location C</option>
+        <option value="Location d">Location D</option>
+      </Form.Control>
+    </Form.Group>
 
       <Form.Group controlId="logoUpload">
         <Form.Label>Logo Upload</Form.Label>

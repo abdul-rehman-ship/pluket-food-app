@@ -56,23 +56,23 @@
 
 			
 				
-				if(product.size?.sm){
-					setUpdatedPrice(product.size.sm)
+				if(product?.size?.sm){
+					setUpdatedPrice(product.size?.sm)
 					setSelectedSize("sm")
-				}else if(product.size?.md){
+				}else if(product?.size?.md){
 
-					setUpdatedPrice(product.size.md)
+					setUpdatedPrice(product.size?.md)
 					setSelectedSize("md")
 
 
 				}
-				else if(product.size?.lg){
+				else if(product?.size?.lg){
 
-					setUpdatedPrice(product.size.lg)
+					setUpdatedPrice(product.size?.lg)
 					setSelectedSize("lg")
 
 				}else{
-					setUpdatedPrice(product.price)
+					setUpdatedPrice(product?.price)
 
 				}
 			
