@@ -6,9 +6,11 @@ import { useForm } from "react-hook-form";
 
 import {
   
-	collection,
 	
-	addDoc,
+	collection,
+
+	setDoc,
+	doc,
 	
 	serverTimestamp,
   } from "firebase/firestore";
@@ -51,12 +53,14 @@ const SignUpForm: React.FC = () => {
 		setLoading(true)
 		setMsg("loading ...")
 		
-		 createUserWithEmailAndPassword(auth,email,password)
+		await createUserWithEmailAndPassword(auth,email,password)
 		 setMsg("uploading data ...")
 
-		
-		 setTimeout(async()=>{
-			await addDoc(collection(db, "users"), {
+		 const userRef:any = 	collection(db, 'users');
+    const newUserRef:any = doc(userRef); // Firestore will automatically generate a unique ID
+
+		 
+			await  setDoc(newUserRef, {
 			
 				name,
 				email,
@@ -66,7 +70,7 @@ const SignUpForm: React.FC = () => {
 				orders: [],
 				referrer: 'no',
 				createdAt: serverTimestamp(),
-			  });
+			  })
 			  cookies.set("email",email)
 
 		
@@ -75,7 +79,7 @@ const SignUpForm: React.FC = () => {
 		signUp({ email, password, name, address,phone,country });
 		
 
-		 },2000)
+		 
 		
 	  
 		  // Add more documents if needed
