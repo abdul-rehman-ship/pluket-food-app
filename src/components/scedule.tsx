@@ -285,10 +285,18 @@ const OpeningHoursButton = () => {
         onChange={handleInputChange}
       >
         <option value="">Select a location</option>
-        <option value="Location a">Location A</option>
-        <option value="Location b">Location B</option>
-        <option value= "Location c">Location C</option>
-        <option value="Location d">Location D</option>
+        <option value="Sirirat">Sirirat</option>
+        <option value="Nanai road">Nanai road</option>
+        <option value="⁠OTOP">⁠OTOP</option>
+        <option value="⁠Bel Aire / Hospital">⁠Bel Aire / Hospital</option>
+        <option value="Dolphin">Dolphin</option>
+        <option value="⁠Bangla / Central">Dolp⁠Bangla / Centralhin</option>
+        
+
+
+
+
+       
       </Form.Control>
     </Form.Group>
 

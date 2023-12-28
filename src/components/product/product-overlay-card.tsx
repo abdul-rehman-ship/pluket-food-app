@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useUI } from "@contexts/ui.context";
+import Router from 'next/router'
 // import usePrice from "@framework/product/use-price";
 
 
@@ -25,21 +25,22 @@ const ProductOverlayCard: React.FC<ProductProps> = ({
 			? "col-span-2 lg:col-span-1"
 			: "col-span-2 lg:col-span-1";
 
-	const { openModal, setModalView, setModalData } = useUI();
+	
 	// const { price }:any = usePrice({
 	// 	amount: product.retailPrice ? product.retailPrice : product.retailPrice,
 	// 	baseAmount: product.retailPrice,
 	// 	currencyCode: "USD",
 	// });
-	function handlePopupView() {
-		setModalData({ data: product });
-		setModalView("PRODUCT_VIEW");
-		return openModal();
+	function handlePopupView(id:any) {
+		Router.push(`/products/${id}`)
+		// setModalData({ data: product });
+		// setModalView("PRODUCT_VIEW");
+		// return openModal();
 	}
 
 	return (
 		<div
-			onClick={handlePopupView}
+			onClick={()=>{handlePopupView(product.id)}}
 			className={`${classes} cursor-pointer group flex flex-col bg-olive rounded-md relative items-center justify-between overflow-hidden`}>
 				
 			<div

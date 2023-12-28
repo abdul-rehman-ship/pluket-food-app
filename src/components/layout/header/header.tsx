@@ -10,6 +10,7 @@ import dynamic from "next/dynamic";
 import { useTranslation } from "next-i18next";
 import Logo from '@components/ui/logo'
 import { Toaster } from "react-hot-toast";
+import Router  from "next/router";
 
 const AuthMenu = dynamic(() => import("./auth-menu"), { ssr: false }) as any;
 const CartButton = dynamic(() => import("@components/cart/cart-button"), {
@@ -23,8 +24,8 @@ const Header: React.FC = () => {
 		openSidebar,
 		setDrawerView,
 		openSearch,
-		openModal,
-		setModalView,
+		
+		
 		isAuthorized,
 	} = useUI();
 	const { t } = useTranslation("common");
@@ -32,8 +33,7 @@ const Header: React.FC = () => {
 	addActiveScroll(siteHeaderRef);
 
 	function handleLogin() {
-		setModalView("LOGIN_VIEW");
-		return openModal();
+		Router.push('/signin')
 	}
 	function handleMobileMenu() {
 		setDrawerView("MOBILE_MENU");

@@ -11,10 +11,11 @@ import {signInWithEmailAndPassword} from 'firebase/auth'
 
 import cookies from 'js-cookie'
 import { Toaster } from "react-hot-toast";
+import Router  from "next/router";
 
 const LoginForm: React.FC = () => {
 	const { t } = useTranslation();
-	const { setModalView, openModal, closeModal } = useUI();
+	const {  closeModal } = useUI();
 	const { mutate: login, isLoading } = useLoginMutation();
 	const [loading,setLoading]:any=useState(false)
 	const [msg,stMsg]:any=useState("")
@@ -42,6 +43,7 @@ try {
 	});
 setLoading(false)
 stMsg("Login Successfull")
+Router.push('/')
 } catch (error:any) {
 	
 setLoading(false)
@@ -55,12 +57,10 @@ stMsg(error.message)
 		
 	}
 	function handleSignUp() {
-		setModalView("SIGN_UP_VIEW");
-		return openModal();
+	Router.push('/signup')
 	}
 	function handleForgetPassword() {
-		setModalView("FORGET_PASSWORD");
-		return openModal();
+		Router.push('/forgot-password')
 	}
 
 	return (

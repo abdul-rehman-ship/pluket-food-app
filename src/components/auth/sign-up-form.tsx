@@ -25,6 +25,7 @@ import { useTranslation } from "next-i18next";
 
 import {auth } from '../../../firebase'
 import cookies from 'js-cookie'
+import  Router  from "next/router";
 
 
 const SignUpForm: React.FC = () => {
@@ -34,7 +35,7 @@ const SignUpForm: React.FC = () => {
 
 	const[loading,setLoading]:any=useState(false)
 	const [msg,setMsg]:any=useState("")
-	const { setModalView, openModal, closeModal } = useUI();
+	const {  closeModal } = useUI();
 	
 	const {
 		register,
@@ -43,8 +44,7 @@ const SignUpForm: React.FC = () => {
 	} = useForm<SignUpInputType>();
 
 	function handleSignIn() {
-		setModalView("LOGIN_VIEW");
-		return openModal();
+		Router.push('/signin')
 	}
 
 	async function   onSubmit({ name, email, password ,address,phone,country}: SignUpInputType) {
@@ -78,7 +78,7 @@ const SignUpForm: React.FC = () => {
 		setMsg("Account created Successfully.  ")
 		signUp({ email, password, name, address,phone,country });
 		
-
+			  Router.push('/')
 		 
 		
 	  

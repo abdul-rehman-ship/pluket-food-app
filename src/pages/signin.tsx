@@ -1,7 +1,7 @@
 import Container from "@components/ui/container";
 import Layout from "@components/layout/layout";
 import LoginForm from "@components/auth/login-form";
-import PageHeader from "@components/ui/page-header";
+
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 
@@ -11,7 +11,7 @@ export default function SignInPage() {
 	
 	return (
 		<>
-			<PageHeader pageHeader="Sign In" />
+			{/* <PageHeader pageHeader="Sign In" /> */}
 			<Container>
 			
 

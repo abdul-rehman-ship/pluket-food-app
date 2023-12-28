@@ -10,13 +10,14 @@ type FormValues = {
 };
 import {auth} from '../../../firebase'
 import {Toaster,toast} from "react-hot-toast";
+import Router  from "next/router";
 const defaultValues = {
 	email: "",
 };
 
 const ForgetPasswordForm = () => {
 	const { t } = useTranslation();
-	const { setModalView, openModal, closeModal } = useUI();
+	const {  closeModal } = useUI();
 	const {
 		register,
 		handleSubmit,
@@ -26,8 +27,7 @@ const ForgetPasswordForm = () => {
 	});
 
 	function handleSignIn() {
-		setModalView("LOGIN_VIEW");
-		return openModal();
+		Router.push("/signin");
 	}
 
 	const onSubmit = (values: FormValues) => {
