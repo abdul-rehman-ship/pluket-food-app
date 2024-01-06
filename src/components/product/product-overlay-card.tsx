@@ -6,7 +6,7 @@ import Router from 'next/router'
 interface ProductProps {
 	product: any;
 	index: number;
-	imgLoading?: "eager" | "lazy";
+	
 	variant?: "left" | "center";
 }
 
@@ -14,7 +14,7 @@ const ProductOverlayCard: React.FC<ProductProps> = ({
 	product,
 	index,
 	variant = "left",
-	imgLoading = "lazy",
+	
 }) => {
 	const size =
 		(variant === "center" && index === 1) || (variant === "left" && index === 0)
@@ -51,7 +51,6 @@ const ProductOverlayCard: React.FC<ProductProps> = ({
   src={product?.image}
   width={size}
   height={size}
-  loading={imgLoading ? "eager" : "lazy"}
   alt={product?.name || "Product Image"}
   className="transition duration-500 ease-in-out transform group-hover:scale-110"
 />
