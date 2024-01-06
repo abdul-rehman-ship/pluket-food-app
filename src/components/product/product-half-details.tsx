@@ -190,7 +190,7 @@ sizePrices[size]?
     onChange={() => handleSizeChange(size)}
     className="form-radio text-olive"
   />
-  <span className="text-olive">{size.toUpperCase()}</span>
+  <span className="text-olive">{size.toUpperCase()==="SM"?"Small 8 Pizza":size.toUpperCase()==="LG"?"Large 12 pizza":size.toUpperCase()}</span>
   
 </label>:""
 ))}
