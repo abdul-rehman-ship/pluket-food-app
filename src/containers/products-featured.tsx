@@ -257,9 +257,9 @@ const search=(value:any)=>{
           <div className="grid grid-cols-2 md:grid-cols-4 grid-rows-2 gap-3 md:gap-5 xl:gap-7">
   {
     searcheddata.length===0 && <div className="flex justify-center items-center m-4 h-auto">
-  <div className="spinner-border text-light" role="status">
-  <span className=" text-white" style={{color:"#ffffff !important"}}>Loading Products...</span>
-</div>
+  
+<span className=" text-white" style={{color:"#ffffff !important"}}> <span className="spinner-border text-light" role="status"></span> Loading Products...</span>
+
     </div>
   }
             {searcheddata?.map((product: any, idx: any) => (
