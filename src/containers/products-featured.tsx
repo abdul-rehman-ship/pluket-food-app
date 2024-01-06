@@ -258,7 +258,7 @@ const search=(value:any)=>{
   {
     searcheddata.length===0 && <div className="flex justify-center items-center m-4 h-auto">
   <div className="spinner-border text-light" role="status">
-  <span className="visually-hidden text-light">Loading Products...</span>
+  <span className="visually-hidden text-white" style={{color:"#ffffff"}}>Loading Products...</span>
 </div>
     </div>
   }
