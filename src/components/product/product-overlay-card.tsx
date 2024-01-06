@@ -1,4 +1,4 @@
-import Image from "next/image";
+// import Image from "next/image";
 import Router from 'next/router'
 // import usePrice from "@framework/product/use-price";
 
@@ -47,16 +47,14 @@ const ProductOverlayCard: React.FC<ProductProps> = ({
 				className="flex justify-center items-center p-4 h-auto 3xl:min-h-[330px]"
 				title={product?.name}
 			>
-				<Image
-					src={
-						product?.image
-					}
-					
-					width={size}
-					height={size}
-					loading={imgLoading}
-					alt={product?.name || "Product Image"}
-					className="transition duration-500 ease-in-out transform group-hover:scale-110"/>
+			<img
+  src={product?.image}
+  width={size}
+  height={size}
+  loading={imgLoading ? "eager" : "lazy"}
+  alt={product?.name || "Product Image"}
+  className="transition duration-500 ease-in-out transform group-hover:scale-110"
+/>
 			</div>
 			<div className="md:pe-2 lg:pe-0  sm:px-8 2xl:pe-2 overflow-hidden">
   <div className="py-2">
