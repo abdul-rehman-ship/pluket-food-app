@@ -1,9 +1,9 @@
 	import React, { useState,useEffect } from "react";
 	import Button from "@components/ui/button";
 	import Counter from "@components/common/counter";
-	import { useRouter } from "next/router";
+	
 	import Router from "next/router";
-	import { useProductQuery } from "@framework/product/get-product";
+	
 
 	import  {useTranslation} from 'next-i18next'
 	import { useCart } from "@contexts/cart/cart.context";
@@ -20,13 +20,11 @@
 	const ProductSingleDetails: React.FC<any> = ({product}) => {
 		
 		
-		const {
-			query: { slug },
-		} = useRouter();
+		
 		
 		const {t}=useTranslation("common")
 		const { width } = useWindowSize();
-		const {  isLoading } = useProductQuery(slug as string);
+		
 		const { addItemToCart } = useCart();
 		
 		const [attributes] = useState<{ [key: string]: string }>({});
@@ -79,7 +77,7 @@
 		}
 		}
 		)
-		if (isLoading) return <p className="text-white"> Loading...</p>;
+		if (!product.name) return <p className="text-white"> Loading...</p>;
 		
 
 		
