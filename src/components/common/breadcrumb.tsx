@@ -68,7 +68,7 @@ const Breadcrumb: React.FC<{ separator?: string }> = ({ separator = "/" }) => {
 
 			{breadcrumbs?.map((breadcrumb: any) => (
 				<ActiveLink
-					href={breadcrumb.href}
+					href={"/allProducts"}
 					activeClassName="font-semibold text-olive "
 					key={breadcrumb.href}
 				>
