@@ -40,7 +40,7 @@ const ProductOverlayCard: React.FC<ProductProps> = ({
 
 	return (
 		<div
-			onClick={()=>{handlePopupView(product.id)}}
+			onClick={()=>{handlePopupView(product.__id__)}}
 			className={`${classes} cursor-pointer group flex flex-col bg-olive rounded-md relative items-center justify-between overflow-hidden`}>
 				
 			<div
